@@ -151,7 +151,7 @@ namespace ArmyBuilder
             var classification = soldier.Classification;
 
             // KNIGHTS TAKE 5 LESS ATTACK DAMAGE
-            if (classification == "Knight")
+            if (classification == ClassificationEnums.Knight)
             {
                 bonusDefense += 5;
             }
@@ -223,7 +223,7 @@ namespace ArmyBuilder
             }
 
             // HUMAN WIZARDS DO 3 EXTRA DAMAGE
-            if (race == "Human" && classification == "Wizard")
+            if (race == "Human" && classification == ClassificationEnums.Wizard)
             {
                 bonusMagicDamage += 3;
             }
