@@ -4,7 +4,12 @@ using System.Threading;
 
 namespace ArmyBuilder
 {
-    class Program
+    /// <summary>
+    /// ArmyBuilder app is a console application which lets you create an army of Soldiers.
+    /// When the Soldier has been added to the army they become a recruit.
+    /// When the army is full you can send the army to battle the evil monster.
+    /// </summary>
+    public class Program
     {
         static void Main(string[] args)
         {
@@ -17,15 +22,19 @@ namespace ArmyBuilder
             Console.ReadKey();
         }
 
+        /// <summary>
+        /// Send Army to battle the evil monster
+        /// </summary>
+        /// <param name="army"></param>
         private static void SendArmyToDoBattle(List<Soldier> army)
         {
             var numberGenerator = new Random();
             var monsterHitPoints = numberGenerator.Next(50, 100);
-            Console.WriteLine("The foul monster sallies forth from its lair...");
+            Console.WriteLine("\nThe foul monster sallies forth from its lair...");
             Thread.Sleep(2000);
-            Console.WriteLine("Slime and flame eminate from the beast as it approaches...");
+            Console.WriteLine("\nSlime and flame eminate from the beast as it approaches...");
             Thread.Sleep(2000);
-            Console.WriteLine("The army attacks!");
+            Console.WriteLine("\nThe army attacks!");
             Thread.Sleep(2000);
 
             while (monsterHitPoints > 0)
@@ -41,21 +50,21 @@ namespace ArmyBuilder
                             var damage = numberGenerator.Next(1, attackStrength);
                             damage += CheckForBonusAttackDamage(army[i]);
                             monsterHitPoints -= damage;
-                            Console.WriteLine($"{army[i].Name} charges forth to attack and slashes at the monster for {damage} points of damage!");
+                            Console.WriteLine($"\n{army[i].Name} charges forth to attack and slashes at the monster for {damage} points of damage!");
                         }
                         else
                         {
                             var damage = numberGenerator.Next(1, sorceryStrength);
                             damage += CheckForBonusMagicDamage(army[i]);
                             monsterHitPoints -= damage;
-                            Console.WriteLine($"{army[i].Name} pauses, chants a loud and ancient phrase, when suddenly lightning strikes the monster for {damage} points of damage!");
+                            Console.WriteLine($"\n{army[i].Name} pauses, chants a loud and ancient phrase, when suddenly lightning strikes the monster for {damage} points of damage!");
                         }
                     }
                 }
 
                 if (monsterHitPoints > 0)
                 {
-                    Console.WriteLine("Despite your best attacks, the monster still lives. It charges forth, and attacks!");
+                    Console.WriteLine("\nDespite your best attacks, the monster still lives. It charges forth, and attacks!");
 
                     for (int i = 0; i < army.Count; i++)
                     {
@@ -72,12 +81,12 @@ namespace ArmyBuilder
                                 damage -= CheckForAttackDefenseBonus(army[i]);
                                 if (damage >= hitPoints)
                                 {
-                                    Console.WriteLine($"{army[i].Name} is hit by the monster with a mightly blow, and falls dead to the earth.");
+                                    Console.WriteLine($"\n{army[i].Name} is hit by the monster with a mightly blow, and falls dead to the earth.\n");
                                     army[i] = null;
                                 }
                                 else
                                 {
-                                    Console.WriteLine($"{army[i].Name} is hit by the monster with a mightly blow, but recovers and is ready for another round of battle!");
+                                    Console.WriteLine($"\n{army[i].Name} is hit by the monster with a mightly blow, but recovers and is ready for another round of battle!\n");
                                 }
                             }
                             else
@@ -87,12 +96,12 @@ namespace ArmyBuilder
                                 damage -= CheckForMagicDefenseBonus(army[i]);
                                 if (damage >= hitPoints)
                                 {
-                                    Console.WriteLine($"Flames spew forth from the tentacles of the beast and envelop {army[i].Name} who falls dead to the earth.");
+                                    Console.WriteLine($"\nFlames spew forth from the tentacles of the beast and envelop {army[i].Name} who falls dead to the earth.\n");
                                     army[i] = null;
                                 }
                                 else
                                 {
-                                    Console.WriteLine($"{army[i].Name} is hit by the magical flames, but recovers and is ready for another round of battle!");
+                                    Console.WriteLine($"\n{army[i].Name} is hit by the magical flames, but recovers and is ready for another round of battle!\n");
                                 }
                             }
                         }
@@ -100,7 +109,7 @@ namespace ArmyBuilder
                 }
                 else
                 {
-                    Console.WriteLine("The monster is vanquished! All hail the king!");
+                    Console.WriteLine("\nThe monster is vanquished!!!!! All hail the king!");
                     break;
                 }
                 Console.WriteLine("Press any key to continue the battle...");
@@ -108,11 +117,17 @@ namespace ArmyBuilder
             }
         }
 
+        /// <summary>
+        /// Check if the Soldier has a Magic Defense Bonus
+        /// </summary>
+        /// <param name="soldier">Pass in a Soldier Object</param>
+        /// <returns>Magic Defense Bonus as an integer</returns>
         private static int CheckForMagicDefenseBonus(Soldier soldier)
         {
             var bonusDefense = 0;
 
             var race = soldier.Race;
+
             // MINOTAURS TAKE 5 LESS MAGIC DAMAGE
             if (race == "Minotaur")
             {
@@ -122,11 +137,17 @@ namespace ArmyBuilder
             return bonusDefense;
         }
 
+        /// <summary>
+        /// Check if the Soldier has an Attack Defense Bonus
+        /// </summary>
+        /// <param name="soldier">Pass in a Soldier Object</param>
+        /// <returns>Attack Defense Bonus as an integer</returns>
         private static int CheckForAttackDefenseBonus(Soldier soldier)
         {
             var bonusDefense = 0;
 
             var classification = soldier.Classification;
+
             // KNIGHTS TAKE 5 LESS ATTACK DAMAGE
             if (classification == "Knight")
             {
@@ -136,6 +157,11 @@ namespace ArmyBuilder
             return bonusDefense;
         }
 
+        /// <summary>
+        /// Check if the Soldier has a Magic Damage bonus
+        /// </summary>
+        /// <param name="soldier"></param>
+        /// <returns></returns>
         private static int CheckForBonusMagicDamage(Soldier soldier)
         {
             var bonusDamage = 0;
@@ -169,6 +195,11 @@ namespace ArmyBuilder
             return bonusDamage;
         }
 
+        /// <summary>
+        /// Check if the Soldier has an Attack Damage bonus
+        /// </summary>
+        /// <param name="soldier"></param>
+        /// <returns></returns>
         private static int CheckForBonusAttackDamage(Soldier soldier)
         {
             var bonusMagicDamage = 0;
