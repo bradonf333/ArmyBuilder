@@ -17,6 +17,10 @@ namespace ArmyBuilder
         public int AttackStrength { get; set; }
         public int SorceryStrength { get; set; }
 
+        public int MagicResistance { get; set; }
+
+        public int ArmorClass { get; set; }
+
         public void Attack()
         {
 

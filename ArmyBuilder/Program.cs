@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
-namespace ArmyBuilderConsoleApp
+namespace ArmyBuilder
 {
     class Program
     {
@@ -20,7 +17,7 @@ namespace ArmyBuilderConsoleApp
             Console.ReadKey();
         }
 
-        private static void SendArmyToDoBattle(List<string[]> army)
+        private static void SendArmyToDoBattle(List<Soldier> army)
         {
             var numberGenerator = new Random();
             var monsterHitPoints = numberGenerator.Next(50, 100);
@@ -37,21 +34,21 @@ namespace ArmyBuilderConsoleApp
                 {
                     if (army[i] != null)
                     {
-                        var attackStrength = Convert.ToInt32(army[i][6]);
-                        var sorceryStrength = Convert.ToInt32(army[i][7]);
+                        var attackStrength = Convert.ToInt32(army[i].AttackStrength);
+                        var sorceryStrength = Convert.ToInt32(army[i].SorceryStrength);
                         if (attackStrength > sorceryStrength)
                         {
                             var damage = numberGenerator.Next(1, attackStrength);
                             damage += CheckForBonusAttackDamage(army[i]);
                             monsterHitPoints -= damage;
-                            Console.WriteLine($"{army[i][0]} charges forth to attack and slashes at the monster for {damage} points of damage!");
+                            Console.WriteLine($"{army[i].Name} charges forth to attack and slashes at the monster for {damage} points of damage!");
                         }
                         else
                         {
                             var damage = numberGenerator.Next(1, sorceryStrength);
                             damage += CheckForBonusMagicDamage(army[i]);
                             monsterHitPoints -= damage;
-                            Console.WriteLine($"{army[i][0]} pauses, chants a loud and ancient phrase, when suddenly lightning strikes the monster for {damage} points of damage!");
+                            Console.WriteLine($"{army[i].Name} pauses, chants a loud and ancient phrase, when suddenly lightning strikes the monster for {damage} points of damage!");
                         }
                     }
                 }
@@ -64,9 +61,9 @@ namespace ArmyBuilderConsoleApp
                     {
                         if (army[i] != null)
                         {
-                            var armorClass = Convert.ToInt32(army[i][8]);
-                            var magicResistance = Convert.ToInt32(army[i][8]);
-                            var hitPoints = Convert.ToInt32(army[i][4]);
+                            var armorClass = army[i].ArmorClass;
+                            var magicResistance = army[i].MagicResistance;
+                            var hitPoints = Convert.ToInt32(army[i].HitPoints);
 
                             if (i % 2 == 0)
                             {
@@ -75,12 +72,12 @@ namespace ArmyBuilderConsoleApp
                                 damage -= CheckForAttackDefenseBonus(army[i]);
                                 if (damage >= hitPoints)
                                 {
-                                    Console.WriteLine($"{army[i][0]} is hit by the monster with a mightly blow, and falls dead to the earth.");
+                                    Console.WriteLine($"{army[i].Name} is hit by the monster with a mightly blow, and falls dead to the earth.");
                                     army[i] = null;
                                 }
                                 else
                                 {
-                                    Console.WriteLine($"{army[i][0]} is hit by the monster with a mightly blow, but recovers and is ready for another round of battle!");
+                                    Console.WriteLine($"{army[i].Name} is hit by the monster with a mightly blow, but recovers and is ready for another round of battle!");
                                 }
                             }
                             else
@@ -90,12 +87,12 @@ namespace ArmyBuilderConsoleApp
                                 damage -= CheckForMagicDefenseBonus(army[i]);
                                 if (damage >= hitPoints)
                                 {
-                                    Console.WriteLine($"Flames spew forth from the tentacles of the beast and envelop {army[i][0]} who falls dead to the earth.");
+                                    Console.WriteLine($"Flames spew forth from the tentacles of the beast and envelop {army[i].Name} who falls dead to the earth.");
                                     army[i] = null;
                                 }
                                 else
                                 {
-                                    Console.WriteLine($"{army[i][0]} is hit by the magical flames, but recovers and is ready for another round of battle!");
+                                    Console.WriteLine($"{army[i].Name} is hit by the magical flames, but recovers and is ready for another round of battle!");
                                 }
                             }
                         }
@@ -111,11 +108,11 @@ namespace ArmyBuilderConsoleApp
             }
         }
 
-        private static int CheckForMagicDefenseBonus(string[] soldier)
+        private static int CheckForMagicDefenseBonus(Soldier soldier)
         {
             var bonusDefense = 0;
 
-            var race = soldier[1];
+            var race = soldier.Race;
             // MINOTAURS TAKE 5 LESS MAGIC DAMAGE
             if (race == "Minotaur")
             {
@@ -125,11 +122,11 @@ namespace ArmyBuilderConsoleApp
             return bonusDefense;
         }
 
-        private static int CheckForAttackDefenseBonus(string[] soldier)
+        private static int CheckForAttackDefenseBonus(Soldier soldier)
         {
             var bonusDefense = 0;
 
-            var classification = soldier[2];
+            var classification = soldier.Classification;
             // KNIGHTS TAKE 5 LESS ATTACK DAMAGE
             if (classification == "Knight")
             {
@@ -139,11 +136,11 @@ namespace ArmyBuilderConsoleApp
             return bonusDefense;
         }
 
-        private static int CheckForBonusMagicDamage(string[] soldier)
+        private static int CheckForBonusMagicDamage(Soldier soldier)
         {
             var bonusDamage = 0;
-            var race = soldier[1];
-            var rank = soldier[3];
+            var race = soldier.Race;
+            var rank = soldier.Rank;
 
             // MINOTAUR GENERALS DO 15 EXTRA DAMAGE
             if (race == "Minotaur" && rank == "General")
@@ -172,13 +169,13 @@ namespace ArmyBuilderConsoleApp
             return bonusDamage;
         }
 
-        private static int CheckForBonusAttackDamage(string[] soldier)
+        private static int CheckForBonusAttackDamage(Soldier soldier)
         {
             var bonusMagicDamage = 0;
-            var race = soldier[1];
-            var classification = soldier[2];
-            var rank = soldier[3];
-            var birthdate = Convert.ToDateTime(soldier[5]);
+            var race = soldier.Race;
+            var classification = soldier.Classification;
+            var rank = soldier.Rank;
+            var birthdate = soldier.Birthdate;
 
             // ELF GENERALS DO 15 EXTRA MAGIC DAMAGE
             if (race == "Elf" && rank == "General")
@@ -213,9 +210,9 @@ namespace ArmyBuilderConsoleApp
             return bonusMagicDamage;
         }
 
-        private static List<string[]> MarshallArmy(List<string[]> recruits)
+        private static List<Soldier> MarshallArmy(IEnumerable<Soldier> recruits)
         {
-            var army = new List<string[]>();
+            var army = new List<Soldier>();
             var maxGeneralCount = 1;
             var maxCaptainCount = 5;
 
@@ -226,13 +223,13 @@ namespace ArmyBuilderConsoleApp
 
             foreach (var recruit in recruits)
             {
-                if (recruit[3] == "General")
+                if (recruit.Rank == "General")
                 {
                     if (generalCount == 0)
                     {
                         army.Add(recruit);
                         generalCount = 1;
-                        Console.WriteLine($"{recruit[0]} has been added to the army!");
+                        Console.WriteLine($"{recruit.Name} has been added to the army!");
                     }
                     else
                     {
@@ -240,13 +237,13 @@ namespace ArmyBuilderConsoleApp
                     }
                 }
 
-                if (recruit[3] == "Captain")
+                if (recruit.Rank == "Captain")
                 {
                     if (captainCount != 5)
                     {
                         army.Add(recruit);
                         captainCount++;
-                        Console.WriteLine($"{recruit[0]} has been added to the army!");
+                        Console.WriteLine($"{recruit.Name} has been added to the army!");
                     }
                     else
                     {
@@ -254,13 +251,13 @@ namespace ArmyBuilderConsoleApp
                     }
                 }
 
-                if (recruit[3] == "Sergeant")
+                if (recruit.Rank == "Sergeant")
                 {
                     var canAddSergeant = (privateCount / 5) < sergeantCount;
                     if (canAddSergeant)
                     {
                         army.Add(recruit);
-                        Console.WriteLine($"{recruit[0]} has been added to the army!");
+                        Console.WriteLine($"{recruit.Name} has been added to the army!");
                         sergeantCount++;
                     }
                     else
@@ -269,10 +266,10 @@ namespace ArmyBuilderConsoleApp
                     }
                 }
 
-                if (recruit[3] == "Private")
+                if (recruit.Rank == "Private")
                 {
                     army.Add(recruit);
-                    Console.WriteLine($"{recruit[0]} has been added to the army!");
+                    Console.WriteLine($"{recruit.Name} has been added to the army!");
                     privateCount++;
                 }
             }
@@ -280,10 +277,10 @@ namespace ArmyBuilderConsoleApp
             return army;
         }
 
-        private static List<string[]> CreateRecruits()
+        private static List<Soldier> CreateRecruits()
         {
             var createMoreSoldiers = true;
-            var recruits = new List<string[]>();
+            var recruits = new List<Soldier>();
             while (createMoreSoldiers)
             {
                 var soldier = CreateSoldier();
@@ -299,141 +296,141 @@ namespace ArmyBuilderConsoleApp
             return recruits;
         }
 
-        private static string[] CreateSoldier()
+        private static Soldier CreateSoldier()
         {
-            var soldier = new string[10];
+            var soldier = new Soldier();
             Console.WriteLine("What kind of soldier would you like to create?");
 
             // GET NAME
             Console.WriteLine("What is the name of the solider you want to create?");
-            soldier[0] = Console.ReadLine();
+            soldier.Name = Console.ReadLine();
             Console.Clear();
 
             // PICK A RACE
-            Console.WriteLine($"Next, pick a race for {soldier[0]}!");
-            soldier[1] = PickRace();
+            Console.WriteLine($"Next, pick a race for {soldier.Name}!");
+            soldier.Race = PickRace();
             Console.Clear();
 
             // PICK A CLASSIFICATION
-            Console.WriteLine($"Next, pick a class for {soldier[0]}!");
-            soldier[2] = PickClassification();
+            Console.WriteLine($"Next, pick a class for {soldier.Name}!");
+            soldier.Classification = PickClassification();
             Console.Clear();
 
             // PICK A RANK
-            Console.WriteLine($"Next, pick a rank for {soldier[0]}!");
-            soldier[3] = PickRank();
+            Console.WriteLine($"Next, pick a rank for {soldier.Name}!");
+            soldier.Rank = PickRank();
             Console.Clear();
 
             // HIT POINTS
-            Console.WriteLine($"How tough is {soldier[0]}? Pick a number between 1 (weak) and 10 (strong).");
-            soldier[4] = Console.ReadLine();
+            Console.WriteLine($"How tough is {soldier.Name}? Pick a number between 1 (weak) and 10 (strong).");
+            soldier.HitPoints = Convert.ToInt32(Console.ReadLine());
 
             // BIRTHDAY
-            Console.WriteLine($"What is {soldier[0]}'s birthdate? Use format MM/DD/YYYY.");
-            soldier[5] = Console.ReadLine();
+            Console.WriteLine($"What is {soldier.Name}'s birthdate? Use format MM/DD/YYYY.");
+            soldier.Birthdate = DateTime.Parse(Console.ReadLine());
 
             AssignAttackStrength(soldier);
             AssignSorceryStrength(soldier);
             AssignArmorClass(soldier);
             AssignMagicResistance(soldier);
 
-            Console.WriteLine($"{soldier[0]} the {soldier[1]} is a {soldier[3]} {soldier[2]} ready to join the army!");
+            Console.WriteLine($"{soldier.Name} the {soldier.Race} is a {soldier.Rank} {soldier.Classification} ready to join the army!");
 
             return soldier;
         }
 
-        private static void AssignAttackStrength(string[] soldier)
+        private static void AssignAttackStrength(Soldier soldier)
         {
             var attackStrength = 2;
 
             // MINOTAURS ARE STROOOONG!
-            if (soldier[1] == "Minotaur")
+            if (soldier.Race == "Minotaur")
             {
                 attackStrength += 10;
             }
 
             // LIZARDMEN ARE strongish!
-            if (soldier[1] == "Lizardman")
+            if (soldier.Race == "Lizardman")
             {
                 attackStrength += 5;
             }
 
             // KNIGHTS ARE STROOOOONG!
-            if (soldier[2] == "Knight")
+            if (soldier.Classification == "Knight")
             {
                 attackStrength += 10;
             }
 
             // HUMAN CLERICS DO PUSHUPS AND ARE strongish?!
-            if (soldier[1] == "Human" && soldier[2] == "Cleric")
+            if (soldier.Race == "Human" && soldier.Classification == "Cleric")
             {
                 attackStrength += 3;
             }
 
-            soldier[6] = attackStrength.ToString();
+            soldier.AttackStrength = attackStrength;
         }
 
-        private static void AssignSorceryStrength(string[] soldier)
+        private static void AssignSorceryStrength(Soldier soldier)
         {
             var sorceryStrength = 0;
 
             // ELVES ARE MAGICAL!!
-            if (soldier[1] == "Elf")
+            if (soldier.Race == "Elf")
             {
                 sorceryStrength += 10;
             }
 
             // WIZARDS ARE MAGICAL!!
-            if (soldier[2] == "Wizard")
+            if (soldier.Classification == "Wizard")
             {
                 sorceryStrength += 10;
             }
 
             // HUMAN CLERICS READ BOOKS AND ARE magical?!
-            if (soldier[1] == "Human" && soldier[2] == "Cleric")
+            if (soldier.Race == "Human" && soldier.Classification == "Cleric")
             {
                 sorceryStrength += 3;
             }
 
-            soldier[7] = sorceryStrength.ToString();
+            soldier.SorceryStrength = sorceryStrength;
         }
 
-        private static void AssignArmorClass(string[] soldier)
+        private static void AssignArmorClass(Soldier soldier)
         {
             var armorClass = 0;
 
             // THIEVES ARE DODGY!!
-            if (soldier[2] == "Thief")
+            if (soldier.Classification == "Thief")
             {
                 armorClass += 10;
             }
 
             // KNIGHTS ARE BEEFY!!
-            if (soldier[2] == "Knight")
+            if (soldier.Classification == "Knight")
             {
                 armorClass += 10;
             }
 
             // HUMAN CLERICS HIDE BEHIND TOUGH GUYS IN A FIGHT!
-            if (soldier[1] == "Human" && soldier[2] == "Cleric")
+            if (soldier.Race == "Human" && soldier.Classification == "Cleric")
             {
                 armorClass += 3;
             }
 
-            soldier[8] = armorClass.ToString();
+            soldier.ArmorClass = armorClass;
         }
 
-        private static void AssignMagicResistance(string[] soldier)
+        private static void AssignMagicResistance(Soldier soldier)
         {
             var magicResistance = 3;
 
             // LIZARDMEN ONLY BELIEVE IN SCIENCE!
-            if (soldier[1] == "Lizardman")
+            if (soldier.Race == "Lizardman")
             {
                 magicResistance += 10;
             }
 
-            soldier[9] = magicResistance.ToString();
+            soldier.MagicResistance = magicResistance;
         }
 
         private static string PickRank()
