@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Threading;
 
+using ArmyBuilder.Soldiers;
+
 namespace ArmyBuilder
 {
     /// <summary>
@@ -64,7 +66,7 @@ namespace ArmyBuilder
 
                 if (monsterHitPoints > 0)
                 {
-                    Console.WriteLine("\nDespite your best attacks, the monster still lives. It charges forth, and attacks!");
+                    Console.WriteLine("Despite your best attacks, the monster still lives. It charges forth, and attacks!");
 
                     for (int i = 0; i < army.Count; i++)
                     {
@@ -81,12 +83,12 @@ namespace ArmyBuilder
                                 damage -= CheckForAttackDefenseBonus(army[i]);
                                 if (damage >= hitPoints)
                                 {
-                                    Console.WriteLine($"\n{army[i].Name} is hit by the monster with a mightly blow, and falls dead to the earth.\n");
+                                    Console.WriteLine($"{army[i].Name} is hit by the monster with a mightly blow, and falls dead to the earth.\n");
                                     army[i] = null;
                                 }
                                 else
                                 {
-                                    Console.WriteLine($"\n{army[i].Name} is hit by the monster with a mightly blow, but recovers and is ready for another round of battle!\n");
+                                    Console.WriteLine($"{army[i].Name} is hit by the monster with a mightly blow, but recovers and is ready for another round of battle!\n");
                                 }
                             }
                             else
@@ -96,12 +98,12 @@ namespace ArmyBuilder
                                 damage -= CheckForMagicDefenseBonus(army[i]);
                                 if (damage >= hitPoints)
                                 {
-                                    Console.WriteLine($"\nFlames spew forth from the tentacles of the beast and envelop {army[i].Name} who falls dead to the earth.\n");
+                                    Console.WriteLine($"Flames spew forth from the tentacles of the beast and envelop {army[i].Name} who falls dead to the earth.\n");
                                     army[i] = null;
                                 }
                                 else
                                 {
-                                    Console.WriteLine($"\n{army[i].Name} is hit by the magical flames, but recovers and is ready for another round of battle!\n");
+                                    Console.WriteLine($"{army[i].Name} is hit by the magical flames, but recovers and is ready for another round of battle!\n");
                                 }
                             }
                         }
@@ -260,7 +262,7 @@ namespace ArmyBuilder
                     {
                         army.Add(recruit);
                         generalCount = 1;
-                        Console.WriteLine($"{recruit.Name} has been added to the army!");
+                        Console.WriteLine($"\n{recruit.Name} has been added to the army!");
                     }
                     else
                     {
@@ -274,11 +276,11 @@ namespace ArmyBuilder
                     {
                         army.Add(recruit);
                         captainCount++;
-                        Console.WriteLine($"{recruit.Name} has been added to the army!");
+                        Console.WriteLine($"\n{recruit.Name} has been added to the army!");
                     }
                     else
                     {
-                        Console.WriteLine("You can't have more than five Captains!");
+                        Console.WriteLine("\nYou can't have more than five Captains!");
                     }
                 }
 
@@ -288,19 +290,19 @@ namespace ArmyBuilder
                     if (canAddSergeant)
                     {
                         army.Add(recruit);
-                        Console.WriteLine($"{recruit.Name} has been added to the army!");
+                        Console.WriteLine($"\n{recruit.Name} has been added to the army!");
                         sergeantCount++;
                     }
                     else
                     {
-                        Console.WriteLine("You can't have more one Sergeant for every five privates!");
+                        Console.WriteLine("\nYou can't have more one Sergeant for every five privates!");
                     }
                 }
 
                 if (recruit.Rank == "Private")
                 {
                     army.Add(recruit);
-                    Console.WriteLine($"{recruit.Name} has been added to the army!");
+                    Console.WriteLine($"\n{recruit.Name} has been added to the army!");
                     privateCount++;
                 }
             }
@@ -317,7 +319,7 @@ namespace ArmyBuilder
                 var soldier = CreateSoldier();
                 recruits.Add(soldier);
 
-                Console.WriteLine("Would you like to create more soliders? Press Y to create more, or N to add soldiers to the army.");
+                Console.WriteLine("\nWould you like to create more soliders? Press Y to create more, or N to add soldiers to the army.");
                 if (Console.ReadKey().Key == ConsoleKey.N)
                 {
                     break;
@@ -329,35 +331,34 @@ namespace ArmyBuilder
 
         private static Soldier CreateSoldier()
         {
-            var soldier = new Soldier();
-            Console.WriteLine("What kind of soldier would you like to create?");
+            // Create the specific soldier type
+            Console.WriteLine("\nWhat type of soldier do you want to create?");
+            var soldier = DetermineSoldierType();
+
+            //var soldier = new Soldier();
+            //Console.WriteLine("\nWhat kind of soldier would you like to create?");
 
             // GET NAME
-            Console.WriteLine("What is the name of the solider you want to create?");
+            Console.WriteLine("\nWhat is the name of the solider you want to create?");
             soldier.Name = Console.ReadLine();
             Console.Clear();
 
-            // PICK A RACE
-            Console.WriteLine($"Next, pick a race for {soldier.Name}!");
-            soldier.Race = PickRace();
-            Console.Clear();
-
             // PICK A CLASSIFICATION
-            Console.WriteLine($"Next, pick a class for {soldier.Name}!");
+            Console.WriteLine($"\nNext, pick a class for {soldier.Name}!");
             soldier.Classification = PickClassification();
             Console.Clear();
 
             // PICK A RANK
-            Console.WriteLine($"Next, pick a rank for {soldier.Name}!");
+            Console.WriteLine($"\nNext, pick a rank for {soldier.Name}!");
             soldier.Rank = PickRank();
             Console.Clear();
 
             // HIT POINTS
-            Console.WriteLine($"How tough is {soldier.Name}? Pick a number between 1 (weak) and 10 (strong).");
+            Console.WriteLine($"\nHow tough is {soldier.Name}? Pick a number between 1 (weak) and 10 (strong).");
             soldier.HitPoints = Convert.ToInt32(Console.ReadLine());
 
             // BIRTHDAY
-            Console.WriteLine($"What is {soldier.Name}'s birthdate? Use format MM/DD/YYYY.");
+            Console.WriteLine($"\nWhat is {soldier.Name}'s birthdate? Use format MM/DD/YYYY.");
             soldier.Birthdate = DateTime.Parse(Console.ReadLine());
 
             AssignAttackStrength(soldier);
@@ -365,7 +366,7 @@ namespace ArmyBuilder
             AssignArmorClass(soldier);
             AssignMagicResistance(soldier);
 
-            Console.WriteLine($"{soldier.Name} the {soldier.Race} is a {soldier.Rank} {soldier.Classification} ready to join the army!");
+            Console.WriteLine($"\n{soldier.Name} the {soldier.SoldierType()} is a {soldier.Rank} {soldier.Classification} ready to join the army!");
 
             return soldier;
         }
@@ -375,25 +376,29 @@ namespace ArmyBuilder
             var attackStrength = 2;
 
             // MINOTAURS ARE STROOOONG!
-            if (soldier.Race == "Minotaur")
-            {
-                attackStrength += 10;
-            }
+            //if (soldier.Race == "Minotaur")
+            //{
+            //    attackStrength += 10;
+            //}
 
             // LIZARDMEN ARE strongish!
-            if (soldier.Race == "Lizardman")
-            {
-                attackStrength += 5;
-            }
+            //if (soldier.Race == "Lizardman")
+            //{
+            //    attackStrength += 5;
+            //}
 
             // KNIGHTS ARE STROOOOONG!
-            if (soldier.Classification == "Knight")
+            if (soldier.Classification == ClassificationEnums.Knight)
             {
                 attackStrength += 10;
             }
 
+            /*
+             * This is a good example to put the modifiers on the Soldier class:
+             * Can put the attack strength modifier if a Cleric in the Human class.
+             */
             // HUMAN CLERICS DO PUSHUPS AND ARE strongish?!
-            if (soldier.Race == "Human" && soldier.Classification == "Cleric")
+            if (soldier.Race == "Human" && soldier.Classification == ClassificationEnums.Cleric)
             {
                 attackStrength += 3;
             }
@@ -401,6 +406,13 @@ namespace ArmyBuilder
             soldier.AttackStrength = attackStrength;
         }
 
+        /*
+         *
+         * Maybe put the Classification logic in the specified soldiers class.
+         * i.e. Minotaur checks its class for they wizard type and adds sorcery strength if true
+         *
+         *
+         */
         private static void AssignSorceryStrength(Soldier soldier)
         {
             var sorceryStrength = 0;
@@ -412,13 +424,13 @@ namespace ArmyBuilder
             }
 
             // WIZARDS ARE MAGICAL!!
-            if (soldier.Classification == "Wizard")
+            if (soldier.Classification == ClassificationEnums.Wizard)
             {
                 sorceryStrength += 10;
             }
 
             // HUMAN CLERICS READ BOOKS AND ARE magical?!
-            if (soldier.Race == "Human" && soldier.Classification == "Cleric")
+            if (soldier.Race == "Human" && soldier.Classification == ClassificationEnums.Cleric)
             {
                 sorceryStrength += 3;
             }
@@ -431,19 +443,19 @@ namespace ArmyBuilder
             var armorClass = 0;
 
             // THIEVES ARE DODGY!!
-            if (soldier.Classification == "Thief")
+            if (soldier.Classification == ClassificationEnums.Thief)
             {
                 armorClass += 10;
             }
 
             // KNIGHTS ARE BEEFY!!
-            if (soldier.Classification == "Knight")
+            if (soldier.Classification == ClassificationEnums.Knight)
             {
                 armorClass += 10;
             }
 
             // HUMAN CLERICS HIDE BEHIND TOUGH GUYS IN A FIGHT!
-            if (soldier.Race == "Human" && soldier.Classification == "Cleric")
+            if (soldier.Race == "Human" && soldier.Classification == ClassificationEnums.Cleric)
             {
                 armorClass += 3;
             }
@@ -499,7 +511,7 @@ namespace ArmyBuilder
             return "";
         }
 
-        private static string PickClassification()
+        private static ClassificationEnums PickClassification()
         {
             var canContinueWithoutClassification = false;
             while (!canContinueWithoutClassification)
@@ -512,29 +524,29 @@ namespace ArmyBuilder
                 var input = Console.ReadKey();
                 if (input.Key == ConsoleKey.K)
                 {
-                    return "Knight";
+                    return ClassificationEnums.Knight;
                 }
 
                 if (input.Key == ConsoleKey.W)
                 {
-                    return "Wizard";
+                    return ClassificationEnums.Wizard;
                 }
 
                 if (input.Key == ConsoleKey.C)
                 {
-                    return "Cleric";
+                    return ClassificationEnums.Cleric;
                 }
 
                 if (input.Key == ConsoleKey.T)
                 {
-                    return "Thief";
+                    return ClassificationEnums.Thief;
                 }
             }
 
-            return "";
+            return ClassificationEnums.None;
         }
 
-        private static string PickRace()
+        private static Soldier DetermineSoldierType()
         {
             var canContinueWithoutRace = false;
             while (!canContinueWithoutRace)
@@ -547,26 +559,26 @@ namespace ArmyBuilder
                 var input = Console.ReadKey();
                 if (input.Key == ConsoleKey.L)
                 {
-                    return "Lizardman";
+                    return new Lizardman();
                 }
 
                 if (input.Key == ConsoleKey.H)
                 {
-                    return "Human";
+                    return new Human();
                 }
 
                 if (input.Key == ConsoleKey.E)
                 {
-                    return "Elf";
+                    return new Elf();
                 }
 
                 if (input.Key == ConsoleKey.M)
                 {
-                    return "Minotaur";
+                    return new Minotaur();
                 }
             }
 
-            return "";
+            return new Soldier();
         }
     }
 }

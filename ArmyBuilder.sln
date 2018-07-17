@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArmyBuilder", "ArmyBuilder\ArmyBuilder.csproj", "{13E7D7B4-2416-40EE-8A6B-557D04A91146}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArmyBuilder.Tests", "ArmyBuilder.Tests\ArmyBuilder.Tests.csproj", "{57A7C84F-BEDE-42F7-A4BA-C96CF91FB5A5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{13E7D7B4-2416-40EE-8A6B-557D04A91146}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13E7D7B4-2416-40EE-8A6B-557D04A91146}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13E7D7B4-2416-40EE-8A6B-557D04A91146}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57A7C84F-BEDE-42F7-A4BA-C96CF91FB5A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57A7C84F-BEDE-42F7-A4BA-C96CF91FB5A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57A7C84F-BEDE-42F7-A4BA-C96CF91FB5A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57A7C84F-BEDE-42F7-A4BA-C96CF91FB5A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
