@@ -42,7 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Soldiers\ClassificationEnums.cs" />
+    <Compile Include="Soldiers\SoldierEnums.cs" />
     <Compile Include="Soldiers\Elf.cs" />
     <Compile Include="Soldiers\Human.cs" />
     <Compile Include="Soldiers\Lizardman.cs" />

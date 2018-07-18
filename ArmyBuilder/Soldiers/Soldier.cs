@@ -16,9 +16,9 @@ namespace ArmyBuilder.Soldiers
 
         public string Race { get; set; }
 
-        public ClassificationEnums Classification { get; set; }
+        public ClassificationEnum Classification { get; set; }
 
-        public string Rank { get; set; }
+        public RankEnum Rank { get; set; }
 
         public int HitPoints { get; set; }
 
@@ -42,6 +42,8 @@ namespace ArmyBuilder.Soldiers
         {
             // All soldiers have a base AttackStrength of 2
             AttackStrength = 2;
+            Classification = ClassificationEnum.None;
+            Rank = RankEnum.Private;
         }
 
         public virtual string SoldierType()
@@ -57,6 +59,42 @@ namespace ArmyBuilder.Soldiers
         public void Defend()
         {
 
+        }
+
+        public Soldier AssignSoldierType()
+        {
+            Console.Clear();
+            Console.WriteLine("What type of soldier do you want to create?");
+            Console.WriteLine("Press L for Lizardman.");
+            Console.WriteLine("Press H for Human.");
+            Console.WriteLine("Press E for Elf.");
+            Console.WriteLine("Press M for Minotaur.");
+
+            var input = Console.ReadKey();
+
+            if (input.Key == ConsoleKey.L)
+            {
+                return new Lizardman();
+            }
+
+            if (input.Key == ConsoleKey.H)
+            {
+                return new Human();
+            }
+
+            if (input.Key == ConsoleKey.E)
+            {
+                return new Elf();
+            }
+
+            if (input.Key == ConsoleKey.M)
+            {
+                return new Minotaur();
+            }
+
+            Console.Clear();
+
+            return new Soldier();
         }
     }
 }

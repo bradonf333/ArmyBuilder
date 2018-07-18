@@ -36,7 +36,7 @@ namespace ArmyBuilder.Tests
         }
 
         [Test]
-        public void Human_WhenCreated_WithDefaults_ShouldHaveSoldierTypeOfMinotaur()
+        public void Minotaur_WhenCreated_WithDefaults_ShouldHaveSoldierTypeOfMinotaur()
         {
             // Arrange
             var sut = new Minotaur();

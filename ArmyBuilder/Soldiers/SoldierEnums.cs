@@ -6,8 +6,13 @@ using System.Threading.Tasks;
 
 namespace ArmyBuilder.Soldiers
 {
-    public enum ClassificationEnums
+    public enum ClassificationEnum
     {
         Knight, Wizard, Cleric, Thief, None
+    }
+
+    public enum RankEnum
+    {
+        Private, Sergeant, Captain, General
     }
 }

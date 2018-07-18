@@ -53,6 +53,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BasicSoldierTests.cs" />
     <Compile Include="LizardmanTests.cs" />
     <Compile Include="ElfTests.cs" />
     <Compile Include="HumanTests.cs" />

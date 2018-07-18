@@ -151,7 +151,7 @@ namespace ArmyBuilder
             var classification = soldier.Classification;
 
             // KNIGHTS TAKE 5 LESS ATTACK DAMAGE
-            if (classification == ClassificationEnums.Knight)
+            if (classification == ClassificationEnum.Knight)
             {
                 bonusDefense += 5;
             }
@@ -169,21 +169,22 @@ namespace ArmyBuilder
             var bonusDamage = 0;
             var race = soldier.Race;
             var rank = soldier.Rank;
+            var classification = soldier.Classification;
 
             // MINOTAUR GENERALS DO 15 EXTRA DAMAGE
-            if (race == "Minotaur" && rank == "General")
+            if (race == "Minotaur" && rank == RankEnum.General)
             {
                 bonusDamage += 10;
             }
 
             // LIZARDMEN PRIVATES DO 1 EXTRA DAMAGE
-            if (race == "Lizardman" && rank == "Private")
+            if (race == "Lizardman" && rank == RankEnum.Private)
             {
                 bonusDamage += 1;
             }
 
             // HUMAN KNIGHTS DO 5 EXTRA DAMAGE
-            if (race == "Human" && rank == "Knight")
+            if (race == "Human" && classification == ClassificationEnum.Knight)
             {
                 bonusDamage += 5;
             }
@@ -211,19 +212,19 @@ namespace ArmyBuilder
             var birthdate = soldier.Birthdate;
 
             // ELF GENERALS DO 15 EXTRA MAGIC DAMAGE
-            if (race == "Elf" && rank == "General")
+            if (race == "Elf" && rank == RankEnum.General)
             {
                 bonusMagicDamage += 15;
             }
 
             // LIZARDMEN CAPTAINS DO 10 EXTRA MAGIC DAMAGE
-            if (race == "Lizardman" && rank == "Captain")
+            if (race == "Lizardman" && rank == RankEnum.Captain)
             {
                 bonusMagicDamage += 10;
             }
 
             // HUMAN WIZARDS DO 3 EXTRA DAMAGE
-            if (race == "Human" && classification == ClassificationEnums.Wizard)
+            if (race == "Human" && classification == ClassificationEnum.Wizard)
             {
                 bonusMagicDamage += 3;
             }
@@ -256,7 +257,7 @@ namespace ArmyBuilder
 
             foreach (var recruit in recruits)
             {
-                if (recruit.Rank == "General")
+                if (recruit.Rank == RankEnum.General)
                 {
                     if (generalCount == 0)
                     {
@@ -270,7 +271,7 @@ namespace ArmyBuilder
                     }
                 }
 
-                if (recruit.Rank == "Captain")
+                if (recruit.Rank == RankEnum.Captain)
                 {
                     if (captainCount != 5)
                     {
@@ -284,7 +285,7 @@ namespace ArmyBuilder
                     }
                 }
 
-                if (recruit.Rank == "Sergeant")
+                if (recruit.Rank == RankEnum.Sergeant)
                 {
                     var canAddSergeant = (privateCount / 5) < sergeantCount;
                     if (canAddSergeant)
@@ -299,7 +300,7 @@ namespace ArmyBuilder
                     }
                 }
 
-                if (recruit.Rank == "Private")
+                if (recruit.Rank == RankEnum.Private)
                 {
                     army.Add(recruit);
                     Console.WriteLine($"\n{recruit.Name} has been added to the army!");
@@ -332,13 +333,16 @@ namespace ArmyBuilder
         private static Soldier CreateSoldier()
         {
             // Create the specific soldier type
-            Console.WriteLine("\nWhat type of soldier do you want to create?");
-            var soldier = DetermineSoldierType();
+            var soldier = new Soldier();
+            soldier = soldier.AssignSoldierType();
 
-            //var soldier = new Soldier();
-            //Console.WriteLine("\nWhat kind of soldier would you like to create?");
+            /*
+             * QUESTION:
+             * Better to put this stuff in the Soldier class?
+             */
 
             // GET NAME
+            Console.Clear();
             Console.WriteLine("\nWhat is the name of the solider you want to create?");
             soldier.Name = Console.ReadLine();
             Console.Clear();
@@ -356,10 +360,12 @@ namespace ArmyBuilder
             // HIT POINTS
             Console.WriteLine($"\nHow tough is {soldier.Name}? Pick a number between 1 (weak) and 10 (strong).");
             soldier.HitPoints = Convert.ToInt32(Console.ReadLine());
+            Console.Clear();
 
             // BIRTHDAY
             Console.WriteLine($"\nWhat is {soldier.Name}'s birthdate? Use format MM/DD/YYYY.");
-            soldier.Birthdate = DateTime.Parse(Console.ReadLine());
+            var birthdate = Console.ReadLine();
+            soldier.Birthdate = string.IsNullOrWhiteSpace(birthdate) ? DateTime.Now : DateTime.Parse(birthdate);
 
             AssignAttackStrength(soldier);
             AssignSorceryStrength(soldier);
@@ -375,30 +381,20 @@ namespace ArmyBuilder
         {
             var attackStrength = 2;
 
-            // MINOTAURS ARE STROOOONG!
-            //if (soldier.Race == "Minotaur")
-            //{
-            //    attackStrength += 10;
-            //}
-
-            // LIZARDMEN ARE strongish!
-            //if (soldier.Race == "Lizardman")
-            //{
-            //    attackStrength += 5;
-            //}
-
             // KNIGHTS ARE STROOOOONG!
-            if (soldier.Classification == ClassificationEnums.Knight)
+            if (soldier.Classification == ClassificationEnum.Knight)
             {
                 attackStrength += 10;
             }
 
             /*
+             * QUESTION:
              * This is a good example to put the modifiers on the Soldier class:
              * Can put the attack strength modifier if a Cleric in the Human class.
              */
+
             // HUMAN CLERICS DO PUSHUPS AND ARE strongish?!
-            if (soldier.Race == "Human" && soldier.Classification == ClassificationEnums.Cleric)
+            if (soldier.Race == "Human" && soldier.Classification == ClassificationEnum.Cleric)
             {
                 attackStrength += 3;
             }
@@ -407,7 +403,7 @@ namespace ArmyBuilder
         }
 
         /*
-         *
+         * QUESTION:
          * Maybe put the Classification logic in the specified soldiers class.
          * i.e. Minotaur checks its class for they wizard type and adds sorcery strength if true
          *
@@ -424,13 +420,13 @@ namespace ArmyBuilder
             }
 
             // WIZARDS ARE MAGICAL!!
-            if (soldier.Classification == ClassificationEnums.Wizard)
+            if (soldier.Classification == ClassificationEnum.Wizard)
             {
                 sorceryStrength += 10;
             }
 
             // HUMAN CLERICS READ BOOKS AND ARE magical?!
-            if (soldier.Race == "Human" && soldier.Classification == ClassificationEnums.Cleric)
+            if (soldier.Race == "Human" && soldier.Classification == ClassificationEnum.Cleric)
             {
                 sorceryStrength += 3;
             }
@@ -443,19 +439,19 @@ namespace ArmyBuilder
             var armorClass = 0;
 
             // THIEVES ARE DODGY!!
-            if (soldier.Classification == ClassificationEnums.Thief)
+            if (soldier.Classification == ClassificationEnum.Thief)
             {
                 armorClass += 10;
             }
 
             // KNIGHTS ARE BEEFY!!
-            if (soldier.Classification == ClassificationEnums.Knight)
+            if (soldier.Classification == ClassificationEnum.Knight)
             {
                 armorClass += 10;
             }
 
             // HUMAN CLERICS HIDE BEHIND TOUGH GUYS IN A FIGHT!
-            if (soldier.Race == "Human" && soldier.Classification == ClassificationEnums.Cleric)
+            if (soldier.Race == "Human" && soldier.Classification == ClassificationEnum.Cleric)
             {
                 armorClass += 3;
             }
@@ -476,7 +472,7 @@ namespace ArmyBuilder
             soldier.MagicResistance = magicResistance;
         }
 
-        private static string PickRank()
+        private static RankEnum PickRank()
         {
             var canContinueWithoutRank = false;
             while (!canContinueWithoutRank)
@@ -489,29 +485,29 @@ namespace ArmyBuilder
                 var input = Console.ReadKey();
                 if (input.Key == ConsoleKey.P)
                 {
-                    return "Private";
+                    return RankEnum.Private;
                 }
 
                 if (input.Key == ConsoleKey.S)
                 {
-                    return "Sergeant";
+                    return RankEnum.Sergeant;
                 }
 
                 if (input.Key == ConsoleKey.C)
                 {
-                    return "Captain";
+                    return RankEnum.Captain;
                 }
 
                 if (input.Key == ConsoleKey.G)
                 {
-                    return "General";
+                    return RankEnum.General;
                 }
             }
 
-            return "";
+            return RankEnum.Private;
         }
 
-        private static ClassificationEnums PickClassification()
+        private static ClassificationEnum PickClassification()
         {
             var canContinueWithoutClassification = false;
             while (!canContinueWithoutClassification)
@@ -524,61 +520,26 @@ namespace ArmyBuilder
                 var input = Console.ReadKey();
                 if (input.Key == ConsoleKey.K)
                 {
-                    return ClassificationEnums.Knight;
+                    return ClassificationEnum.Knight;
                 }
 
                 if (input.Key == ConsoleKey.W)
                 {
-                    return ClassificationEnums.Wizard;
+                    return ClassificationEnum.Wizard;
                 }
 
                 if (input.Key == ConsoleKey.C)
                 {
-                    return ClassificationEnums.Cleric;
+                    return ClassificationEnum.Cleric;
                 }
 
                 if (input.Key == ConsoleKey.T)
                 {
-                    return ClassificationEnums.Thief;
+                    return ClassificationEnum.Thief;
                 }
             }
 
-            return ClassificationEnums.None;
-        }
-
-        private static Soldier DetermineSoldierType()
-        {
-            var canContinueWithoutRace = false;
-            while (!canContinueWithoutRace)
-            {
-                Console.WriteLine("Press L for Lizardman.");
-                Console.WriteLine("Press H for Human.");
-                Console.WriteLine("Press E for Elf.");
-                Console.WriteLine("Press M for Minotaur.");
-
-                var input = Console.ReadKey();
-                if (input.Key == ConsoleKey.L)
-                {
-                    return new Lizardman();
-                }
-
-                if (input.Key == ConsoleKey.H)
-                {
-                    return new Human();
-                }
-
-                if (input.Key == ConsoleKey.E)
-                {
-                    return new Elf();
-                }
-
-                if (input.Key == ConsoleKey.M)
-                {
-                    return new Minotaur();
-                }
-            }
-
-            return new Soldier();
+            return ClassificationEnum.None;
         }
     }
 }
