@@ -39,5 +39,20 @@ namespace ArmyBuilder.Tests
             // Assert
             Assert.That(soldierType, Is.EqualTo("Elf"));
         }
+
+        [Test]
+        public void Elf_WhenCreated_WithDefaults_ShouldHaveSorceryStrengthBonusEqualToTen()
+        {
+            // Arrange
+            var sut = new Elf();
+
+            // Act
+            sut.AssignSorceryStrengthBonus();
+            var sorceryStrength = sut.SorceryStrength;
+            Console.WriteLine($"Sorcery Strength: {sorceryStrength}");
+
+            // Assert
+            Assert.That(sorceryStrength, Is.EqualTo(10));
+        }
     }
 }

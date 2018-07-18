@@ -22,5 +22,22 @@ namespace ArmyBuilder.Tests
             // Assert
             Assert.That(soldierType, Is.EqualTo("Human"));
         }
+
+        [Test]
+        public void Human_WhenTypeOfIsEqualToCleric_ShouldGetBonusAttackToEqualFive()
+        {
+            // Arrange
+            var sut = new Human();
+
+            // Act
+            sut.Classification = ClassificationEnum.Cleric;
+            sut.AssignAttackBonus();
+            var attackStrength = sut.AttackStrength;
+        
+            Console.WriteLine($"Attack Strength: {attackStrength}");
+
+            // Assert
+            Assert.That(attackStrength, Is.EqualTo(5));
+        }
     }
 }

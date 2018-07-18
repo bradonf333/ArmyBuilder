@@ -367,9 +367,18 @@ namespace ArmyBuilder
             var birthdate = Console.ReadLine();
             soldier.Birthdate = string.IsNullOrWhiteSpace(birthdate) ? DateTime.Now : DateTime.Parse(birthdate);
 
-            AssignAttackStrength(soldier);
-            AssignSorceryStrength(soldier);
-            AssignArmorClass(soldier);
+            // AttackBonus
+            soldier.AssignAttackBonus();
+
+            // Sorcery Bonus
+            soldier.AssignSorceryStrengthBonus();
+
+            // Armor Bonus
+            soldier.AssignArmorClass();
+
+            //AssignAttackStrength(soldier);
+            //AssignSorceryStrength(soldier);
+            //AssignArmorClass(soldier);
             AssignMagicResistance(soldier);
 
             Console.WriteLine($"\n{soldier.Name} the {soldier.SoldierType()} is a {soldier.Rank} {soldier.Classification} ready to join the army!");
@@ -382,10 +391,10 @@ namespace ArmyBuilder
             var attackStrength = 2;
 
             // KNIGHTS ARE STROOOOONG!
-            if (soldier.Classification == ClassificationEnum.Knight)
-            {
-                attackStrength += 10;
-            }
+            //if (soldier.Classification == ClassificationEnum.Knight)
+            //{
+            //    attackStrength += 10;
+            //}
 
             /*
              * QUESTION:
@@ -405,7 +414,7 @@ namespace ArmyBuilder
         /*
          * QUESTION:
          * Maybe put the Classification logic in the specified soldiers class.
-         * i.e. Minotaur checks its class for they wizard type and adds sorcery strength if true
+         * i.e. Minotaur checks its class for the wizard type and adds sorcery strength if true
          *
          *
          */

@@ -11,7 +11,7 @@ namespace ArmyBuilder.Soldiers
         public Minotaur()
         {
             AttackStrength += 10;
-            //BonusDamage += 5;
+            // BonusDamage += 5;
             BonusMagicDamage -= 1;
             Defense += 5;
         }

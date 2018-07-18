@@ -40,10 +40,13 @@ namespace ArmyBuilder.Soldiers
 
         public Soldier()
         {
-            // All soldiers have a base AttackStrength of 2
+            // All soldiers have a base stats
             AttackStrength = 2;
             Classification = ClassificationEnum.None;
             Rank = RankEnum.Private;
+            SorceryStrength = 0;
+            ArmorClass = 0;
+            MagicResistance = 3;
         }
 
         public virtual string SoldierType()
@@ -95,6 +98,67 @@ namespace ArmyBuilder.Soldiers
             Console.Clear();
 
             return new Soldier();
+        }
+
+        public void AssignAttackBonus()
+        {
+            var soldierType = this.GetType();
+
+            if (Classification == ClassificationEnum.Knight)
+            {
+                AttackStrength += 10;
+            }
+
+            if (soldierType == typeof(Human) && Classification == ClassificationEnum.Cleric)
+            {
+                AttackStrength += 3;
+            }
+        }
+
+        public void AssignSorceryStrengthBonus()
+        {
+            var soldierType = this.GetType();
+
+            // ELVES ARE MAGICAL!!
+            // Doing this by default in the Elf Class now.
+            //if (soldierType == typeof(Elf))
+            //{
+            //    SorceryStrength += 10;
+            //}
+
+            // WIZARDS ARE MAGICAL!!
+            if (Classification == ClassificationEnum.Wizard)
+            {
+                SorceryStrength += 10;
+            }
+
+            // HUMAN CLERICS READ BOOKS AND ARE MAGICAL?!
+            if (soldierType == typeof(Human) && Classification == ClassificationEnum.Cleric)
+            {
+                SorceryStrength += 3;
+            }
+        }
+
+        public void AssignArmorClass()
+        {
+            var soldierType = this.GetType();
+
+            // KNIGHTS ARE BEEFY!! THIEVES ARE DODGY!!
+            if (Classification == ClassificationEnum.Thief || Classification == ClassificationEnum.Knight)
+            {
+                ArmorClass += 10;
+            }
+
+            // HUMAN CLERICS READ BOOKS AND ARE MAGICAL?!
+            if (soldierType == typeof(Human) && Classification == ClassificationEnum.Cleric)
+            {
+                ArmorClass += 3;
+            }
+        }
+
+        public void AssignMagicResistanceBonus()
+        {
+            throw new NotImplementedException();
         }
     }
 }
