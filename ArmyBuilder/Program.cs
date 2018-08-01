@@ -332,58 +332,89 @@ namespace ArmyBuilder
 
         private static Soldier CreateSoldier()
         {
-            // Create the specific soldier type
-            var soldier = new Soldier();
-            soldier = soldier.AssignSoldierType();
+            var soldierName = PickSoldierName();
+            var soldierClass = PickSoldierClassification();
+            var soldierRank = PickSoldierRank();
+            var soldierHitPoints = PickSoldierHitPoints();
+            var soldierBirthday = PickSoldierBirthdate();
+            var soldierType = PickSoldierType();
 
-            /*
-             * QUESTION:
-             * Better to put this stuff in the Soldier class?
-             */
-
-            // GET NAME
-            Console.Clear();
-            Console.WriteLine("\nWhat is the name of the solider you want to create?");
-            soldier.Name = Console.ReadLine();
-            Console.Clear();
-
-            // PICK A CLASSIFICATION
-            Console.WriteLine($"\nNext, pick a class for {soldier.Name}!");
-            soldier.Classification = PickClassification();
-            Console.Clear();
-
-            // PICK A RANK
-            Console.WriteLine($"\nNext, pick a rank for {soldier.Name}!");
-            soldier.Rank = PickRank();
-            Console.Clear();
-
-            // HIT POINTS
-            Console.WriteLine($"\nHow tough is {soldier.Name}? Pick a number between 1 (weak) and 10 (strong).");
-            soldier.HitPoints = Convert.ToInt32(Console.ReadLine());
-            Console.Clear();
-
-            // BIRTHDAY
-            Console.WriteLine($"\nWhat is {soldier.Name}'s birthdate? Use format MM/DD/YYYY.");
-            var birthdate = Console.ReadLine();
-            soldier.Birthdate = string.IsNullOrWhiteSpace(birthdate) ? DateTime.Now : DateTime.Parse(birthdate);
+            //var soldierCreater = new SoldierCreator();
 
             // AttackBonus
-            soldier.AssignAttackBonus();
+            //soldier.AssignAttackBonus();
 
-            // Sorcery Bonus
-            soldier.AssignSorceryStrengthBonus();
+            //// Sorcery Bonus
+            //soldier.AssignSorceryStrengthBonus();
 
-            // Armor Bonus
-            soldier.AssignArmorClass();
+            //// Armor Bonus
+            //soldier.AssignArmorClass();
 
-            //AssignAttackStrength(soldier);
-            //AssignSorceryStrength(soldier);
-            //AssignArmorClass(soldier);
-            AssignMagicResistance(soldier);
+            ////AssignAttackStrength(soldier);
+            ////AssignSorceryStrength(soldier);
+            ////AssignArmorClass(soldier);
+            //AssignMagicResistance(soldier);
 
-            Console.WriteLine($"\n{soldier.Name} the {soldier.SoldierType()} is a {soldier.Rank} {soldier.Classification} ready to join the army!");
+            //Console.WriteLine($"\n{soldier.Name} the {soldier.SoldierType()} is a {soldier.Rank} {soldier.Classification} ready to join the army!");
 
-            return soldier;
+            return new Soldier();
+        }
+
+        private static SoldierType PickSoldierType()
+        {
+            Console.Clear();
+
+            var soldierTypes = Enum.GetNames(typeof(SoldierType));
+            Console.WriteLine("What type of soldier do you want to create?");
+
+            for (int i = 0; i < soldierTypes.Length - 1; i++)
+            {
+                Console.WriteLine($"{i} : {soldierTypes[i]}");
+            }
+
+            var input = Console.ReadKey();
+
+            if (input.Key == ConsoleKey.NumPad0)
+            {
+                return SoldierType.Lizardman;
+            }
+
+            if (input.Key == ConsoleKey.NumPad1)
+            {
+                return SoldierType.Human;
+            }
+
+            if (input.Key == ConsoleKey.NumPad2)
+            {
+                return SoldierType.Elf;
+            }
+
+            if (input.Key == ConsoleKey.NumPad3)
+            {
+                return SoldierType.Minotaur;
+            }
+
+            return SoldierType.BasicSoldier;
+        }
+
+        private static DateTime PickSoldierBirthdate()
+        {
+            Console.WriteLine($"\nWhat is your soldier's birthdate? Use format MM/DD/YYYY.");
+            var birthdate = Console.ReadLine();
+            return string.IsNullOrWhiteSpace(birthdate) ? DateTime.Now : DateTime.Parse(birthdate);
+        }
+
+        private static int PickSoldierHitPoints()
+        {
+            Console.WriteLine($"\nHow tough is your soldier? Pick a number between 1 (weak) and 10 (strong).");
+            return Convert.ToInt32(Console.ReadLine());
+        }
+
+        private static string PickSoldierName()
+        {
+            Console.Clear();
+            Console.WriteLine("\nWhat is the name of the solider you want to create?");
+            return Console.ReadLine();
         }
 
         private static void AssignAttackStrength(Soldier soldier)
@@ -481,8 +512,10 @@ namespace ArmyBuilder
             soldier.MagicResistance = magicResistance;
         }
 
-        private static RankEnum PickRank()
+        private static RankEnum PickSoldierRank()
         {
+            Console.WriteLine($"\nNext, pick a rank for your soldier!");
+
             var canContinueWithoutRank = false;
             while (!canContinueWithoutRank)
             {
@@ -516,8 +549,9 @@ namespace ArmyBuilder
             return RankEnum.Private;
         }
 
-        private static ClassificationEnum PickClassification()
+        private static ClassificationEnum PickSoldierClassification()
         {
+            Console.WriteLine($"\nNext, pick a class for your soldier!");
             var canContinueWithoutClassification = false;
             while (!canContinueWithoutClassification)
             {

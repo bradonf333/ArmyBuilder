@@ -64,42 +64,6 @@ namespace ArmyBuilder.Soldiers
 
         }
 
-        public Soldier AssignSoldierType()
-        {
-            Console.Clear();
-            Console.WriteLine("What type of soldier do you want to create?");
-            Console.WriteLine("Press L for Lizardman.");
-            Console.WriteLine("Press H for Human.");
-            Console.WriteLine("Press E for Elf.");
-            Console.WriteLine("Press M for Minotaur.");
-
-            var input = Console.ReadKey();
-
-            if (input.Key == ConsoleKey.L)
-            {
-                return new Lizardman();
-            }
-
-            if (input.Key == ConsoleKey.H)
-            {
-                return new Human();
-            }
-
-            if (input.Key == ConsoleKey.E)
-            {
-                return new Elf();
-            }
-
-            if (input.Key == ConsoleKey.M)
-            {
-                return new Minotaur();
-            }
-
-            Console.Clear();
-
-            return new Soldier();
-        }
-
         public void AssignAttackBonus()
         {
             var soldierType = this.GetType();

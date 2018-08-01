@@ -11,6 +11,11 @@ namespace ArmyBuilder.Soldiers
         Knight, Wizard, Cleric, Thief, None
     }
 
+    public enum SoldierType
+    {
+        Lizardman, Human, Elf, Minotaur, BasicSoldier
+    }
+
     public enum RankEnum
     {
         Private, Sergeant, Captain, General
