@@ -345,28 +345,16 @@ namespace ArmyBuilder
             // Race now equals SoldierType (type of the Child Class)
             var soldier = BuildSoldier(soldierType);
 
+            //var soldier = BuildSoldier(soldierType, soldierClass, soldierRank, soldierName, soldierBirthday);
+
             soldier.Classification = soldierClass;
             soldier.Rank = soldierRank;
             soldier.Name = soldierName;
             soldier.Birthdate = soldierBirthday;
-            
+
+            soldier.AssignStatModifiers();
+
             Console.Clear();
-
-            //var soldierCreater = new SoldierCreator();
-
-            // AttackBonus
-            //soldier.AssignAttackBonus();
-
-            //// Sorcery Bonus
-            //soldier.AssignSorceryStrengthBonus();
-
-            //// Armor Bonus
-            //soldier.AssignArmorClass();
-
-            ////AssignAttackStrength(soldier);
-            ////AssignSorceryStrength(soldier);
-            ////AssignArmorClass(soldier);
-            //AssignMagicResistance(soldier);
 
             //Console.WriteLine($"\n{soldier.Name} the {soldier.SoldierType()} is a {soldier.Rank} {soldier.Classification} ready to join the army!");
 
@@ -379,22 +367,19 @@ namespace ArmyBuilder
             {
                 return new Lizardman();
             }
-            else if (soldierType == SoldierType.Human)
+            if (soldierType == SoldierType.Human)
             {
                 return new Human();
             }
-            else if (soldierType == SoldierType.Elf)
+            if (soldierType == SoldierType.Elf)
             {
                 return new Elf();
             }
-            else if (soldierType == SoldierType.Minotaur)
+            if (soldierType == SoldierType.Minotaur)
             {
                 return new Minotaur();
             }
-            else
-            {
-                return new Soldier();
-            }
+            return new Soldier();
         }
 
         private static SoldierType PickSoldierType()
@@ -404,34 +389,35 @@ namespace ArmyBuilder
             var soldierTypes = Enum.GetNames(typeof(SoldierType));
             Console.WriteLine("What type of soldier do you want to create?");
 
+            WriteSoldierTypes(soldierTypes);
+
+            var input = Console.ReadKey();
+            Console.WriteLine(input.Key);
+            switch (input.Key)
+            {
+                case ConsoleKey.NumPad0:
+                case ConsoleKey.D0:
+                    return SoldierType.Lizardman;
+                case ConsoleKey.NumPad1:
+                case ConsoleKey.D1:
+                    return SoldierType.Human;
+                case ConsoleKey.NumPad2:
+                case ConsoleKey.D2:
+                    return SoldierType.Elf;
+                case ConsoleKey.NumPad3:
+                case ConsoleKey.D3:
+                    return SoldierType.Minotaur;
+                default:
+                    return SoldierType.BasicSoldier;
+            }
+        }
+
+        private static void WriteSoldierTypes(string[] soldierTypes)
+        {
             for (int i = 0; i < soldierTypes.Length - 1; i++)
             {
                 Console.WriteLine($"{i} : {soldierTypes[i]}");
             }
-
-            var input = Console.ReadKey();
-
-            if (input.Key == ConsoleKey.NumPad0)
-            {
-                return SoldierType.Lizardman;
-            }
-
-            if (input.Key == ConsoleKey.NumPad1)
-            {
-                return SoldierType.Human;
-            }
-
-            if (input.Key == ConsoleKey.NumPad2)
-            {
-                return SoldierType.Elf;
-            }
-
-            if (input.Key == ConsoleKey.NumPad3)
-            {
-                return SoldierType.Minotaur;
-            }
-
-            return SoldierType.BasicSoldier;
         }
 
         private static DateTime PickSoldierBirthdate()
@@ -454,31 +440,6 @@ namespace ArmyBuilder
             Console.Clear();
             Console.WriteLine("\nWhat is the name of the solider you want to create?");
             return Console.ReadLine();
-        }
-
-        private static void AssignAttackStrength(Soldier soldier)
-        {
-            var attackStrength = 2;
-
-            // KNIGHTS ARE STROOOOONG!
-            //if (soldier.Classification == ClassificationEnum.Knight)
-            //{
-            //    attackStrength += 10;
-            //}
-
-            /*
-             * QUESTION:
-             * This is a good example to put the modifiers on the Soldier class:
-             * Can put the attack strength modifier if a Cleric in the Human class.
-             */
-
-            // HUMAN CLERICS DO PUSHUPS AND ARE strongish?!
-            if (soldier.Race == "Human" && soldier.Classification == ClassificationEnum.Cleric)
-            {
-                attackStrength += 3;
-            }
-
-            soldier.SoldierStats.AttackStrength = attackStrength;
         }
 
         /*
@@ -517,6 +478,10 @@ namespace ArmyBuilder
         {
             var armorClass = 0;
 
+            /*
+             * These are probably ok to leave in the main soldier class
+             */
+
             // THIEVES ARE DODGY!!
             if (soldier.Classification == ClassificationEnum.Thief)
             {
@@ -529,26 +494,12 @@ namespace ArmyBuilder
                 armorClass += 10;
             }
 
-            // HUMAN CLERICS HIDE BEHIND TOUGH GUYS IN A FIGHT!
-            if (soldier.Race == "Human" && soldier.Classification == ClassificationEnum.Cleric)
-            {
-                armorClass += 3;
-            }
+            /*
+             *
+             */
+
 
             soldier.SoldierStats.ArmorClass = armorClass;
-        }
-
-        private static void AssignMagicResistance(Soldier soldier)
-        {
-            var magicResistance = 3;
-
-            // LIZARDMEN ONLY BELIEVE IN SCIENCE!
-            if (soldier.Race == "Lizardman")
-            {
-                magicResistance += 10;
-            }
-
-            soldier.SoldierStats.MagicResistance = magicResistance;
         }
 
         private static RankEnum PickSoldierRank()

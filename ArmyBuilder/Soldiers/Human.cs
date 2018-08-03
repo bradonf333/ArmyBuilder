@@ -10,12 +10,21 @@ namespace ArmyBuilder.Soldiers
     {
         public Human()
         {
-            
+            HumanStatModifiers();
         }
 
         public override string SoldierType()
         {
             return "Human";
+        }
+
+        private void HumanStatModifiers()
+        {
+            if (Classification == ClassificationEnum.Cleric)
+            {
+                SoldierStats.AttackStrength += 3;
+                SoldierStats.SorceryStrength += 3;
+            }
         }
     }
 }

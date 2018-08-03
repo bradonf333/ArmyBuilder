@@ -10,12 +10,6 @@ namespace ArmyBuilder.Soldiers
     {
         public Elf()
         {
-            /*
-             * QUESTION:
-             * Elves always get a SorceryStrengthBonus of 10. Should I do this by default,
-             * or keep in the AssignSorceryStrengthBonus method?
-             */
-
             SoldierStats.SorceryStrength += 10;
         }
 

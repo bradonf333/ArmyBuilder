@@ -47,7 +47,7 @@ namespace ArmyBuilder.Tests
             var sut = new Elf();
 
             // Act
-            sut.AssignSorceryStrengthBonus();
+            sut.AssignStatModifiers();
             var sorceryStrength = sut.SoldierStats.SorceryStrength;
             Console.WriteLine($"Sorcery Strength: {sorceryStrength}");
 

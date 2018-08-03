@@ -30,6 +30,7 @@ namespace ArmyBuilder.Soldiers
 
             // All soldiers have base stats
             SoldierStats.AttackStrength = 2;
+
             Classification = ClassificationEnum.None;
             Rank = RankEnum.Private;
             SoldierStats.SorceryStrength = 0;
@@ -52,39 +53,40 @@ namespace ArmyBuilder.Soldiers
 
         }
 
-        public void AssignAttackBonus()
+        /// <summary>
+        /// Handles all Modifiers that are shared across ANY Soldier.
+        /// If there are modifiers 
+        /// </summary>
+        public void AssignStatModifiers()
         {
-            var soldierType = this.GetType();
+            AssignAttackBonus();
+            AssignSorceryStrengthBonus();
+            AssignArmorClass();
+            AssignMagicResistanceBonus();
+        }
+
+        private void AssignAttackBonus()
+        {
+            var soldierType = GetType();
 
             if (Classification == ClassificationEnum.Knight)
             {
                 SoldierStats.AttackStrength += 10;
             }
-
-            if (soldierType == typeof(Human) && Classification == ClassificationEnum.Cleric)
-            {
-                SoldierStats.AttackStrength += 3;
-            }
         }
 
-        public void AssignSorceryStrengthBonus()
+        private void AssignSorceryStrengthBonus()
         {
-            var soldierType = this.GetType();
+            var soldierType = GetType();
 
             // WIZARDS ARE MAGICAL!!
             if (Classification == ClassificationEnum.Wizard)
             {
                 SoldierStats.SorceryStrength += 10;
             }
-
-            // HUMAN CLERICS READ BOOKS AND ARE MAGICAL?!
-            if (soldierType == typeof(Human) && Classification == ClassificationEnum.Cleric)
-            {
-                SoldierStats.SorceryStrength += 3;
-            }
         }
 
-        public void AssignArmorClass()
+        private void AssignArmorClass()
         {
             var soldierType = this.GetType();
 
@@ -101,7 +103,7 @@ namespace ArmyBuilder.Soldiers
             }
         }
 
-        public void AssignMagicResistanceBonus()
+        private void AssignMagicResistanceBonus()
         {
             SoldierStats.MagicResistance = 0;
         }
