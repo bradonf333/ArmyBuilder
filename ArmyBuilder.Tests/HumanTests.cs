@@ -32,7 +32,7 @@ namespace ArmyBuilder.Tests
             // Act
             sut.Classification = ClassificationEnum.Cleric;
             sut.AssignAttackBonus();
-            var attackStrength = sut.AttackStrength;
+            var attackStrength = sut.SoldierStats.AttackStrength;
         
             Console.WriteLine($"Attack Strength: {attackStrength}");
 

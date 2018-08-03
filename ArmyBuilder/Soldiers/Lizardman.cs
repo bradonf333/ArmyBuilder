@@ -10,7 +10,7 @@ namespace ArmyBuilder.Soldiers
     {
         public Lizardman()
         {
-            AttackStrength += 5;
+            SoldierStats.AttackStrength += 5;
 
             /*
              * QUESTION:
@@ -23,7 +23,7 @@ namespace ArmyBuilder.Soldiers
              *
              * Just need to figure out how to handle the Classification modifiers as well...
              */
-            MagicResistance += 10;
+            SoldierStats.MagicResistance += 10;
         }
 
         public override string SoldierType()

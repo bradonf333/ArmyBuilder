@@ -16,7 +16,7 @@ namespace ArmyBuilder.Soldiers
              * or keep in the AssignSorceryStrengthBonus method?
              */
 
-            SorceryStrength += 10;
+            SoldierStats.SorceryStrength += 10;
         }
 
         public override string SoldierType()

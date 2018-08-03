@@ -16,7 +16,7 @@ namespace ArmyBuilder.Tests
             var sut = new Minotaur();
 
             // Act
-            var attackStrenth = sut.AttackStrength;
+            var attackStrenth = sut.SoldierStats.AttackStrength;
 
             // Assert
             Assert.That(attackStrenth, Is.EqualTo(12));
@@ -29,7 +29,7 @@ namespace ArmyBuilder.Tests
             var sut = new Minotaur();
 
             // Act
-            var defense = sut.Defense;
+            var defense = sut.SoldierStats.Defense;
 
             // Assert
             Assert.That(defense, Is.EqualTo(5));

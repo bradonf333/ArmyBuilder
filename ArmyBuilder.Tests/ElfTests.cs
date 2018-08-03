@@ -20,7 +20,7 @@ namespace ArmyBuilder.Tests
             var sut = new Elf();
 
             // Act
-            var sorceryStrength = sut.SorceryStrength;
+            var sorceryStrength = sut.SoldierStats.SorceryStrength;
 
             // Assert
             Assert.That(sorceryStrength, Is.EqualTo(10));
@@ -48,7 +48,7 @@ namespace ArmyBuilder.Tests
 
             // Act
             sut.AssignSorceryStrengthBonus();
-            var sorceryStrength = sut.SorceryStrength;
+            var sorceryStrength = sut.SoldierStats.SorceryStrength;
             Console.WriteLine($"Sorcery Strength: {sorceryStrength}");
 
             // Assert

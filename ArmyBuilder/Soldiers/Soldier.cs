@@ -14,39 +14,27 @@ namespace ArmyBuilder.Soldiers
     {
         public string Name { get; set; }
 
+        public DateTime Birthdate { get; set; }
+
         public string Race { get; set; }
 
         public ClassificationEnum Classification { get; set; }
 
         public RankEnum Rank { get; set; }
 
-        public int HitPoints { get; set; }
-
-        public DateTime Birthdate { get; set; }
-
-        public int AttackStrength { get; set; }
-
-        public int SorceryStrength { get; set; }
-
-        public int MagicResistance { get; set; }
-
-        public int ArmorClass { get; set; }
-
-        public int BonusDamage { get; set; }
-
-        public int BonusMagicDamage { get; set; }
-
-        public int Defense { get; set; }
+        public SoldierStats SoldierStats { get; set; }
 
         public Soldier()
         {
-            // All soldiers have a base stats
-            AttackStrength = 2;
+            SoldierStats = new SoldierStats();
+
+            // All soldiers have base stats
+            SoldierStats.AttackStrength = 2;
             Classification = ClassificationEnum.None;
             Rank = RankEnum.Private;
-            SorceryStrength = 0;
-            ArmorClass = 0;
-            MagicResistance = 3;
+            SoldierStats.SorceryStrength = 0;
+            SoldierStats.ArmorClass = 0;
+            SoldierStats.MagicResistance = 3;
         }
 
         public virtual string SoldierType()
@@ -70,12 +58,12 @@ namespace ArmyBuilder.Soldiers
 
             if (Classification == ClassificationEnum.Knight)
             {
-                AttackStrength += 10;
+                SoldierStats.AttackStrength += 10;
             }
 
             if (soldierType == typeof(Human) && Classification == ClassificationEnum.Cleric)
             {
-                AttackStrength += 3;
+                SoldierStats.AttackStrength += 3;
             }
         }
 
@@ -83,23 +71,16 @@ namespace ArmyBuilder.Soldiers
         {
             var soldierType = this.GetType();
 
-            // ELVES ARE MAGICAL!!
-            // Doing this by default in the Elf Class now.
-            //if (soldierType == typeof(Elf))
-            //{
-            //    SorceryStrength += 10;
-            //}
-
             // WIZARDS ARE MAGICAL!!
             if (Classification == ClassificationEnum.Wizard)
             {
-                SorceryStrength += 10;
+                SoldierStats.SorceryStrength += 10;
             }
 
             // HUMAN CLERICS READ BOOKS AND ARE MAGICAL?!
             if (soldierType == typeof(Human) && Classification == ClassificationEnum.Cleric)
             {
-                SorceryStrength += 3;
+                SoldierStats.SorceryStrength += 3;
             }
         }
 
@@ -110,19 +91,19 @@ namespace ArmyBuilder.Soldiers
             // KNIGHTS ARE BEEFY!! THIEVES ARE DODGY!!
             if (Classification == ClassificationEnum.Thief || Classification == ClassificationEnum.Knight)
             {
-                ArmorClass += 10;
+                SoldierStats.ArmorClass += 10;
             }
 
             // HUMAN CLERICS READ BOOKS AND ARE MAGICAL?!
             if (soldierType == typeof(Human) && Classification == ClassificationEnum.Cleric)
             {
-                ArmorClass += 3;
+                SoldierStats.ArmorClass += 3;
             }
         }
 
         public void AssignMagicResistanceBonus()
         {
-            throw new NotImplementedException();
+            SoldierStats.MagicResistance = 0;
         }
     }
 }

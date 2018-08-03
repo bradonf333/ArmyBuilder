@@ -10,10 +10,10 @@ namespace ArmyBuilder.Soldiers
     {
         public Minotaur()
         {
-            AttackStrength += 10;
+            SoldierStats.AttackStrength += 10;
             // BonusDamage += 5;
-            BonusMagicDamage -= 1;
-            Defense += 5;
+            SoldierStats.BonusMagicDamage -= 1;
+            SoldierStats.Defense += 5;
         }
 
         public override string SoldierType()

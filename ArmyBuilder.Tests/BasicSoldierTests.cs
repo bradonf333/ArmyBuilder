@@ -14,7 +14,7 @@ namespace ArmyBuilder.Tests
             var sut = new Soldier();
 
             // Act
-            var attackStrength = sut.AttackStrength;
+            var attackStrength = sut.SoldierStats.AttackStrength;
             Console.WriteLine($"Basic Soldier AttackStrength: {attackStrength}");
 
             // Assert
@@ -71,7 +71,7 @@ namespace ArmyBuilder.Tests
 
             // Act
             sut.AssignAttackBonus();
-            var soldierAttack = sut.AttackStrength;
+            var soldierAttack = sut.SoldierStats.AttackStrength;
             Console.WriteLine($"Basic Soldier Attack: {soldierAttack}");
 
             // Assert
@@ -86,7 +86,7 @@ namespace ArmyBuilder.Tests
 
             // Act
             sut.AssignSorceryStrengthBonus();
-            var soldierSorcery = sut.SorceryStrength;
+            var soldierSorcery = sut.SoldierStats.SorceryStrength;
             Console.WriteLine($"Basic Soldier Sorcery: {soldierSorcery}");
 
             // Assert
@@ -101,7 +101,7 @@ namespace ArmyBuilder.Tests
 
             // Act
             sut.AssignArmorClass();
-            var soldierArmor = sut.ArmorClass;
+            var soldierArmor = sut.SoldierStats.ArmorClass;
             Console.WriteLine($"Basic Soldier Armor Rating: {soldierArmor}");
 
             // Assert
@@ -116,7 +116,7 @@ namespace ArmyBuilder.Tests
 
             // Act
             sut.AssignMagicResistanceBonus();
-            var soldierMagicResistance = sut.MagicResistance;
+            var soldierMagicResistance = sut.SoldierStats.MagicResistance;
             Console.WriteLine($"Basic Soldier Magic Resistance: {soldierMagicResistance}");
 
             // Assert

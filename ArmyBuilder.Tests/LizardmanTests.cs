@@ -19,7 +19,7 @@ namespace ArmyBuilder.Tests
             var sut = new Lizardman();
 
             // Act
-            var attackStrength = sut.AttackStrength;
+            var attackStrength = sut.SoldierStats.AttackStrength;
 
             // Assert
             Assert.That(attackStrength, Is.EqualTo(7));
@@ -32,10 +32,10 @@ namespace ArmyBuilder.Tests
             var sut = new Lizardman();
 
             // Act
-            var magicResistance = sut.MagicResistance;
+            var magicResistance = sut.SoldierStats.MagicResistance;
 
             // Assert
-            Assert.That(magicResistance, Is.EqualTo(10));
+            Assert.That(magicResistance, Is.EqualTo(13));
         }
 
         [Test]
