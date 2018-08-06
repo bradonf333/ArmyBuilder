@@ -27,12 +27,16 @@ namespace ArmyBuilder.Soldiers
         public Soldier()
         {
             SoldierStats = new SoldierStats();
-
-            // All soldiers have base stats
-            SoldierStats.AttackStrength = 2;
+            AssignBaseStats();
 
             Classification = ClassificationEnum.None;
             Rank = RankEnum.Private;
+        }
+
+        private void AssignBaseStats()
+        {
+            // All soldiers have base stats
+            SoldierStats.AttackStrength = 2;
             SoldierStats.SorceryStrength = 0;
             SoldierStats.ArmorClass = 0;
             SoldierStats.MagicResistance = 3;
@@ -63,12 +67,20 @@ namespace ArmyBuilder.Soldiers
             AssignSorceryStrengthBonus();
             AssignArmorClass();
             AssignMagicResistanceBonus();
+            AssignDefenseBonus();
+        }
+
+        private void AssignDefenseBonus()
+        {
+            // KNIGHTS TAKE 5 LESS ATTACK DAMAGE
+            if (Classification == ClassificationEnum.Knight)
+            {
+                SoldierStats.Defense += 5;
+            }
         }
 
         private void AssignAttackBonus()
         {
-            var soldierType = GetType();
-
             if (Classification == ClassificationEnum.Knight)
             {
                 SoldierStats.AttackStrength += 10;
@@ -94,12 +106,6 @@ namespace ArmyBuilder.Soldiers
             if (Classification == ClassificationEnum.Thief || Classification == ClassificationEnum.Knight)
             {
                 SoldierStats.ArmorClass += 10;
-            }
-
-            // HUMAN CLERICS READ BOOKS AND ARE MAGICAL?!
-            if (soldierType == typeof(Human) && Classification == ClassificationEnum.Cleric)
-            {
-                SoldierStats.ArmorClass += 3;
             }
         }
 

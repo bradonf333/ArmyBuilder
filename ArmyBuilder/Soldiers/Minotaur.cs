@@ -13,10 +13,12 @@ namespace ArmyBuilder.Soldiers
             SoldierStats.AttackStrength += 10;
             SoldierStats.BonusMagicDamage -= 1;
             SoldierStats.Defense += 5;
+
+            MinotaurStatModifiers();
         }
 
         // How to handle these modifiers? Maybe how Human is doing it?
-        public override void AssignStatModifiers()
+        private void MinotaurStatModifiers()
         {
             if (Classification == ClassificationEnum.Knight)
             {
