@@ -6,16 +6,18 @@ using System.Threading.Tasks;
 
 namespace ArmyBuilder.Soldiers
 {
-    public class Human : Soldier
+    public class Human : BaseSoldier
     {
         public Human()
         {
-            HumanStatModifiers();
+            SoldierType = SoldierType.Human;
         }
 
-        public override string SoldierType()
+        public Human(ClassificationEnum classificationEnum)
         {
-            return "Human";
+            SoldierType = SoldierType.Human;
+            Classification = classificationEnum;
+            HumanStatModifiers();
         }
 
         private void HumanStatModifiers()

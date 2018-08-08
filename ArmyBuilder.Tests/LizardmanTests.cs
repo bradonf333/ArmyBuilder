@@ -45,7 +45,7 @@ namespace ArmyBuilder.Tests
             var sut = new Lizardman();
 
             // Act
-            var soldierType = sut.SoldierType();
+            var soldierType = sut.SoldierType;
             Console.WriteLine($"Soldier Type: {soldierType}");
 
             // Assert

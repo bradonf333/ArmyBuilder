@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Soldiers\BaseSoldier.cs" />
     <Compile Include="Soldiers\SoldierEnums.cs" />
     <Compile Include="Soldiers\Elf.cs" />
     <Compile Include="Soldiers\Human.cs" />
@@ -49,7 +50,7 @@
     <Compile Include="Soldiers\Minotaur.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Soldiers\Soldier.cs" />
+    <Compile Include="Soldiers\ISoldier.cs" />
     <Compile Include="Soldiers\SoldierStats.cs" />
   </ItemGroup>
   <ItemGroup>

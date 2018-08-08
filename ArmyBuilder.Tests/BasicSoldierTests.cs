@@ -11,7 +11,7 @@ namespace ArmyBuilder.Tests
         public void Solider_WhenCreatedWithDefaults_ShouldHaveBaseAttackOfTwo()
         {
             // Arrange
-            var sut = new Soldier();
+            var sut = new BaseSoldier();
 
             // Act
             var attackStrength = sut.SoldierStats.AttackStrength;
@@ -25,7 +25,7 @@ namespace ArmyBuilder.Tests
         public void Solider_WhenCreatedWithDefaults_ShouldHaveClassificationOfNone()
         {
             // Arrange
-            var sut = new Soldier();
+            var sut = new BaseSoldier();
 
             // Act
             var classification = sut.Classification;
@@ -39,10 +39,10 @@ namespace ArmyBuilder.Tests
         public void Solider_WhenCreatedWithDefaults_ShouldHaveSoldierTypeOfBasicSoldier()
         {
             // Arrange
-            var sut = new Soldier();
+            var sut = new BaseSoldier();
 
             // Act
-            var soldierType = sut.SoldierType();
+            var soldierType = sut.SoldierType;
             Console.WriteLine($"Basic Soldier Type: {soldierType}");
 
             // Assert
@@ -53,7 +53,7 @@ namespace ArmyBuilder.Tests
         public void Solider_WhenCreatedWithDefaults_ShouldHaveRankOfPrivate()
         {
             // Arrange
-            var sut = new Soldier();
+            var sut = new BaseSoldier();
 
             // Act
             var soldierRank = sut.Rank;
@@ -67,7 +67,7 @@ namespace ArmyBuilder.Tests
         public void Solider_WhenCreatedWithDefaults_ShouldHaveAttackStrengthOfTwo()
         {
             // Arrange
-            var sut = new Soldier();
+            var sut = new BaseSoldier();
 
             // Act
             sut.AssignStatModifiers();
@@ -82,7 +82,7 @@ namespace ArmyBuilder.Tests
         public void Solider_WhenCreatedWithDefaults_ShouldHaveSorceryStrengthOfZero()
         {
             // Arrange
-            var sut = new Soldier();
+            var sut = new BaseSoldier();
 
             // Act
             sut.AssignStatModifiers();
@@ -97,7 +97,7 @@ namespace ArmyBuilder.Tests
         public void Solider_WhenCreatedWithDefaults_ShouldHaveBaseArmorOfZero()
         {
             // Arrange
-            var sut = new Soldier();
+            var sut = new BaseSoldier();
 
             // Act
             sut.AssignStatModifiers();
@@ -112,7 +112,7 @@ namespace ArmyBuilder.Tests
         public void Solider_WhenCreatedWithDefaults_ShouldHaveBaseMagicResistanceOfThree()
         {
             // Arrange
-            var sut = new Soldier();
+            var sut = new BaseSoldier();
 
             // Act
             sut.AssignStatModifiers();

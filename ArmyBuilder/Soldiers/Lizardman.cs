@@ -6,22 +6,13 @@ using System.Threading.Tasks;
 
 namespace ArmyBuilder.Soldiers
 {
-    public class Lizardman : Soldier
+    public class Lizardman : BaseSoldier
     {
         public Lizardman()
         {
+            SoldierType = SoldierType.Lizardman;
             SoldierStats.AttackStrength += 5;
-
-            /*
-             * QUESTION:
-             * Just need to figure out how to handle the Classification modifiers as well...
-             */
             SoldierStats.MagicResistance += 10;
-        }
-
-        public override string SoldierType()
-        {
-            return "Lizardman";
         }
     }
 }

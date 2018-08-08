@@ -28,7 +28,7 @@ namespace ArmyBuilder
         /// Send Army to battle the evil monster
         /// </summary>
         /// <param name="army"></param>
-        private static void SendArmyToDoBattle(List<Soldier> army)
+        private static void SendArmyToDoBattle(List<BaseSoldier> army)
         {
             var numberGenerator = new Random();
             var monsterHitPoints = numberGenerator.Next(50, 100);
@@ -124,17 +124,18 @@ namespace ArmyBuilder
         /// </summary>
         /// <param name="soldier">Pass in a Soldier Object</param>
         /// <returns>Magic Defense Bonus as an integer</returns>
-        private static int CheckForMagicDefenseBonus(Soldier soldier)
+        private static int CheckForMagicDefenseBonus(BaseSoldier soldier)
         {
             var bonusDefense = 0;
 
-            var race = soldier.Race;
+            // @@@ Moved to the Minotaur class! --DONE
+            //var race = soldier.Race;
 
             // MINOTAURS TAKE 5 LESS MAGIC DAMAGE
-            if (race == "Minotaur")
-            {
-                bonusDefense += 5;
-            }
+            //if (race == "Minotaur")
+            //{
+            //    bonusDefense += 5;
+            //}
 
             return bonusDefense;
         }
@@ -144,17 +145,18 @@ namespace ArmyBuilder
         /// </summary>
         /// <param name="soldier">Pass in a Soldier Object</param>
         /// <returns>Attack Defense Bonus as an integer</returns>
-        private static int CheckForAttackDefenseBonus(Soldier soldier)
+        private static int CheckForAttackDefenseBonus(BaseSoldier soldier)
         {
             var bonusDefense = 0;
 
             var classification = soldier.Classification;
 
+            // @@@ - Moved to the Soldier Class --DONE
             // KNIGHTS TAKE 5 LESS ATTACK DAMAGE
-            if (classification == ClassificationEnum.Knight)
-            {
-                bonusDefense += 5;
-            }
+            //if (classification == ClassificationEnum.Knight)
+            //{
+            //    bonusDefense += 5;
+            //}
 
             return bonusDefense;
         }
@@ -164,7 +166,7 @@ namespace ArmyBuilder
         /// </summary>
         /// <param name="soldier"></param>
         /// <returns></returns>
-        private static int CheckForBonusMagicDamage(Soldier soldier)
+        private static int CheckForBonusMagicDamage(BaseSoldier soldier)
         {
             var bonusDamage = 0;
             var race = soldier.Race;
@@ -203,7 +205,7 @@ namespace ArmyBuilder
         /// </summary>
         /// <param name="soldier"></param>
         /// <returns></returns>
-        private static int CheckForBonusAttackDamage(Soldier soldier)
+        private static int CheckForBonusAttackDamage(BaseSoldier soldier)
         {
             var bonusMagicDamage = 0;
             var race = soldier.Race;
@@ -244,9 +246,9 @@ namespace ArmyBuilder
             return bonusMagicDamage;
         }
 
-        private static List<Soldier> MarshallArmy(IEnumerable<Soldier> recruits)
+        private static List<BaseSoldier> MarshallArmy(IEnumerable<BaseSoldier> recruits)
         {
-            var army = new List<Soldier>();
+            var army = new List<BaseSoldier>();
             var maxGeneralCount = 1;
             var maxCaptainCount = 5;
 
@@ -311,10 +313,10 @@ namespace ArmyBuilder
             return army;
         }
 
-        private static List<Soldier> CreateRecruits()
+        private static List<BaseSoldier> CreateRecruits()
         {
             var createMoreSoldiers = true;
-            var recruits = new List<Soldier>();
+            var recruits = new List<BaseSoldier>();
             while (createMoreSoldiers)
             {
                 var soldier = CreateSoldier();
@@ -330,12 +332,13 @@ namespace ArmyBuilder
             return recruits;
         }
 
-        private static Soldier CreateSoldier()
+        private static BaseSoldier CreateSoldier()
         {
+            var soldierName = PickSoldierName();
+            
             var soldierStats = new SoldierStats();
             soldierStats.HitPoints = PickSoldierHitPoints(); // Probably get rid of this in future and have it decided by the other info
-
-            var soldierName = PickSoldierName();
+            
             var soldierBirthday = PickSoldierBirthdate();
 
             var soldierClass = PickSoldierClassification();
@@ -345,8 +348,6 @@ namespace ArmyBuilder
             // Race now equals SoldierType (type of the Child Class)
             var soldier = BuildSoldier(soldierType);
 
-            //var soldier = BuildSoldier(soldierType, soldierClass, soldierRank, soldierName, soldierBirthday);
-
             soldier.Classification = soldierClass;
             soldier.Rank = soldierRank;
             soldier.Name = soldierName;
@@ -354,14 +355,34 @@ namespace ArmyBuilder
 
             soldier.AssignStatModifiers();
 
+            DisplayNewSoldier(soldier);
+
             Console.Clear();
 
-            //Console.WriteLine($"\n{soldier.Name} the {soldier.SoldierType()} is a {soldier.Rank} {soldier.Classification} ready to join the army!");
-
-            return new Soldier();
+            return soldier;
         }
 
-        private static Soldier BuildSoldier(SoldierType soldierType)
+        private static void DisplayNewSoldier(BaseSoldier soldier)
+        {
+            Console.Clear();
+
+            Console.WriteLine("{0,-15} {1,5}", "Name:", soldier.Name);
+            Console.WriteLine("{0,-15} {1,5}", "Birthdate:", soldier.Birthdate);
+            Console.WriteLine("{0,-15} {1,5}", "Race:", soldier.SoldierType);
+            Console.WriteLine("{0,-15} {1,5}", "Class:", soldier.Classification);
+            Console.WriteLine("{0,-15} {1,5}", "Rank:", soldier.Rank);
+            Console.WriteLine("{0,-10} {1,5} {2,10}", "-----------", "Stats", "-----------");
+            Console.WriteLine("{0,-15} {1,7}", "AttackStrength:", soldier.SoldierStats.AttackStrength);
+            Console.WriteLine("{0,-15} {1,7}", "Defense:", soldier.SoldierStats.Defense);
+            Console.WriteLine("{0,-15} {1,7}", "ArmorClass:", soldier.SoldierStats.ArmorClass);
+            Console.WriteLine("{0,-15} {1,7}", "HitPoints:", soldier.SoldierStats.HitPoints);
+            Console.WriteLine("{0,-15} {1,6}", "MagicResistance:", soldier.SoldierStats.MagicResistance);
+            Console.WriteLine("{0,-15} {1,7}", "BonusDamage:", soldier.SoldierStats.BonusDamage);
+            Console.WriteLine("{0,-15} {1,6}", "SorceryStrength:", soldier.SoldierStats.SorceryStrength);
+            Console.WriteLine("{0,-15} {1,5}", "BonusMagicDamage:", soldier.SoldierStats.BonusMagicDamage);
+        }
+
+        private static BaseSoldier BuildSoldier(SoldierType soldierType)
         {
             if (soldierType == SoldierType.Lizardman)
             {
@@ -379,7 +400,8 @@ namespace ArmyBuilder
             {
                 return new Minotaur();
             }
-            return new Soldier();
+
+            return new BaseSoldier();
         }
 
         private static SoldierType PickSoldierType()
@@ -440,66 +462,6 @@ namespace ArmyBuilder
             Console.Clear();
             Console.WriteLine("\nWhat is the name of the solider you want to create?");
             return Console.ReadLine();
-        }
-
-        /*
-         * QUESTION:
-         * Maybe put the Classification logic in the specified soldiers class.
-         * i.e. Minotaur checks its class for the wizard type and adds sorcery strength if true
-         *
-         *
-         */
-        private static void AssignSorceryStrength(Soldier soldier)
-        {
-            var sorceryStrength = 0;
-
-            // ELVES ARE MAGICAL!!
-            if (soldier.Race == "Elf")
-            {
-                sorceryStrength += 10;
-            }
-
-            // WIZARDS ARE MAGICAL!!
-            if (soldier.Classification == ClassificationEnum.Wizard)
-            {
-                sorceryStrength += 10;
-            }
-
-            // HUMAN CLERICS READ BOOKS AND ARE magical?!
-            if (soldier.Race == "Human" && soldier.Classification == ClassificationEnum.Cleric)
-            {
-                sorceryStrength += 3;
-            }
-
-            soldier.SoldierStats.SorceryStrength = sorceryStrength;
-        }
-
-        private static void AssignArmorClass(Soldier soldier)
-        {
-            var armorClass = 0;
-
-            /*
-             * These are probably ok to leave in the main soldier class
-             */
-
-            // THIEVES ARE DODGY!!
-            if (soldier.Classification == ClassificationEnum.Thief)
-            {
-                armorClass += 10;
-            }
-
-            // KNIGHTS ARE BEEFY!!
-            if (soldier.Classification == ClassificationEnum.Knight)
-            {
-                armorClass += 10;
-            }
-
-            /*
-             *
-             */
-
-
-            soldier.SoldierStats.ArmorClass = armorClass;
         }
 
         private static RankEnum PickSoldierRank()

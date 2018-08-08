@@ -16,7 +16,7 @@ namespace ArmyBuilder.Tests
             var sut = new Human();
 
             // Act
-            var soldierType = sut.SoldierType();
+            var soldierType = sut.SoldierType;
             Console.WriteLine($"Soldier Type: {soldierType}");
 
             // Assert
@@ -27,10 +27,10 @@ namespace ArmyBuilder.Tests
         public void Human_WhenTypeOfIsEqualToCleric_ShouldGetBonusAttackToEqualFive()
         {
             // Arrange
-            var sut = new Human();
+            var sut = new Human(ClassificationEnum.Cleric);
 
             // Act
-            sut.Classification = ClassificationEnum.Cleric;
+            //sut.Classification = ClassificationEnum.Cleric;
             sut.AssignStatModifiers();
             var attackStrength = sut.SoldierStats.AttackStrength;
         

@@ -33,11 +33,11 @@ namespace ArmyBuilder.Tests
             var sut = new Elf();
 
             // Act
-            var soldierType = sut.SoldierType();
+            var soldierType = sut.SoldierType;
             Console.WriteLine($"Soldier Type: {soldierType}");
 
             // Assert
-            Assert.That(soldierType, Is.EqualTo("Elf"));
+            Assert.That(soldierType, Is.EqualTo(SoldierType.Elf));
         }
 
         [Test]

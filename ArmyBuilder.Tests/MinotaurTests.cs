@@ -42,7 +42,7 @@ namespace ArmyBuilder.Tests
             var sut = new Minotaur();
 
             // Act
-            var soldierType = sut.SoldierType();
+            var soldierType = sut.SoldierType;
             Console.WriteLine($"Soldier Type: {soldierType}");
 
             // Assert

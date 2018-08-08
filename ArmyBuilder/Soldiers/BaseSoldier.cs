@@ -7,24 +7,12 @@ using System.Threading.Tasks;
 namespace ArmyBuilder.Soldiers
 {
     /// <summary>
-    /// Soldier should probably be a base class which is used to create the specialized soldiers
-    /// i.e. each race would be a specialization of Soldier
+    /// All soldiers need a classification to be created successfully. If this is not provided,
+    /// a basic soldier will be created instead which has no classification.
     /// </summary>
-    public class Soldier
+    public class BaseSoldier : ISoldier
     {
-        public string Name { get; set; }
-
-        public DateTime Birthdate { get; set; }
-
-        public string Race { get; set; }
-
-        public ClassificationEnum Classification { get; set; }
-
-        public RankEnum Rank { get; set; }
-
-        public SoldierStats SoldierStats { get; set; }
-
-        public Soldier()
+        public BaseSoldier()
         {
             SoldierStats = new SoldierStats();
             AssignBaseStats();
@@ -33,7 +21,15 @@ namespace ArmyBuilder.Soldiers
             Rank = RankEnum.Private;
         }
 
-        private void AssignBaseStats()
+        public string Name { get; set; }
+        public DateTime Birthdate { get; set; }
+        public string Race { get; set; }
+        public ClassificationEnum Classification { get; set; }
+        public RankEnum Rank { get; set; }
+        public SoldierStats SoldierStats { get; set; }
+        public SoldierType SoldierType { get; set; }
+
+        public void AssignBaseStats()
         {
             // All soldiers have base stats
             SoldierStats.AttackStrength = 2;
@@ -42,25 +38,16 @@ namespace ArmyBuilder.Soldiers
             SoldierStats.MagicResistance = 3;
         }
 
-        public virtual string SoldierType()
-        {
-            return "Basic Soldier";
-        }
-
         public void Attack()
         {
-
+            throw new NotImplementedException();
         }
 
         public void Defend()
         {
-
+            throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Handles all Modifiers that are shared across ANY Soldier.
-        /// If there are modifiers 
-        /// </summary>
         public void AssignStatModifiers()
         {
             AssignAttackBonus();
@@ -103,7 +90,8 @@ namespace ArmyBuilder.Soldiers
             var soldierType = this.GetType();
 
             // KNIGHTS ARE BEEFY!! THIEVES ARE DODGY!!
-            if (Classification == ClassificationEnum.Thief || Classification == ClassificationEnum.Knight)
+            if (Classification == ClassificationEnum.Thief 
+                || Classification == ClassificationEnum.Knight)
             {
                 SoldierStats.ArmorClass += 10;
             }

@@ -6,29 +6,30 @@ using System.Threading.Tasks;
 
 namespace ArmyBuilder.Soldiers
 {
-    public class Minotaur : Soldier
+    public class Minotaur : BaseSoldier
     {
         public Minotaur()
         {
-            SoldierStats.AttackStrength += 10;
-            SoldierStats.BonusMagicDamage -= 1;
-            SoldierStats.Defense += 5;
-
+            SoldierType = SoldierType.Minotaur;
             MinotaurStatModifiers();
         }
 
         // How to handle these modifiers? Maybe how Human is doing it?
         private void MinotaurStatModifiers()
         {
+            SoldierStats.Defense += 5;
+            SoldierStats.AttackStrength += 10;
+            SoldierStats.BonusMagicDamage -= 1;
+
+            if (Rank == RankEnum.General)
+            {
+                SoldierStats.BonusDamage += 10;
+            }
+
             if (Classification == ClassificationEnum.Knight)
             {
 
             }
-        }
-
-        public override string SoldierType()
-        {
-            return "Minotaur";
         }
     }
 }
