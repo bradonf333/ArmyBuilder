@@ -16,6 +16,7 @@ namespace ArmyBuilder
         static void Main(string[] args)
         {
             var recruits = CreateRecruits();
+            var army1 = new Army(recruits);
 
             var army = MarshallArmy(recruits);
 
