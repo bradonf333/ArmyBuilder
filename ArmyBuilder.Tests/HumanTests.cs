@@ -10,6 +10,20 @@ namespace ArmyBuilder.Tests
     public class HumanTests
     {
         [Test]
+        public void Human_WhenCreated_WithDefaults_ShouldHaveSoldierClassificationOfNone()
+        {
+            // Arrange
+            var sut = new Human();
+
+            // Act
+            var soldierClass = sut.Classification;
+            Console.WriteLine($"Soldier Classification: {soldierClass}");
+
+            // Assert
+            Assert.That(soldierClass, Is.EqualTo(ClassificationEnum.None));
+        }
+
+        [Test]
         public void Human_WhenCreated_WithDefaults_ShouldHaveSoldierTypeOfHuman()
         {
             // Arrange
@@ -20,7 +34,7 @@ namespace ArmyBuilder.Tests
             Console.WriteLine($"Soldier Type: {soldierType}");
 
             // Assert
-            Assert.That(soldierType, Is.EqualTo("Human"));
+            Assert.That(soldierType, Is.EqualTo(SoldierType.Human));
         }
 
         [Test]
@@ -30,7 +44,6 @@ namespace ArmyBuilder.Tests
             var sut = new Human(ClassificationEnum.Cleric);
 
             // Act
-            //sut.Classification = ClassificationEnum.Cleric;
             sut.AssignStatModifiers();
             var attackStrength = sut.SoldierStats.AttackStrength;
         

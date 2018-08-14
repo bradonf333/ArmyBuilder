@@ -11,6 +11,19 @@ namespace ArmyBuilder.Tests
     [TestFixture]
     public class LizardmanTests
     {
+        [Test]
+        public void Lizardman_WhenCreated_WithDefaults_ShouldHaveSoldierClassificationOfNone()
+        {
+            // Arrange
+            var sut = new Lizardman();
+
+            // Act
+            var soldierClass = sut.Classification;
+            Console.WriteLine($"Soldier Classification: {soldierClass}");
+
+            // Assert
+            Assert.That(soldierClass, Is.EqualTo(ClassificationEnum.None));
+        }
 
         [Test]
         public void Lizardman_WhenCreated_WithDefaults_ShouldGetBonusAttackStrength_ToEqualSeven()
@@ -49,7 +62,7 @@ namespace ArmyBuilder.Tests
             Console.WriteLine($"Soldier Type: {soldierType}");
 
             // Assert
-            Assert.That(soldierType, Is.EqualTo("Lizardman"));
+            Assert.That(soldierType, Is.EqualTo(SoldierType.Lizardman));
         }
     }
 }

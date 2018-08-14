@@ -46,7 +46,7 @@ namespace ArmyBuilder.Tests
             Console.WriteLine($"Basic Soldier Type: {soldierType}");
 
             // Assert
-            Assert.That(soldierType, Is.EqualTo("Basic Soldier"));
+            Assert.That(soldierType, Is.EqualTo(SoldierType.BasicSoldier));
         }
 
         [Test]

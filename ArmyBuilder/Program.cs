@@ -28,7 +28,7 @@ namespace ArmyBuilder
         /// Send Army to battle the evil monster
         /// </summary>
         /// <param name="army"></param>
-        private static void SendArmyToDoBattle(List<BaseSoldier> army)
+        private static void SendArmyToDoBattle(List<ISoldier> army)
         {
             var numberGenerator = new Random();
             var monsterHitPoints = numberGenerator.Next(50, 100);
@@ -124,7 +124,7 @@ namespace ArmyBuilder
         /// </summary>
         /// <param name="soldier">Pass in a Soldier Object</param>
         /// <returns>Magic Defense Bonus as an integer</returns>
-        private static int CheckForMagicDefenseBonus(BaseSoldier soldier)
+        private static int CheckForMagicDefenseBonus(ISoldier soldier)
         {
             var bonusDefense = 0;
 
@@ -145,7 +145,7 @@ namespace ArmyBuilder
         /// </summary>
         /// <param name="soldier">Pass in a Soldier Object</param>
         /// <returns>Attack Defense Bonus as an integer</returns>
-        private static int CheckForAttackDefenseBonus(BaseSoldier soldier)
+        private static int CheckForAttackDefenseBonus(ISoldier soldier)
         {
             var bonusDefense = 0;
 
@@ -166,7 +166,7 @@ namespace ArmyBuilder
         /// </summary>
         /// <param name="soldier"></param>
         /// <returns></returns>
-        private static int CheckForBonusMagicDamage(BaseSoldier soldier)
+        private static int CheckForBonusMagicDamage(ISoldier soldier)
         {
             var bonusDamage = 0;
             var race = soldier.Race;
@@ -205,7 +205,7 @@ namespace ArmyBuilder
         /// </summary>
         /// <param name="soldier"></param>
         /// <returns></returns>
-        private static int CheckForBonusAttackDamage(BaseSoldier soldier)
+        private static int CheckForBonusAttackDamage(ISoldier soldier)
         {
             var bonusMagicDamage = 0;
             var race = soldier.Race;
@@ -246,9 +246,9 @@ namespace ArmyBuilder
             return bonusMagicDamage;
         }
 
-        private static List<BaseSoldier> MarshallArmy(IEnumerable<BaseSoldier> recruits)
+        private static List<ISoldier> MarshallArmy(IEnumerable<ISoldier> recruits)
         {
-            var army = new List<BaseSoldier>();
+            var army = new List<ISoldier>();
             var maxGeneralCount = 1;
             var maxCaptainCount = 5;
 
@@ -313,10 +313,10 @@ namespace ArmyBuilder
             return army;
         }
 
-        private static List<BaseSoldier> CreateRecruits()
+        private static List<ISoldier> CreateRecruits()
         {
             var createMoreSoldiers = true;
-            var recruits = new List<BaseSoldier>();
+            var recruits = new List<ISoldier>();
             while (createMoreSoldiers)
             {
                 var soldier = CreateSoldier();
@@ -332,7 +332,7 @@ namespace ArmyBuilder
             return recruits;
         }
 
-        private static BaseSoldier CreateSoldier()
+        private static ISoldier CreateSoldier()
         {
             var soldierName = PickSoldierName();
             
@@ -362,7 +362,7 @@ namespace ArmyBuilder
             return soldier;
         }
 
-        private static void DisplayNewSoldier(BaseSoldier soldier)
+        private static void DisplayNewSoldier(ISoldier soldier)
         {
             Console.Clear();
 

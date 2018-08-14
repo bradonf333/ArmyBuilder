@@ -10,6 +10,20 @@ namespace ArmyBuilder.Tests
     public class MinotaurTests
     {
         [Test]
+        public void Minotaur_WhenCreated_WithDefaults_ShouldHaveSoldierClassificationOfNone()
+        {
+            // Arrange
+            var sut = new Minotaur();
+
+            // Act
+            var soldierClass = sut.Classification;
+            Console.WriteLine($"Soldier Classification: {soldierClass}");
+
+            // Assert
+            Assert.That(soldierClass, Is.EqualTo(ClassificationEnum.None));
+        }
+
+        [Test]
         public void Minotaur_WhenCreated_WithDefaults_ShouldGetBonusAttackStrength_ToEqualTwelve()
         {
             // Arrange
@@ -46,7 +60,7 @@ namespace ArmyBuilder.Tests
             Console.WriteLine($"Soldier Type: {soldierType}");
 
             // Assert
-            Assert.That(soldierType, Is.EqualTo("Minotaur"));
+            Assert.That(soldierType, Is.EqualTo(SoldierType.Minotaur));
         }
     }
 }

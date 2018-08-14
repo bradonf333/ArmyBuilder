@@ -13,7 +13,7 @@ namespace ArmyBuilder.Soldiers
 
     public enum SoldierType
     {
-        Lizardman, Human, Elf, Minotaur, BasicSoldier
+        BasicSoldier, Lizardman, Human, Elf, Minotaur
     }
 
     public enum RankEnum

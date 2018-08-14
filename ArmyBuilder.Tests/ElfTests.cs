@@ -12,6 +12,19 @@ namespace ArmyBuilder.Tests
     [TestFixture]
     public class ElfTests
     {
+        [Test]
+        public void Elf_WhenCreated_WithDefaults_ShouldHaveSoldierClassificationOfNone()
+        {
+            // Arrange
+            var sut = new Elf();
+
+            // Act
+            var soldierClass = sut.Classification;
+            Console.WriteLine($"Soldier Classification: {soldierClass}");
+
+            // Assert
+            Assert.That(soldierClass, Is.EqualTo(ClassificationEnum.None));
+        }
 
         [Test]
         public void Elf_WhenCreated_WithDefaults_ShouldGetBonusSorceryStrengthOfTen()

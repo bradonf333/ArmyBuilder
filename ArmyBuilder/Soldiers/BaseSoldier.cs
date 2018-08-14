@@ -14,6 +14,7 @@ namespace ArmyBuilder.Soldiers
     {
         public BaseSoldier()
         {
+            SoldierType = SoldierType.BasicSoldier;
             SoldierStats = new SoldierStats();
             AssignBaseStats();
 
