@@ -43,7 +43,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Army.cs" />
+    <Compile Include="AttackType.cs" />
+    <Compile Include="Monster.cs" />
     <Compile Include="Soldiers\BaseSoldier.cs" />
+    <Compile Include="Soldiers\ISpecificBonus.cs" />
+    <Compile Include="Soldiers\SoldierBuilder.cs" />
     <Compile Include="Soldiers\SoldierEnums.cs" />
     <Compile Include="Soldiers\Elf.cs" />
     <Compile Include="Soldiers\Human.cs" />

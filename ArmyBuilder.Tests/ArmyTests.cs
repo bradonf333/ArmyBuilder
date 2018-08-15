@@ -16,15 +16,14 @@ namespace ArmyBuilder.Tests
         {
             // Arrange
             const int expectedGeneralCount = 1;
-            var recruits = AddManyMinotaurPrivates();
+            var recruits = AddFiveMinotaurPrivates();
             recruits.Add(AddMinotaurGeneral());
             recruits.Add(AddMinotaurGeneral());
             recruits.Add(AddMinotaurGeneral());
             recruits.Add(AddMinotaurGeneral());
-            var sut = new Army(recruits);
 
             // Act
-            sut.DetermineRanks();
+            var sut = new Army(recruits);
             var actualGeneralCount = sut.GeneralCount;
 
             // Assert
@@ -32,12 +31,47 @@ namespace ArmyBuilder.Tests
         }
 
         [Test]
+        public void Army_WhenTenPrivatesAdded_CanHaveUpTo_TwoSergeants()
+        {
+            // Arrange
+            const int expectedSergeantCount = 2;
+            var recruits = AddFiveMinotaurPrivates();
+            recruits.AddRange(AddFiveMinotaurPrivates());
+
+            // Act
+            var sut = new Army(recruits);
+            var actualMaxSergeantCount = sut.MaxSergeantCount;
+
+            // Assert
+            Assert.That(actualMaxSergeantCount, Is.EqualTo(expectedSergeantCount));
+        }
+
+        [Test]
+        public void Army_WhenTenPrivatesAdded_WithThreeSergeants_OneSergeantShouldBeDemoted_ToPrivate()
+        {
+            // Arrange
+            const int expectedSergeantCount = 2;
+            var recruits = AddFiveMinotaurPrivates();
+            recruits.AddRange(AddFiveMinotaurPrivates());
+            recruits.Add(CreateMinotaur(ClassificationEnum.Knight, RankEnum.Sergeant));
+            recruits.Add(CreateMinotaur(ClassificationEnum.Knight, RankEnum.Sergeant));
+            recruits.Add(CreateMinotaur(ClassificationEnum.Knight, RankEnum.Sergeant));
+
+            // Act
+            var sut = new Army(recruits);
+            var actualSergeantCount = sut.SergeantCount;
+
+            // Assert
+            Assert.That(actualSergeantCount, Is.EqualTo(expectedSergeantCount));
+        }
+
+        [Test]
         public void Army_WhenNoGeneralsAdded_ShouldFunctionAsNormal()
         {
             // Arrange
             const int expectedGeneralCount = 0;
-            var recruits = AddManyMinotaurPrivates();
-            recruits.AddRange(AddManyMinotaurPrivates());
+            var recruits = AddFiveMinotaurPrivates();
+            recruits.AddRange(AddFiveMinotaurPrivates());
             var sut = new Army(recruits);
 
             // Act
@@ -53,7 +87,7 @@ namespace ArmyBuilder.Tests
         {
             // Arrange
             const int expectedCaptainCount = 5;
-            var recruits = AddManyMinotaurPrivates();
+            var recruits = AddFiveMinotaurPrivates();
             recruits.Add(CreateMinotaur(ClassificationEnum.Wizard, RankEnum.Captain));
             recruits.Add(CreateMinotaur(ClassificationEnum.Wizard, RankEnum.Captain));
             recruits.Add(CreateMinotaur(ClassificationEnum.Wizard, RankEnum.Captain));
@@ -71,7 +105,7 @@ namespace ArmyBuilder.Tests
             Assert.That(actualCaptainCount, Is.EqualTo(expectedCaptainCount));
         }
 
-        private List<ISoldier> AddManyMinotaurPrivates()
+        private List<ISoldier> AddFiveMinotaurPrivates()
         {
             var recruits = new List<ISoldier>();
             recruits.Add(CreateMinotaur(ClassificationEnum.Knight, RankEnum.Private));

@@ -6,16 +6,15 @@ using System.Threading.Tasks;
 
 namespace ArmyBuilder.Soldiers
 {
-    public class Minotaur : BaseSoldier
+    public class Minotaur : BaseSoldier, ISpecificBonus
     {
         public Minotaur()
         {
             SoldierType = SoldierType.Minotaur;
-            MinotaurStatModifiers();
+            ApplySpecificBonuses();
         }
 
-        // How to handle these modifiers? Maybe how Human is doing it?
-        private void MinotaurStatModifiers()
+        public void ApplySpecificBonuses()
         {
             SoldierStats.Defense += 5;
             SoldierStats.AttackStrength += 10;

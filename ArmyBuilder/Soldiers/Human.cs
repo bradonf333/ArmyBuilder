@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ArmyBuilder.Soldiers
 {
-    public class Human : BaseSoldier
+    public class Human : BaseSoldier, ISpecificBonus
     {
         /// <summary>
         /// Default Constructor leaves Classification as the default: BasicSoldier which doesn't give many stat modifiers.
@@ -14,6 +14,7 @@ namespace ArmyBuilder.Soldiers
         public Human()
         {
             SoldierType = SoldierType.Human;
+            ApplySpecificBonuses();
         }
 
         /// <summary>
@@ -24,10 +25,10 @@ namespace ArmyBuilder.Soldiers
         {
             SoldierType = SoldierType.Human;
             Classification = classificationEnum;
-            HumanStatModifiers();
+            ApplySpecificBonuses();
         }
 
-        private void HumanStatModifiers()
+        public void ApplySpecificBonuses()
         {
             if (Classification == ClassificationEnum.Cleric)
             {

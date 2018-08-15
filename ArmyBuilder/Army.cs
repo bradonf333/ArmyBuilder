@@ -17,22 +17,27 @@ namespace ArmyBuilder
 
         private int _maxGeneralCount = 1;
         private int _maxCaptainCount = 5;
+        private const int PrivatesNeededPerSergeant = 5;
 
-        public int MaxGeneralCount 
+        // By default Allow 1 Sergeant
+        private int _maxSergeantCount = 1;
+
+        public int MaxGeneralCount
         {
             get { return _maxGeneralCount; }
             private set { _maxGeneralCount = 1; }
         }
 
-        public int MaxCaptainCount 
+        public int MaxCaptainCount
         {
             get { return _maxCaptainCount; }
             private set { _maxCaptainCount = 5; }
         }
 
-        public Army()
+        public int MaxSergeantCount
         {
-            Recruits = new List<ISoldier>();
+            get { return _maxSergeantCount; }
+            private set { _maxSergeantCount = PrivateCount / PrivatesNeededPerSergeant; }
         }
 
         /// <summary>
@@ -50,10 +55,61 @@ namespace ArmyBuilder
         {
             CountRanks();
 
-            if (GeneralCount > 1 || CaptainCount > 5)
+            if (RankRulesBroken())
             {
                 DemoteRecruits();
             }
+        }
+
+        public void Battle(Monster monster)
+        {
+            Attack(monster);
+            Defend(monster);
+
+            var soldierCount = Recruits.Count(r => !r.IsDead);
+            var soldierCasualties = Recruits.Count(r => r.IsDead);
+            DisplayBattleReports(soldierCount, soldierCasualties, monster.HitPoints);
+        }
+
+        private void Attack(Monster monster)
+        {
+            foreach (var soldier in Recruits)
+            {
+                if (monster.HitPoints > 0)
+                {
+                    monster.Defend(soldier.Attack());
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+
+        public void Defend(Monster monster)
+        {
+            var liveSoldiers = Recruits.Where(r => !r.IsDead);
+
+            foreach (var soldier in liveSoldiers)
+            {
+                soldier.Defend(monster.AttackType, monster.Attack());
+            }
+        }
+
+        private string DisplayBattleReports(int soldierCasualties, int soldierCount, int monsterHitPoints)
+        {
+            var messageBuilder = new StringBuilder();
+            messageBuilder.Append("Your Army has defended against the Monster. Here is the battle report:");
+            messageBuilder.Append($"Casualties: {soldierCasualties}\nRemaining Soldiers: {soldierCount}");
+            messageBuilder.Append($"Monster HitPoints: {monsterHitPoints}");
+            return messageBuilder.ToString();
+        }
+
+        private bool RankRulesBroken()
+        {
+            return GeneralCount > _maxGeneralCount
+                   || CaptainCount > _maxCaptainCount
+                   || SergeantCount > MaxSergeantCount;
         }
 
         private void CountRanks()
@@ -62,44 +118,64 @@ namespace ArmyBuilder
             CaptainCount = Recruits.Count(s => s.Rank == RankEnum.Captain);
             SergeantCount = Recruits.Count(s => s.Rank == RankEnum.Sergeant);
             PrivateCount = Recruits.Count(s => s.Rank == RankEnum.Private);
+            MaxSergeantCount = PrivateCount / PrivatesNeededPerSergeant;
         }
 
         private void DemoteRecruits()
         {
             if (GeneralCount > MaxGeneralCount)
             {
-                for (int i = GeneralCount; i > MaxGeneralCount; i--)
-                {
-                    var generalToDemote = Recruits.First(s => s.Rank == RankEnum.General);
-                    generalToDemote.Rank = RankEnum.Captain; 
-                }
+                DemoteNecessaryGeneralsToCaptains();
+                CountRanks();
             }
-            
-            CountRanks();
 
             if (CaptainCount > MaxCaptainCount)
             {
-                for (int i = CaptainCount; i > MaxCaptainCount; i--)
-                {
-                    var captainToDemote = Recruits.First(s => s.Rank == RankEnum.Captain);
-                    captainToDemote.Rank = RankEnum.Private;
-                }
+                DemoteNecessaryCaptainsToPrivates();
+                CountRanks();
             }
 
-            CountRanks();
+            if (SergeantCount > MaxSergeantCount)
+            {
+                DemoteNecessarySergeantsToPrivates();
+                CountRanks();
+            }
         }
 
-        private void DemoteCaptains()
+        private void DemoteNecessaryCaptainsToPrivates()
         {
-            for (int i = 0; i < CaptainCount - 1; i++)
+            Console.WriteLine($"You can't have more than {MaxCaptainCount} Captains!");
+
+            for (int i = CaptainCount; i > MaxCaptainCount; i--)
             {
                 var captainToDemote = Recruits.First(s => s.Rank == RankEnum.Captain);
                 captainToDemote.Rank = RankEnum.Private;
+                Console.WriteLine($"{captainToDemote.Name} has been demoted from {RankEnum.Captain} to {RankEnum.Private}");
             }
-
-            DetermineRanks();
         }
 
+        private void DemoteNecessaryGeneralsToCaptains()
+        {
+            Console.WriteLine($"You can't have more than {MaxGeneralCount} General!");
 
+            for (int i = GeneralCount; i > MaxGeneralCount; i--)
+            {
+                var generalToDemote = Recruits.First(s => s.Rank == RankEnum.General);
+                generalToDemote.Rank = RankEnum.Captain;
+                Console.WriteLine($"{generalToDemote.Name} has been demoted from {RankEnum.General} to {RankEnum.Captain}");
+            }
+        }
+
+        private void DemoteNecessarySergeantsToPrivates()
+        {
+            Console.WriteLine($"You can't have more than {MaxSergeantCount} Sergeant(s)!");
+
+            for (int i = SergeantCount; i > MaxSergeantCount; i--)
+            {
+                var sergeantToDemote = Recruits.First(s => s.Rank == RankEnum.Sergeant);
+                sergeantToDemote.Rank = RankEnum.Private;
+                Console.WriteLine($"{sergeantToDemote.Name} has been demoted from {RankEnum.Sergeant} to {RankEnum.Private}");
+            }
+        }
     }
 }
