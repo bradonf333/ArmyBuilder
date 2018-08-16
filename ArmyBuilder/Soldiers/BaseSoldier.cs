@@ -7,13 +7,13 @@ namespace ArmyBuilder.Soldiers
     /// All soldiers need a classification to be created successfully. If this is not provided,
     /// a basic soldier will be created instead which has no classification.
     /// </summary>
-    public class BaseSoldier : ISoldier
+    public class BaseSoldier : ISoldier, IBonusRules
     {
         public string Name { get; set; }
         public DateTime Birthdate { get; set; }
         public string Race { get; set; }
-        public ClassificationEnum Classification { get; set; }
-        public RankEnum Rank { get; set; }
+        public Class Classification { get; set; }
+        public Rank Rank { get; set; }
         public SoldierStats SoldierStats { get; set; }
         public SoldierType SoldierType { get; set; }
         public bool IsDead { get; set; }
@@ -27,8 +27,8 @@ namespace ArmyBuilder.Soldiers
             SoldierStats = new SoldierStats();
             AssignBaseStats();
 
-            Classification = ClassificationEnum.None;
-            Rank = RankEnum.Private;
+            Classification = Class.None;
+            Rank = Rank.Private;
         }
 
         public void AssignBaseStats()
@@ -86,7 +86,8 @@ namespace ArmyBuilder.Soldiers
         {
             if (attackType == AttackType.Physical)
             {
-                SoldierStats.HitPoints -= (SoldierStats.Defense + SoldierStats.ArmorClass) - attackDamage;
+                // Need to work on this logic, it's not right
+                SoldierStats.HitPoints -= attackDamage - (SoldierStats.Defense + SoldierStats.ArmorClass);
             }
             else
             {
@@ -116,7 +117,7 @@ namespace ArmyBuilder.Soldiers
         private void AssignDefenseBonus()
         {
             // KNIGHTS TAKE 5 LESS ATTACK DAMAGE
-            if (Classification == ClassificationEnum.Knight)
+            if (Classification == Class.Knight)
             {
                 SoldierStats.Defense += 5;
             }
@@ -124,7 +125,7 @@ namespace ArmyBuilder.Soldiers
 
         private void AssignAttackBonus()
         {
-            if (Classification == ClassificationEnum.Knight)
+            if (Classification == Class.Knight)
             {
                 SoldierStats.AttackStrength += 10;
             }
@@ -135,7 +136,7 @@ namespace ArmyBuilder.Soldiers
             var soldierType = GetType();
 
             // WIZARDS ARE MAGICAL!!
-            if (Classification == ClassificationEnum.Wizard)
+            if (Classification == Class.Wizard)
             {
                 SoldierStats.SorceryStrength += 10;
             }
@@ -146,8 +147,8 @@ namespace ArmyBuilder.Soldiers
             var soldierType = this.GetType();
 
             // KNIGHTS ARE BEEFY!! THIEVES ARE DODGY!!
-            if (Classification == ClassificationEnum.Thief
-                || Classification == ClassificationEnum.Knight)
+            if (Classification == Class.Thief
+                || Classification == Class.Knight)
             {
                 SoldierStats.ArmorClass += 10;
             }
@@ -156,6 +157,10 @@ namespace ArmyBuilder.Soldiers
         private void AssignMagicResistanceBonus()
         {
             SoldierStats.MagicResistance = 0;
+        }
+
+        public virtual void ApplyBonuses()
+        {
         }
     }
 }

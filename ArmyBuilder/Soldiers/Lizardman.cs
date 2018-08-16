@@ -1,14 +1,14 @@
 ﻿namespace ArmyBuilder.Soldiers
 {
-    public class Lizardman : BaseSoldier, ISpecificBonus
+    public class Lizardman : BaseSoldier
     {
         public Lizardman()
         {
             SoldierType = SoldierType.Lizardman;
-            ApplySpecificBonuses();
+            ApplyBonuses();
         }
 
-        public void ApplySpecificBonuses()
+        public override void ApplyBonuses()
         {
             SoldierStats.AttackStrength += 5;
             SoldierStats.MagicResistance += 10;

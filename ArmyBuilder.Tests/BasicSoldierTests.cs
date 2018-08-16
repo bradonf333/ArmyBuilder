@@ -32,7 +32,7 @@ namespace ArmyBuilder.Tests
             Console.WriteLine($"Basic Soldier Classification: {classification}");
 
             // Assert
-            Assert.That(classification, Is.EqualTo(ClassificationEnum.None));
+            Assert.That(classification, Is.EqualTo(Class.None));
         }
 
         [Test]
@@ -60,7 +60,7 @@ namespace ArmyBuilder.Tests
             Console.WriteLine($"Basic Soldier Rank: {soldierRank}");
 
             // Assert
-            Assert.That(soldierRank, Is.EqualTo(RankEnum.Private));
+            Assert.That(soldierRank, Is.EqualTo(Rank.Private));
         }
 
         [Test]

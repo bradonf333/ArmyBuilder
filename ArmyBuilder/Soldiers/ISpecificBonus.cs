@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace ArmyBuilder.Soldiers
 {
-    public interface ISpecificBonus
+    public interface IBonusRules
     {
-        void ApplySpecificBonuses();
+        void ApplyBonuses();
     }
 }

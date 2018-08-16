@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ArmyBuilder.Soldiers
 {
-    public class Human : BaseSoldier, ISpecificBonus
+    public class Human : BaseSoldier
     {
         /// <summary>
         /// Default Constructor leaves Classification as the default: BasicSoldier which doesn't give many stat modifiers.
@@ -14,23 +14,23 @@ namespace ArmyBuilder.Soldiers
         public Human()
         {
             SoldierType = SoldierType.Human;
-            ApplySpecificBonuses();
+            ApplyBonuses();
         }
 
         /// <summary>
-        /// Pass in the Classification which affects the Stat Modifiers
+        /// Pass in the Class which affects the Stat Modifiers
         /// </summary>
-        /// <param name="classificationEnum"></param>
-        public Human(ClassificationEnum classificationEnum)
+        /// <param name="classEnum"></param>
+        public Human(Class classEnum)
         {
             SoldierType = SoldierType.Human;
-            Classification = classificationEnum;
-            ApplySpecificBonuses();
+            Classification = classEnum;
+            ApplyBonuses();
         }
 
-        public void ApplySpecificBonuses()
+        public override void ApplyBonuses()
         {
-            if (Classification == ClassificationEnum.Cleric)
+            if (Classification == Class.Cleric)
             {
                 SoldierStats.AttackStrength += 3;
                 SoldierStats.SorceryStrength += 3;

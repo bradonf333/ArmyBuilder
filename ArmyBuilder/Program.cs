@@ -19,9 +19,8 @@ namespace ArmyBuilder
             var recruits = CreateRecruits();
             var army = new Army(recruits); // New!! Dependency, since its in the Program class might be ok?
             var monster = new Monster(); // New!! Dependency, since its in the Program class might be ok?
-            army.Battle(monster);
 
-            //SendArmyToDoBattle(army);
+            Console.WriteLine(army.Battle(monster));
 
             Console.ReadKey();
         }
@@ -181,19 +180,19 @@ namespace ArmyBuilder
             var classification = soldier.Classification;
 
             // MINOTAUR GENERALS DO 15 EXTRA DAMAGE
-            if (race == "Minotaur" && rank == RankEnum.General)
+            if (race == "Minotaur" && rank == Rank.General)
             {
                 bonusDamage += 10;
             }
 
             // LIZARDMEN PRIVATES DO 1 EXTRA DAMAGE
-            if (race == "Lizardman" && rank == RankEnum.Private)
+            if (race == "Lizardman" && rank == Rank.Private)
             {
                 bonusDamage += 1;
             }
 
             // HUMAN KNIGHTS DO 5 EXTRA DAMAGE
-            if (race == "Human" && classification == ClassificationEnum.Knight)
+            if (race == "Human" && classification == Class.Knight)
             {
                 bonusDamage += 5;
             }
@@ -221,19 +220,19 @@ namespace ArmyBuilder
             var birthdate = soldier.Birthdate;
 
             // ELF GENERALS DO 15 EXTRA MAGIC DAMAGE
-            if (race == "Elf" && rank == RankEnum.General)
+            if (race == "Elf" && rank == Rank.General)
             {
                 bonusMagicDamage += 15;
             }
 
             // LIZARDMEN CAPTAINS DO 10 EXTRA MAGIC DAMAGE
-            if (race == "Lizardman" && rank == RankEnum.Captain)
+            if (race == "Lizardman" && rank == Rank.Captain)
             {
                 bonusMagicDamage += 10;
             }
 
             // HUMAN WIZARDS DO 3 EXTRA DAMAGE
-            if (race == "Human" && classification == ClassificationEnum.Wizard)
+            if (race == "Human" && classification == Class.Wizard)
             {
                 bonusMagicDamage += 3;
             }

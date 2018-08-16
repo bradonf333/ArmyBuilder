@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ArmyBuilder.Soldiers
 {
@@ -30,7 +26,6 @@ namespace ArmyBuilder.Soldiers
             return soldier;
         }
 
-        
 
         private static BaseSoldier BuildSoldier(SoldierType soldierType)
         {
@@ -114,7 +109,7 @@ namespace ArmyBuilder.Soldiers
             return Console.ReadLine();
         }
 
-        public static RankEnum PickSoldierRank()
+        public static Rank PickSoldierRank()
         {
             Console.Clear();
             Console.WriteLine($"\nNext, pick a rank for your soldier!");
@@ -130,29 +125,29 @@ namespace ArmyBuilder.Soldiers
                 var input = Console.ReadKey();
                 if (input.Key == ConsoleKey.P)
                 {
-                    return RankEnum.Private;
+                    return Rank.Private;
                 }
 
                 if (input.Key == ConsoleKey.S)
                 {
-                    return RankEnum.Sergeant;
+                    return Rank.Sergeant;
                 }
 
                 if (input.Key == ConsoleKey.C)
                 {
-                    return RankEnum.Captain;
+                    return Rank.Captain;
                 }
 
                 if (input.Key == ConsoleKey.G)
                 {
-                    return RankEnum.General;
+                    return Rank.General;
                 }
             }
 
-            return RankEnum.Private;
+            return Rank.Private;
         }
 
-        public static ClassificationEnum PickSoldierClassification()
+        public static Class PickSoldierClassification()
         {
             Console.Clear();
             Console.WriteLine($"\nNext, pick a class for your soldier!");
@@ -167,26 +162,26 @@ namespace ArmyBuilder.Soldiers
                 var input = Console.ReadKey();
                 if (input.Key == ConsoleKey.K)
                 {
-                    return ClassificationEnum.Knight;
+                    return Class.Knight;
                 }
 
                 if (input.Key == ConsoleKey.W)
                 {
-                    return ClassificationEnum.Wizard;
+                    return Class.Wizard;
                 }
 
                 if (input.Key == ConsoleKey.C)
                 {
-                    return ClassificationEnum.Cleric;
+                    return Class.Cleric;
                 }
 
                 if (input.Key == ConsoleKey.T)
                 {
-                    return ClassificationEnum.Thief;
+                    return Class.Thief;
                 }
             }
 
-            return ClassificationEnum.None;
+            return Class.None;
         }
     }
 }

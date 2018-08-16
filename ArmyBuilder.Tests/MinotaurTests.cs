@@ -20,7 +20,7 @@ namespace ArmyBuilder.Tests
             Console.WriteLine($"Soldier Classification: {soldierClass}");
 
             // Assert
-            Assert.That(soldierClass, Is.EqualTo(ClassificationEnum.None));
+            Assert.That(soldierClass, Is.EqualTo(Class.None));
         }
 
         [Test]

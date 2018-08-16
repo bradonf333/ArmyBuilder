@@ -6,17 +6,12 @@ using System.Threading.Tasks;
 
 namespace ArmyBuilder.Soldiers
 {
-    public class Elf : BaseSoldier, ISpecificBonus
+    public class Elf : BaseSoldier
     {
         public Elf()
         {
             SoldierType = SoldierType.Elf;
             SoldierStats.SorceryStrength += 10;
-        }
-
-        public void ApplySpecificBonuses()
-        {
-            
         }
     }
 }

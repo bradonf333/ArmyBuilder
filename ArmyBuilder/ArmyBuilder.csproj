@@ -44,7 +44,8 @@
   <ItemGroup>
     <Compile Include="Army.cs" />
     <Compile Include="AttackType.cs" />
-    <Compile Include="Monster.cs" />
+    <Compile Include="Enemies\IEnemy.cs" />
+    <Compile Include="Enemies\Monster.cs" />
     <Compile Include="Soldiers\BaseSoldier.cs" />
     <Compile Include="Soldiers\ISpecificBonus.cs" />
     <Compile Include="Soldiers\SoldierBuilder.cs" />

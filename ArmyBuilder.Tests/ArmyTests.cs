@@ -53,9 +53,9 @@ namespace ArmyBuilder.Tests
             const int expectedSergeantCount = 2;
             var recruits = AddFiveMinotaurPrivates();
             recruits.AddRange(AddFiveMinotaurPrivates());
-            recruits.Add(CreateMinotaur(ClassificationEnum.Knight, RankEnum.Sergeant));
-            recruits.Add(CreateMinotaur(ClassificationEnum.Knight, RankEnum.Sergeant));
-            recruits.Add(CreateMinotaur(ClassificationEnum.Knight, RankEnum.Sergeant));
+            recruits.Add(CreateMinotaur(Class.Knight, Rank.Sergeant));
+            recruits.Add(CreateMinotaur(Class.Knight, Rank.Sergeant));
+            recruits.Add(CreateMinotaur(Class.Knight, Rank.Sergeant));
 
             // Act
             var sut = new Army(recruits);
@@ -88,10 +88,10 @@ namespace ArmyBuilder.Tests
             // Arrange
             const int expectedCaptainCount = 5;
             var recruits = AddFiveMinotaurPrivates();
-            recruits.Add(CreateMinotaur(ClassificationEnum.Wizard, RankEnum.Captain));
-            recruits.Add(CreateMinotaur(ClassificationEnum.Wizard, RankEnum.Captain));
-            recruits.Add(CreateMinotaur(ClassificationEnum.Wizard, RankEnum.Captain));
-            recruits.Add(CreateMinotaur(ClassificationEnum.Wizard, RankEnum.Captain));
+            recruits.Add(CreateMinotaur(Class.Wizard, Rank.Captain));
+            recruits.Add(CreateMinotaur(Class.Wizard, Rank.Captain));
+            recruits.Add(CreateMinotaur(Class.Wizard, Rank.Captain));
+            recruits.Add(CreateMinotaur(Class.Wizard, Rank.Captain));
             recruits.Add(AddMinotaurGeneral());
             recruits.Add(AddMinotaurGeneral());
             recruits.Add(AddMinotaurGeneral());
@@ -108,16 +108,16 @@ namespace ArmyBuilder.Tests
         private List<ISoldier> AddFiveMinotaurPrivates()
         {
             var recruits = new List<ISoldier>();
-            recruits.Add(CreateMinotaur(ClassificationEnum.Knight, RankEnum.Private));
-            recruits.Add(CreateMinotaur(ClassificationEnum.Thief, RankEnum.Private));
-            recruits.Add(CreateMinotaur(ClassificationEnum.Cleric, RankEnum.Private));
-            recruits.Add(CreateMinotaur(ClassificationEnum.Wizard, RankEnum.Private));
-            recruits.Add(CreateMinotaur(ClassificationEnum.Knight, RankEnum.Private));
+            recruits.Add(CreateMinotaur(Class.Knight, Rank.Private));
+            recruits.Add(CreateMinotaur(Class.Thief, Rank.Private));
+            recruits.Add(CreateMinotaur(Class.Cleric, Rank.Private));
+            recruits.Add(CreateMinotaur(Class.Wizard, Rank.Private));
+            recruits.Add(CreateMinotaur(Class.Knight, Rank.Private));
 
             return recruits;
         }
 
-        private ISoldier CreateMinotaur(ClassificationEnum classificationEnum, RankEnum rank)
+        private ISoldier CreateMinotaur(Class classificationEnum, Rank rank)
         {
             var rand = new Random();
 
@@ -145,8 +145,8 @@ namespace ArmyBuilder.Tests
             {
                 Name = "Bradon",
                 Birthdate = birthday,
-                Classification = ClassificationEnum.Knight,
-                Rank = RankEnum.General,
+                Classification = Class.Knight,
+                Rank = Rank.General,
                 SoldierType = SoldierType.Minotaur
             };
         }

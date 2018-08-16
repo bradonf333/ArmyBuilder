@@ -20,7 +20,7 @@ namespace ArmyBuilder.Tests
             Console.WriteLine($"Soldier Classification: {soldierClass}");
 
             // Assert
-            Assert.That(soldierClass, Is.EqualTo(ClassificationEnum.None));
+            Assert.That(soldierClass, Is.EqualTo(Class.None));
         }
 
         [Test]
@@ -41,7 +41,7 @@ namespace ArmyBuilder.Tests
         public void Human_WhenTypeOfIsEqualToCleric_ShouldGetBonusAttackToEqualFive()
         {
             // Arrange
-            var sut = new Human(ClassificationEnum.Cleric);
+            var sut = new Human(Class.Cleric);
 
             // Act
             sut.AssignStatModifiers();
