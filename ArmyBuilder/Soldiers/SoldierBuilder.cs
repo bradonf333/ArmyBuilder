@@ -1,10 +1,18 @@
 ﻿using System;
+using ArmyBuilder.Writers;
 
 namespace ArmyBuilder.Soldiers
 {
     public class SoldierBuilder
     {
-        public static ISoldier CreateSoldier()
+        private readonly IWriter _writer;
+
+        public SoldierBuilder(IWriter writer)
+        {
+            _writer = writer;
+        }
+
+        public ISoldier CreateSoldier()
         {
             var soldierName = PickSoldierName();
             var hitPoints = PickSoldierHitPoints(); // Probably get rid of this in future and have it decided by the other info
@@ -21,13 +29,12 @@ namespace ArmyBuilder.Soldiers
             soldier.SoldierStats.HitPoints = hitPoints;
 
             soldier.AssignStatModifiers();
-            Console.Clear();
+            _writer.ClearMessage();
 
             return soldier;
         }
 
-
-        private static BaseSoldier BuildSoldier(SoldierType soldierType)
+        private BaseSoldier BuildSoldier(SoldierType soldierType)
         {
             if (soldierType == SoldierType.Lizardman)
             {
@@ -49,17 +56,17 @@ namespace ArmyBuilder.Soldiers
             return new BaseSoldier();
         }
 
-        private static SoldierType PickSoldierType()
+        private SoldierType PickSoldierType()
         {
-            Console.Clear();
+            _writer.ClearMessage();
 
             var soldierTypes = Enum.GetNames(typeof(SoldierType));
-            Console.WriteLine("What type of soldier do you want to create?");
+            _writer.WriteMessage("What type of soldier do you want to create?");
 
-            WriteSoldierTypes(soldierTypes);
+            DisplaySoldierTypes(soldierTypes);
 
             var input = Console.ReadKey();
-            Console.WriteLine(input.Key);
+            _writer.WriteMessage(input.Key.ToString());
             switch (input.Key)
             {
                 case ConsoleKey.NumPad1:
@@ -79,48 +86,48 @@ namespace ArmyBuilder.Soldiers
             }
         }
 
-        private static void WriteSoldierTypes(string[] soldierTypes)
+        private void DisplaySoldierTypes(string[] soldierTypes)
         {
             for (int i = 0; i < soldierTypes.Length; i++)
             {
-                Console.WriteLine($"{i} : {soldierTypes[i]}");
+                _writer.WriteMessage($"{i} : {soldierTypes[i]}");
             }
         }
 
-        public static DateTime PickSoldierBirthdate()
+        public DateTime PickSoldierBirthdate()
         {
-            Console.Clear();
-            Console.WriteLine($"\nWhat is your soldier's birthdate? Use format MM/DD/YYYY.");
+            _writer.ClearMessage();
+            _writer.WriteMessage($"\nWhat is your soldier's birthdate? Use format MM/DD/YYYY.");
             var birthdate = Console.ReadLine();
-            return String.IsNullOrWhiteSpace(birthdate) ? DateTime.Now : DateTime.Parse(birthdate);
+            return string.IsNullOrWhiteSpace(birthdate) ? DateTime.Now : DateTime.Parse(birthdate);
         }
 
-        public static int PickSoldierHitPoints()
+        public int PickSoldierHitPoints()
         {
-            Console.Clear();
-            Console.WriteLine($"\nHow tough is your soldier? Pick a number between 1 (weak) and 10 (strong).");
+            _writer.ClearMessage();
+            _writer.WriteMessage($"\nHow tough is your soldier? Pick a number between 1 (weak) and 10 (strong).");
             return Convert.ToInt32(Console.ReadLine());
         }
 
-        public static string PickSoldierName()
+        public string PickSoldierName()
         {
-            Console.Clear();
-            Console.WriteLine("\nWhat is the name of the solider you want to create?");
+            _writer.ClearMessage();
+            _writer.WriteMessage("\nWhat is the name of the solider you want to create?");
             return Console.ReadLine();
         }
 
-        public static Rank PickSoldierRank()
+        public Rank PickSoldierRank()
         {
-            Console.Clear();
-            Console.WriteLine($"\nNext, pick a rank for your soldier!");
+            _writer.ClearMessage();
+            _writer.WriteMessage($"\nNext, pick a rank for your soldier!");
 
             var canContinueWithoutRank = false;
             while (!canContinueWithoutRank)
             {
-                Console.WriteLine("Press P for Private.");
-                Console.WriteLine("Press S for Sergeant.");
-                Console.WriteLine("Press C for Captain.");
-                Console.WriteLine("Press G for General.");
+                _writer.WriteMessage("Press P for Private.");
+                _writer.WriteMessage("Press S for Sergeant.");
+                _writer.WriteMessage("Press C for Captain.");
+                _writer.WriteMessage("Press G for General.");
 
                 var input = Console.ReadKey();
                 if (input.Key == ConsoleKey.P)
@@ -147,17 +154,17 @@ namespace ArmyBuilder.Soldiers
             return Rank.Private;
         }
 
-        public static Class PickSoldierClassification()
+        public Class PickSoldierClassification()
         {
-            Console.Clear();
-            Console.WriteLine($"\nNext, pick a class for your soldier!");
+            _writer.ClearMessage();
+            _writer.WriteMessage($"\nNext, pick a class for your soldier!");
             var canContinueWithoutClassification = false;
             while (!canContinueWithoutClassification)
             {
-                Console.WriteLine("Press K for Knight.");
-                Console.WriteLine("Press W for Wizard.");
-                Console.WriteLine("Press C for Cleric.");
-                Console.WriteLine("Press T for Thief.");
+                _writer.WriteMessage("Press K for Knight.");
+                _writer.WriteMessage("Press W for Wizard.");
+                _writer.WriteMessage("Press C for Cleric.");
+                _writer.WriteMessage("Press T for Thief.");
 
                 var input = Console.ReadKey();
                 if (input.Key == ConsoleKey.K)

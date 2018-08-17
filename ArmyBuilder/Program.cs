@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 
 using ArmyBuilder.Soldiers;
+using ArmyBuilder.Writers;
 
 namespace ArmyBuilder
 {
@@ -16,11 +17,12 @@ namespace ArmyBuilder
     {
         static void Main(string[] args)
         {
-            var recruits = CreateRecruits();
-            var army = new Army(recruits); // New!! Dependency, since its in the Program class might be ok?
+            var writer = new ConsoleWriter();
+            var recruits = CreateRecruits(writer);
+            var army = new Army(recruits, writer); // New!! Dependency, since its in the Program class might be ok?
             var monster = new Monster(); // New!! Dependency, since its in the Program class might be ok?
 
-            Console.WriteLine(army.Battle(monster));
+            army.Battle(monster);
 
             Console.ReadKey();
         }
@@ -252,23 +254,26 @@ namespace ArmyBuilder
             return bonusMagicDamage;
         }
 
-        private static List<ISoldier> CreateRecruits()
+        private static List<ISoldier> CreateRecruits(IWriter writer)
         {
+            var soldierBuilder = new SoldierBuilder(writer);
+
             var createMoreSoldiers = true;
             var recruits = new List<ISoldier>();
             while (createMoreSoldiers)
             {
-                var soldier = SoldierBuilder.CreateSoldier();
-                Console.WriteLine(soldier.DisplayNewSoldier());
+                var soldier = soldierBuilder.CreateSoldier();
+                writer.WriteMessage(soldier.DisplayNewSoldier());
                 recruits.Add(soldier);
 
-                Console.WriteLine("\nWould you like to create more soliders? Press Y to create more, or N to add soldiers to the army.");
+                writer.WriteMessage("\nWould you like to create more soliders? Press Y to create more, or N to add soldiers to the army.");
                 if (Console.ReadKey().Key == ConsoleKey.N)
                 {
                     break;
                 }
             }
 
+            writer.ClearMessage();
             return recruits;
         }
     }

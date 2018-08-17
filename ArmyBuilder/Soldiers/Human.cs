@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ArmyBuilder.Soldiers
+﻿namespace ArmyBuilder.Soldiers
 {
     public class Human : BaseSoldier
     {
@@ -28,7 +22,7 @@ namespace ArmyBuilder.Soldiers
             ApplyBonuses();
         }
 
-        public override void ApplyBonuses()
+        public sealed override void ApplyBonuses()
         {
             if (Classification == Class.Cleric)
             {

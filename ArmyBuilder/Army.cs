@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ArmyBuilder.Writers;
 
 namespace ArmyBuilder
 {
@@ -14,7 +15,6 @@ namespace ArmyBuilder
         public int SergeantCount { get; private set; }
         public int PrivateCount { get; private set; }
         public bool IsDefeated { get; set; }
-        public string BattleReport { get; set; }
 
         public int MaxGeneralCount
         {
@@ -37,20 +37,24 @@ namespace ArmyBuilder
         private int _maxGeneralCount = 1;
         private int _maxCaptainCount = 5;
         private const int PrivatesNeededPerSergeant = 5;
+        private readonly IWriter _writer;
 
         // By default Allow 1 Sergeant
         private int _maxSergeantCount = 1;
 
         /// <summary>
-        /// Pass in all the recruits. This will also Determine the recruits to ensre the Ranks are correct.
-        /// If they are not, some recruits Rank will be demoted.
+        /// Pass in all the recruits and the type of writer to display details about the army to the user.
+        /// This will also Determine the recruits to ensure the Ranks are correct.
+        /// If ranks are incorrect, some recruits Rank will be demoted!!
         /// </summary>
         /// <param name="recruits"></param>
-        public Army(List<ISoldier> recruits)
+        /// <param name="writer"></param>
+        public Army(List<ISoldier> recruits, IWriter writer)
         {
             IsDefeated = false;
             Recruits = recruits;
             DetermineRanks();
+            _writer = writer;
         }
 
         /// <summary>
@@ -70,8 +74,10 @@ namespace ArmyBuilder
         /// Battle against an enemy. The Army will Attack first and Defend Second.
         /// </summary>
         /// <param name="enemy"></param>
-        public string Battle(IEnemy enemy)
+        public void Battle(IEnemy enemy)
         {
+            DisplayBeginBattleMessage(enemy);
+
             while (!(enemy.IsDead || IsDefeated))
             {
                 Attack(enemy);
@@ -80,18 +86,26 @@ namespace ArmyBuilder
                 var soldierCount = Recruits.Count(r => !r.IsDead);
                 var soldierCasualties = Recruits.Count(r => r.IsDead);
 
-                Console.WriteLine(BuildBattleReport(soldierCasualties, soldierCount, enemy.HitPoints));
+                _writer.WriteMessage(BuildBattleReport(soldierCasualties, soldierCount, enemy.HitPoints));
             }
 
-            if(enemy.IsDead)
-            {
-                return "The Army has successfully defeated the Enemy!";
-            }
-            else
-            {
-                return "The Army has been defeated by the Enemy!";
-            }
-            
+            _writer.WriteMessage(enemy.IsDead
+                ? $"The Army has successfully defeated the {enemy.EnemyTypeToString()}!"
+                : $"The Army has been defeated by the {enemy.EnemyTypeToString()}!");
+        }
+
+        /// <summary>
+        /// Displays a message at the beginning of the battle.
+        /// </summary>
+        /// <param name="enemy"></param>
+        private void DisplayBeginBattleMessage(IEnemy enemy)
+        {
+            var messageBuilder = new StringBuilder();
+            messageBuilder.Append("\nThe army approaches a dark and dreary cavern.......");
+            messageBuilder.Append($"\nA foul {enemy.EnemyTypeToString()} sallies forth from its lair...");
+            messageBuilder.Append("\nSlime and flame eminate from the beast as it approaches...");
+
+            _writer.WriteMessage(messageBuilder.ToString());
         }
 
         /// <summary>
@@ -100,11 +114,15 @@ namespace ArmyBuilder
         /// <param name="enemy"></param>
         private void Attack(IEnemy enemy)
         {
+            _writer.WriteMessage("\nThe Army begins its Attack!!");
+
             foreach (var soldier in Recruits)
             {
                 if (enemy.HitPoints > 0)
                 {
-                    enemy.Defend(soldier.Attack());
+                    var attackDamage = soldier.Attack();
+                    _writer.WriteMessage($"{soldier.Name} attacks the monster for {attackDamage} damage!\n");
+                    enemy.Defend(attackDamage);
                 }
                 else
                 {
@@ -122,9 +140,11 @@ namespace ArmyBuilder
         {
             var liveSoldiers = Recruits.Where(r => !r.IsDead);
 
+            _writer.WriteMessage("The Monster attacks each recruit in the army!!");
             foreach (var soldier in liveSoldiers)
             {
                 soldier.Defend(enemy.AttackType, enemy.Attack());
+                _writer.WriteMessage($"{soldier.Name} has been hit with a {enemy.AttackType} attack!");
             }
         }
 
@@ -140,7 +160,7 @@ namespace ArmyBuilder
             var messageBuilder = new StringBuilder();
             messageBuilder.Append("Your Army has defended against the Monster. Here is the battle report:\n");
             messageBuilder.Append($"Casualties: {soldierCasualties}\nRemaining Soldiers: {soldierCount}\n");
-            messageBuilder.Append($"Monster HitPoints: {monsterHitPoints}");
+            messageBuilder.Append($"Monster HitPoints: {monsterHitPoints}\n");
             return messageBuilder.ToString();
         }
 
@@ -196,13 +216,13 @@ namespace ArmyBuilder
         /// </summary>
         private void DemoteNecessaryGeneralsToCaptains()
         {
-            Console.WriteLine($"You can't have more than {MaxGeneralCount} General!");
+            _writer.WriteMessage($"You can't have more than {MaxGeneralCount} General!");
 
             for (int i = GeneralCount; i > MaxGeneralCount; i--)
             {
                 var generalToDemote = Recruits.First(s => s.Rank == Rank.General);
                 generalToDemote.Rank = Rank.Captain;
-                Console.WriteLine($"{generalToDemote.Name} has been demoted from {Rank.General} to {Rank.Captain}");
+                _writer.WriteMessage($"{generalToDemote.Name} has been demoted from {Rank.General} to {Rank.Captain}");
             }
         }
 
@@ -211,13 +231,13 @@ namespace ArmyBuilder
         /// </summary>
         private void DemoteNecessaryCaptainsToPrivates()
         {
-            Console.WriteLine($"You can't have more than {MaxCaptainCount} Captains!");
+            _writer.WriteMessage($"You can't have more than {MaxCaptainCount} Captains!");
 
             for (int i = CaptainCount; i > MaxCaptainCount; i--)
             {
                 var captainToDemote = Recruits.First(s => s.Rank == Rank.Captain);
                 captainToDemote.Rank = Rank.Private;
-                Console.WriteLine($"{captainToDemote.Name} has been demoted from {Rank.Captain} to {Rank.Private}");
+                _writer.WriteMessage($"{captainToDemote.Name} has been demoted from {Rank.Captain} to {Rank.Private}");
             }
         }
 
@@ -226,13 +246,13 @@ namespace ArmyBuilder
         /// </summary>
         private void DemoteNecessarySergeantsToPrivates()
         {
-            Console.WriteLine($"You can't have more than {MaxSergeantCount} Sergeant(s)!");
+            _writer.WriteMessage($"You can't have more than {MaxSergeantCount} Sergeant(s)!");
 
             for (int i = SergeantCount; i > MaxSergeantCount; i--)
             {
                 var sergeantToDemote = Recruits.First(s => s.Rank == Rank.Sergeant);
                 sergeantToDemote.Rank = Rank.Private;
-                Console.WriteLine($"{sergeantToDemote.Name} has been demoted from {Rank.Sergeant} to {Rank.Private}");
+                _writer.WriteMessage($"{sergeantToDemote.Name} has been demoted from {Rank.Sergeant} to {Rank.Private}");
             }
         }
     }

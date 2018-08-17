@@ -10,5 +10,11 @@
 
         int Attack();
         void Defend(int damage);
+        
+        /// <summary>
+        /// Easily readable way to display the Type of the Enemy
+        /// </summary>
+        /// <returns>Enemies type as a string</returns>
+        string EnemyTypeToString();
     }
 }

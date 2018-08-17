@@ -8,7 +8,7 @@
             ApplyBonuses();
         }
 
-        public override void ApplyBonuses()
+        public sealed override void ApplyBonuses()
         {
             SoldierStats.AttackStrength += 5;
             SoldierStats.MagicResistance += 10;

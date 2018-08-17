@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using ArmyBuilder.Writers;
 
 namespace ArmyBuilder.Soldiers
 {
@@ -46,8 +47,8 @@ namespace ArmyBuilder.Soldiers
         /// <returns></returns>
         public string DisplayNewSoldier()
         {
-            Console.Clear();
             var stringBuilder = new StringBuilder();
+            stringBuilder.Append($"{"Your Soldier has been created! Here is a summary of your new soldier:",-15}\n");
             stringBuilder.Append($"{"Name:",-15} {Name,5}\n");
             stringBuilder.Append($"{"Birthdate:",-15} {Birthdate,5}\n");
             stringBuilder.Append($"{"Race:",-15} {SoldierType,5}\n");
@@ -66,6 +67,7 @@ namespace ArmyBuilder.Soldiers
             return stringBuilder.ToString();
         }
 
+        /// <inheritdoc />
         /// <summary>
         /// Determines which Type of Attack the Soldier uses based on whichever is highest.
         /// </summary>
@@ -77,8 +79,9 @@ namespace ArmyBuilder.Soldiers
                 : SoldierStats.SorceryStrength;
         }
 
+        /// <inheritdoc />
         /// <summary>
-        /// Defend on incoming Attack. Can defend from a Physical or Magical Attack based on the AttackType.
+        /// Defend an incoming Attack. Can defend from a Physical or Magical Attack based on the AttackType.
         /// </summary>
         /// <param name="attackType"></param>
         /// <param name="attackDamage"></param>
@@ -86,8 +89,8 @@ namespace ArmyBuilder.Soldiers
         {
             if (attackType == AttackType.Physical)
             {
-                // Need to work on this logic, it's not right
-                SoldierStats.HitPoints -= attackDamage - (SoldierStats.Defense + SoldierStats.ArmorClass);
+                // Would rather decrease the attackDamage by a certain percent based on these bonuses/stats
+                SoldierStats.HitPoints -= attackDamage * (SoldierStats.Defense + SoldierStats.ArmorClass);
             }
             else
             {
@@ -101,6 +104,7 @@ namespace ArmyBuilder.Soldiers
 
         }
 
+        /// <inheritdoc />
         /// <summary>
         /// Assigns the Bonuses that are shared among all Soldiers.
         /// Any child of soldier that has specific bonsuses handle those bonuses in the Constructor.
