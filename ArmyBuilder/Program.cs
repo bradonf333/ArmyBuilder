@@ -80,7 +80,7 @@ namespace ArmyBuilder
                     {
                         if (army != null)
                         {
-                            var armorClass = army.Recruits[i].SoldierStats.ArmorClass;
+                            var armorClass = army.Recruits[i].SoldierStats.ArmorResistance;
                             var magicResistance = army.Recruits[i].SoldierStats.MagicResistance;
                             var hitPoints = Convert.ToInt32(army.Recruits[i].SoldierStats.HitPoints);
 

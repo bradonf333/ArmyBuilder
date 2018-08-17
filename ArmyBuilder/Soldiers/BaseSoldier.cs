@@ -19,6 +19,8 @@ namespace ArmyBuilder.Soldiers
         public SoldierType SoldierType { get; set; }
         public bool IsDead { get; set; }
 
+        private const int StatModifier = 16;
+
         /// <summary>
         /// Default Soldier if no SoldierType is specified at creation.
         /// </summary>
@@ -37,7 +39,7 @@ namespace ArmyBuilder.Soldiers
             // All soldiers have base stats
             SoldierStats.AttackStrength = 2;
             SoldierStats.SorceryStrength = 0;
-            SoldierStats.ArmorClass = 0;
+            SoldierStats.ArmorResistance = 0;
             SoldierStats.MagicResistance = 3;
         }
 
@@ -57,7 +59,7 @@ namespace ArmyBuilder.Soldiers
             stringBuilder.Append($"{"-----------",-10} {"Stats",5} {"-----------",10}\n");
             stringBuilder.Append($"{"AttackStrength:",-15} {SoldierStats.AttackStrength,7}\n");
             stringBuilder.Append($"{"Defense:",-15} {SoldierStats.Defense,7}\n");
-            stringBuilder.Append($"{"ArmorClass:",-15} {SoldierStats.ArmorClass,7}\n");
+            stringBuilder.Append($"{"ArmorClass:",-15} {SoldierStats.ArmorResistance,7}\n");
             stringBuilder.Append($"{"HitPoints:",-15} {SoldierStats.HitPoints,7}\n");
             stringBuilder.Append($"{"MagicResistance:",-15} {SoldierStats.MagicResistance,6}\n");
             stringBuilder.Append($"{"BonusDamage:",-15} {SoldierStats.BonusDamage,7}\n");
@@ -87,21 +89,32 @@ namespace ArmyBuilder.Soldiers
         /// <param name="attackDamage"></param>
         public void Defend(AttackType attackType, int attackDamage)
         {
-            if (attackType == AttackType.Physical)
-            {
-                // Would rather decrease the attackDamage by a certain percent based on these bonuses/stats
-                SoldierStats.HitPoints -= attackDamage * (SoldierStats.Defense + SoldierStats.ArmorClass);
-            }
-            else
-            {
-                SoldierStats.HitPoints -= (SoldierStats.MagicResistance) - attackDamage;
-            }
+            var damageAfterModifier = Convert.ToInt32(attackDamage * DefenseBonusModifier(attackType));
+
+            SoldierStats.HitPoints -= damageAfterModifier;
 
             if (SoldierStats.HitPoints <= 0)
             {
                 IsDead = true;
             }
+        }
 
+        private double DefenseBonusModifier(AttackType attackType)
+        {
+            var totalDefense = 0;
+            if (attackType == AttackType.Physical)
+            {
+                totalDefense = (SoldierStats.Defense + SoldierStats.ArmorResistance);
+
+            }
+            else
+            {
+                totalDefense = SoldierStats.MagicResistance;
+            }
+
+            var modifier = (10 - (totalDefense * .02 * StatModifier)) * .1;
+
+            return modifier;
         }
 
         /// <inheritdoc />
@@ -137,8 +150,6 @@ namespace ArmyBuilder.Soldiers
 
         private void AssignSorceryStrengthBonus()
         {
-            var soldierType = GetType();
-
             // WIZARDS ARE MAGICAL!!
             if (Classification == Class.Wizard)
             {
@@ -148,13 +159,11 @@ namespace ArmyBuilder.Soldiers
 
         private void AssignArmorClass()
         {
-            var soldierType = this.GetType();
-
             // KNIGHTS ARE BEEFY!! THIEVES ARE DODGY!!
             if (Classification == Class.Thief
                 || Classification == Class.Knight)
             {
-                SoldierStats.ArmorClass += 10;
+                SoldierStats.ArmorResistance += 10;
             }
         }
 

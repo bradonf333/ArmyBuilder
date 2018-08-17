@@ -14,7 +14,7 @@ namespace ArmyBuilder.Soldiers
             ApplyBonuses();
         }
 
-        public override void ApplyBonuses()
+        public sealed override void ApplyBonuses()
         {
             SoldierStats.Defense += 5;
             SoldierStats.AttackStrength += 10;

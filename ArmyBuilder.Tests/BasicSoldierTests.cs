@@ -101,7 +101,7 @@ namespace ArmyBuilder.Tests
 
             // Act
             sut.AssignStatModifiers();
-            var soldierArmor = sut.SoldierStats.ArmorClass;
+            var soldierArmor = sut.SoldierStats.ArmorResistance;
             Console.WriteLine($"Basic Soldier Armor Rating: {soldierArmor}");
 
             // Assert

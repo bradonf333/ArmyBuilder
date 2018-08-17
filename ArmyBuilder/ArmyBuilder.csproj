@@ -46,8 +46,10 @@
     <Compile Include="AttackType.cs" />
     <Compile Include="Enemies\IEnemy.cs" />
     <Compile Include="Enemies\Monster.cs" />
-    <Compile Include="Writers\ConsoleWriter.cs" />
-    <Compile Include="Writers\IWriter.cs" />
+    <Compile Include="Input\ConsoleReader.cs" />
+    <Compile Include="Input\IReader.cs" />
+    <Compile Include="Output\ConsoleWriter.cs" />
+    <Compile Include="Output\IWriter.cs" />
     <Compile Include="Soldiers\BaseSoldier.cs" />
     <Compile Include="Soldiers\ISpecificBonus.cs" />
     <Compile Include="Soldiers\SoldierBuilder.cs" />

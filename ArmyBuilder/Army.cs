@@ -76,11 +76,16 @@ namespace ArmyBuilder
         /// <param name="enemy"></param>
         public void Battle(IEnemy enemy)
         {
+            BeginBattle();
             DisplayBeginBattleMessage(enemy);
 
             while (!(enemy.IsDead || IsDefeated))
             {
                 Attack(enemy);
+                if (enemy.IsDead)
+                {
+                    break;
+                }
                 Defend(enemy);
 
                 var soldierCount = Recruits.Count(r => !r.IsDead);
@@ -92,6 +97,11 @@ namespace ArmyBuilder
             _writer.WriteMessage(enemy.IsDead
                 ? $"The Army has successfully defeated the {enemy.EnemyTypeToString()}!"
                 : $"The Army has been defeated by the {enemy.EnemyTypeToString()}!");
+        }
+
+        private void BeginBattle()
+        {
+            _writer.WriteMessage("Are you ready to begin the battle:");
         }
 
         /// <summary>
@@ -143,8 +153,10 @@ namespace ArmyBuilder
             _writer.WriteMessage("The Monster attacks each recruit in the army!!");
             foreach (var soldier in liveSoldiers)
             {
-                soldier.Defend(enemy.AttackType, enemy.Attack());
-                _writer.WriteMessage($"{soldier.Name} has been hit with a {enemy.AttackType} attack!");
+                var attackDamage = enemy.Attack();
+
+                soldier.Defend(enemy.AttackType, attackDamage);
+                _writer.WriteMessage($"{soldier.Name} has been hit with a {enemy.AttackType} attack for {attackDamage} damage!");
             }
         }
 

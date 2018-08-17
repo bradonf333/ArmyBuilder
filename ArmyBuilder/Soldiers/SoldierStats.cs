@@ -10,7 +10,7 @@
 
         public int MagicResistance { get; set; }
 
-        public int ArmorClass { get; set; }
+        public int ArmorResistance { get; set; }
 
         public int BonusDamage { get; set; }
 
