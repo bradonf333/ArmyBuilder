@@ -8,14 +8,15 @@ namespace ArmyBuilder.Input
 {
     public class ConsoleReader : IReader
     {
-        public void ReadChar()
+        public char ReadChar()
         {
-            Console.ReadKey();
+            var input = Console.ReadKey();
+            return input.KeyChar;
         }
 
-        public void ReadLine()
+        public string ReadLine()
         {
-            Console.ReadLine();
+            return Console.ReadLine();
         }
     }
 }

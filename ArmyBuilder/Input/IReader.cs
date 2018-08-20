@@ -11,11 +11,11 @@ namespace ArmyBuilder.Input
         /// <summary>
         /// Reads a single Character.
         /// </summary>
-        void ReadChar();
+        char ReadChar();
 
         /// <summary>
         /// Reads an entire line.
         /// </summary>
-        void ReadLine();
+        string ReadLine();
     }
 }

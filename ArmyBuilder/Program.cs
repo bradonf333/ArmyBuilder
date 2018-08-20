@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-
+using ArmyBuilder.Input;
 using ArmyBuilder.Soldiers;
 using ArmyBuilder.Writers;
 
@@ -18,13 +18,15 @@ namespace ArmyBuilder
         static void Main(string[] args)
         {
             var writer = new ConsoleWriter();
-            var recruits = CreateRecruits(writer);
-            var army = new Army(recruits, writer); // New!! Dependency, since its in the Program class might be ok?
+            var reader = new ConsoleReader();
             var monster = new Monster(); // New!! Dependency, since its in the Program class might be ok?
+
+            var recruits = CreateRecruits(writer);
+            var army = new Army(recruits, writer, reader); // New!! Dependency, since its in the Program class might be ok?
 
             army.Battle(monster);
 
-            Console.ReadKey();
+            reader.ReadChar();
         }
 
         /// <summary>

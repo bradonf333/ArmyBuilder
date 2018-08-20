@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ArmyBuilder.Input;
 using ArmyBuilder.Writers;
 
 namespace ArmyBuilder
@@ -38,9 +39,11 @@ namespace ArmyBuilder
         private int _maxCaptainCount = 5;
         private const int PrivatesNeededPerSergeant = 5;
         private readonly IWriter _writer;
+        private readonly IReader _reader;
 
         // By default Allow 1 Sergeant
         private int _maxSergeantCount = 1;
+
 
         /// <summary>
         /// Pass in all the recruits and the type of writer to display details about the army to the user.
@@ -49,12 +52,13 @@ namespace ArmyBuilder
         /// </summary>
         /// <param name="recruits"></param>
         /// <param name="writer"></param>
-        public Army(List<ISoldier> recruits, IWriter writer)
+        public Army(List<ISoldier> recruits, IWriter writer, IReader reader)
         {
             IsDefeated = false;
             Recruits = recruits;
             DetermineRanks();
             _writer = writer;
+            _reader = reader;
         }
 
         /// <summary>
@@ -76,32 +80,35 @@ namespace ArmyBuilder
         /// <param name="enemy"></param>
         public void Battle(IEnemy enemy)
         {
-            BeginBattle();
-            DisplayBeginBattleMessage(enemy);
-
-            while (!(enemy.IsDead || IsDefeated))
+            if (BeginBattle())
             {
-                Attack(enemy);
-                if (enemy.IsDead)
+                DisplayBeginBattleMessage(enemy);
+
+                while (!(enemy.IsDead || IsDefeated))
                 {
-                    break;
+                    Attack(enemy);
+                    if (enemy.IsDead)
+                    {
+                        break;
+                    }
+                    Defend(enemy);
+
+                    var soldierCount = Recruits.Count(r => !r.IsDead);
+                    var soldierCasualties = Recruits.Count(r => r.IsDead);
+
+                    _writer.WriteMessage(BuildBattleReport(soldierCasualties, soldierCount, enemy.HitPoints));
                 }
-                Defend(enemy);
 
-                var soldierCount = Recruits.Count(r => !r.IsDead);
-                var soldierCasualties = Recruits.Count(r => r.IsDead);
-
-                _writer.WriteMessage(BuildBattleReport(soldierCasualties, soldierCount, enemy.HitPoints));
+                _writer.WriteMessage(enemy.IsDead
+                    ? $"The Army has successfully defeated the {enemy.EnemyTypeToString()}!"
+                    : $"The Army has been defeated by the {enemy.EnemyTypeToString()}!");
             }
-
-            _writer.WriteMessage(enemy.IsDead
-                ? $"The Army has successfully defeated the {enemy.EnemyTypeToString()}!"
-                : $"The Army has been defeated by the {enemy.EnemyTypeToString()}!");
         }
 
-        private void BeginBattle()
+        private bool BeginBattle()
         {
-            _writer.WriteMessage("Are you ready to begin the battle:");
+            _writer.WriteMessage("Are you ready to begin the battle Y for Yes N for N?:\n");
+            return _reader.ReadChar() == 'Y';
         }
 
         /// <summary>
@@ -131,7 +138,8 @@ namespace ArmyBuilder
                 if (enemy.HitPoints > 0)
                 {
                     var attackDamage = soldier.Attack();
-                    _writer.WriteMessage($"{soldier.Name} attacks the monster for {attackDamage} damage!\n");
+                    _writer.WriteMessage($"{soldier.Name} charges forth to attack and slashes at the monster for {attackDamage} points damage!\n");
+                    //{army.Recruits[i].Name} pauses, chants a loud and ancient phrase, when suddenly lightning strikes the monster for {damage} points of damage!");
                     enemy.Defend(attackDamage);
                 }
                 else
