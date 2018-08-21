@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using ArmyBuilder.Writers;
 
-namespace ArmyBuilder
+namespace ArmyBuilder.Enemies
 {
+    /// <summary>
+    /// Monsters are cool!!!
+    /// </summary>
     public class Monster : IEnemy
     {
         public int HitPoints { get; set; }

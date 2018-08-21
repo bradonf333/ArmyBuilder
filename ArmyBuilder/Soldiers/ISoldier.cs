@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ArmyBuilder.Soldiers
 {
@@ -31,8 +27,15 @@ namespace ArmyBuilder.Soldiers
         /// <param name="attackDamage"></param>
         void Defend(AttackType attackType, int attackDamage);
 
+        /// <summary>
+        /// Display the Soldiers information
+        /// </summary>
+        /// <returns></returns>
         string DisplayNewSoldier();
 
+        /// <summary>
+        /// Assign the Base stats for the Soldier
+        /// </summary>
         void AssignBaseStats();
 
         /// <summary>

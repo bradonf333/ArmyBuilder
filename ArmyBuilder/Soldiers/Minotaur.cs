@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ArmyBuilder.Soldiers
+﻿namespace ArmyBuilder.Soldiers
 {
+    /// <summary>
+    /// Minotaur are the strongest. Level these guys up to a general and you got a 1 man army. Hint... Hint...
+    /// </summary>
     public class Minotaur : BaseSoldier
     {
         public Minotaur()

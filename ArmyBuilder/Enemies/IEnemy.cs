@@ -1,5 +1,8 @@
-﻿namespace ArmyBuilder
+﻿namespace ArmyBuilder.Enemies
 {
+    /// <summary>
+    /// All the necessary things needed to be classified as an enemy!
+    /// </summary>
     public interface IEnemy
     {
         int HitPoints { get; set; }

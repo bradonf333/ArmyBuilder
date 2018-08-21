@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ArmyBuilder.Writers;
+using System;
 
-namespace ArmyBuilder.Writers
+namespace ArmyBuilder.Output
 {
     public class ConsoleWriter : IWriter
     {

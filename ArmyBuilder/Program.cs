@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using ArmyBuilder.Enemies;
 using ArmyBuilder.Input;
+using ArmyBuilder.Output;
 using ArmyBuilder.Soldiers;
 using ArmyBuilder.Writers;
 

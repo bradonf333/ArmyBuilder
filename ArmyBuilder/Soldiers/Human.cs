@@ -1,5 +1,8 @@
 ﻿namespace ArmyBuilder.Soldiers
 {
+    /// <summary>
+    /// Humans are fairly cool and get a little bit of a bonus.
+    /// </summary>
     public class Human : BaseSoldier
     {
         /// <summary>
@@ -22,6 +25,9 @@
             ApplyBonuses();
         }
 
+        /// <inheritdoc />
+        /// <summary>
+        /// </summary>
         public sealed override void ApplyBonuses()
         {
             if (Classification == Class.Cleric)

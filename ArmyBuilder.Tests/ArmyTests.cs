@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ArmyBuilder.Input;
+using ArmyBuilder.Output;
 using ArmyBuilder.Soldiers;
 using ArmyBuilder.Writers;
 using NUnit.Framework;
@@ -17,6 +19,7 @@ namespace ArmyBuilder.Tests
         {
             // Arrange
             var consoleWriter = new ConsoleWriter();
+            var consoleReader = new ConsoleReader();
             const int expectedGeneralCount = 1;
             var recruits = AddFiveMinotaurPrivates();
             recruits.Add(AddMinotaurGeneral());
@@ -25,7 +28,7 @@ namespace ArmyBuilder.Tests
             recruits.Add(AddMinotaurGeneral());
 
             // Act
-            var sut = new Army(recruits, consoleWriter);
+            var sut = new Army(recruits, consoleWriter, consoleReader);
             var actualGeneralCount = sut.GeneralCount;
 
             // Assert
@@ -37,12 +40,13 @@ namespace ArmyBuilder.Tests
         {
             // Arrange
             var consoleWriter = new ConsoleWriter();
+            var consoleReader = new ConsoleReader();
             const int expectedSergeantCount = 2;
             var recruits = AddFiveMinotaurPrivates();
             recruits.AddRange(AddFiveMinotaurPrivates());
 
             // Act
-            var sut = new Army(recruits, consoleWriter);
+            var sut = new Army(recruits, consoleWriter, consoleReader);
             var actualMaxSergeantCount = sut.MaxSergeantCount;
 
             // Assert
@@ -54,6 +58,7 @@ namespace ArmyBuilder.Tests
         {
             // Arrange
             var consoleWriter = new ConsoleWriter();
+            var consoleReader = new ConsoleReader();
             const int expectedSergeantCount = 2;
             var recruits = AddFiveMinotaurPrivates();
             recruits.AddRange(AddFiveMinotaurPrivates());
@@ -62,7 +67,7 @@ namespace ArmyBuilder.Tests
             recruits.Add(CreateMinotaur(Class.Knight, Rank.Sergeant));
 
             // Act
-            var sut = new Army(recruits, consoleWriter);
+            var sut = new Army(recruits, consoleWriter, consoleReader);
             var actualSergeantCount = sut.SergeantCount;
 
             // Assert
@@ -74,10 +79,11 @@ namespace ArmyBuilder.Tests
         {
             // Arrange
             var consoleWriter = new ConsoleWriter();
+            var consoleReader = new ConsoleReader();
             const int expectedGeneralCount = 0;
             var recruits = AddFiveMinotaurPrivates();
             recruits.AddRange(AddFiveMinotaurPrivates());
-            var sut = new Army(recruits, consoleWriter);
+            var sut = new Army(recruits, consoleWriter, consoleReader);
 
             // Act
             sut.DetermineRanks();
@@ -92,6 +98,7 @@ namespace ArmyBuilder.Tests
         {
             // Arrange
             var consoleWriter = new ConsoleWriter();
+            var consoleReader = new ConsoleReader();
             const int expectedCaptainCount = 5;
             var recruits = AddFiveMinotaurPrivates();
             recruits.Add(CreateMinotaur(Class.Wizard, Rank.Captain));
@@ -101,7 +108,7 @@ namespace ArmyBuilder.Tests
             recruits.Add(AddMinotaurGeneral());
             recruits.Add(AddMinotaurGeneral());
             recruits.Add(AddMinotaurGeneral());
-            var sut = new Army(recruits, consoleWriter);
+            var sut = new Army(recruits, consoleWriter, consoleReader);
 
             // Act
             sut.DetermineRanks();

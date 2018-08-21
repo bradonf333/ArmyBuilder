@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text;
-using ArmyBuilder.Writers;
 
 namespace ArmyBuilder.Soldiers
 {
@@ -19,6 +18,9 @@ namespace ArmyBuilder.Soldiers
         public SoldierType SoldierType { get; set; }
         public bool IsDead { get; set; }
 
+        /// <summary>
+        /// Modifer used to determine bonuses. This affects the scale of the bonus.
+        /// </summary>
         private const int StatModifier = 16;
 
         /// <summary>
@@ -34,9 +36,11 @@ namespace ArmyBuilder.Soldiers
             Rank = Rank.Private;
         }
 
+        /// <summary>
+        /// Assign the Base Stats of the Soldier
+        /// </summary>
         public void AssignBaseStats()
         {
-            // All soldiers have base stats
             SoldierStats.AttackStrength = 2;
             SoldierStats.SorceryStrength = 0;
             SoldierStats.ArmorResistance = 0;
@@ -99,6 +103,32 @@ namespace ArmyBuilder.Soldiers
             }
         }
 
+        /// <summary>
+        /// Method used to Apply Bonuses for all Children of this class.
+        /// </summary>
+        public virtual void ApplyBonuses()
+        {
+        }
+
+        /// <inheritdoc />
+        /// <summary>
+        /// Assigns the Bonuses that are shared among all Soldiers.
+        /// Any child of soldier that has specific bonsuses handle those bonuses in the Constructor.
+        /// </summary>
+        public void AssignStatModifiers()
+        {
+            AssignAttackBonus();
+            AssignSorceryStrengthBonus();
+            AssignArmorClass();
+            AssignMagicResistanceBonus();
+            AssignDefenseBonus();
+        }
+
+        /// <summary>
+        /// Reduces damage depending on the bonuses of the soldier.
+        /// </summary>
+        /// <param name="attackType"></param>
+        /// <returns></returns>
         private double DefenseBonusModifier(AttackType attackType)
         {
             var totalDefense = 0;
@@ -117,20 +147,9 @@ namespace ArmyBuilder.Soldiers
             return modifier;
         }
 
-        /// <inheritdoc />
         /// <summary>
-        /// Assigns the Bonuses that are shared among all Soldiers.
-        /// Any child of soldier that has specific bonsuses handle those bonuses in the Constructor.
+        /// Additional Defense is given if certain requirements are met.
         /// </summary>
-        public void AssignStatModifiers()
-        {
-            AssignAttackBonus();
-            AssignSorceryStrengthBonus();
-            AssignArmorClass();
-            AssignMagicResistanceBonus();
-            AssignDefenseBonus();
-        }
-
         private void AssignDefenseBonus()
         {
             // KNIGHTS TAKE 5 LESS ATTACK DAMAGE
@@ -140,6 +159,9 @@ namespace ArmyBuilder.Soldiers
             }
         }
 
+        /// <summary>
+        /// Additional Attack Points are given if certain requirements are met.
+        /// </summary>
         private void AssignAttackBonus()
         {
             if (Classification == Class.Knight)
@@ -148,6 +170,9 @@ namespace ArmyBuilder.Soldiers
             }
         }
 
+        /// <summary>
+        /// Additional Sorcery Strength is given if certain requirements are met.
+        /// </summary>
         private void AssignSorceryStrengthBonus()
         {
             // WIZARDS ARE MAGICAL!!
@@ -157,6 +182,9 @@ namespace ArmyBuilder.Soldiers
             }
         }
 
+        /// <summary>
+        /// Additonal Armor Points are given if certain requirements are met.
+        /// </summary>
         private void AssignArmorClass()
         {
             // KNIGHTS ARE BEEFY!! THIEVES ARE DODGY!!
@@ -167,13 +195,12 @@ namespace ArmyBuilder.Soldiers
             }
         }
 
+        /// <summary>
+        /// Additional Magic Resistance is given if certain requirements are met.
+        /// </summary>
         private void AssignMagicResistanceBonus()
         {
             SoldierStats.MagicResistance = 0;
-        }
-
-        public virtual void ApplyBonuses()
-        {
         }
     }
 }

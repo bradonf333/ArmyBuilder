@@ -1,5 +1,9 @@
 ﻿namespace ArmyBuilder.Soldiers
 {
+    /// <summary>
+    /// Self explanatory, don't make me go into further detail please...
+    /// Ok fine.. Contains all the soldiers stats.
+    /// </summary>
     public class SoldierStats
     {
         public int HitPoints { get; set; }

@@ -10,8 +10,7 @@ namespace ArmyBuilder.Input
     {
         public char ReadChar()
         {
-            var input = Console.ReadKey();
-            return input.KeyChar;
+            return Console.ReadKey().KeyChar;
         }
 
         public string ReadLine()

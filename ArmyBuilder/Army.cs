@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ArmyBuilder.Enemies;
 using ArmyBuilder.Input;
 using ArmyBuilder.Writers;
 
@@ -52,6 +53,7 @@ namespace ArmyBuilder
         /// </summary>
         /// <param name="recruits"></param>
         /// <param name="writer"></param>
+        /// <param name="reader"></param>
         public Army(List<ISoldier> recruits, IWriter writer, IReader reader)
         {
             IsDefeated = false;
@@ -80,8 +82,13 @@ namespace ArmyBuilder
         /// <param name="enemy"></param>
         public void Battle(IEnemy enemy)
         {
-            if (BeginBattle())
+            while (true)
             {
+                if (!ReadyForBattle())
+                {
+                    continue;
+                }
+
                 DisplayBeginBattleMessage(enemy);
 
                 while (!(enemy.IsDead || IsDefeated))
@@ -94,21 +101,32 @@ namespace ArmyBuilder
                     Defend(enemy);
 
                     var soldierCount = Recruits.Count(r => !r.IsDead);
-                    var soldierCasualties = Recruits.Count(r => r.IsDead);
 
+                    if (soldierCount <= 0)
+                    {
+                        break;
+                    }
+
+                    var soldierCasualties = Recruits.Count(r => r.IsDead);
                     _writer.WriteMessage(BuildBattleReport(soldierCasualties, soldierCount, enemy.HitPoints));
                 }
 
                 _writer.WriteMessage(enemy.IsDead
                     ? $"The Army has successfully defeated the {enemy.EnemyTypeToString()}!"
                     : $"The Army has been defeated by the {enemy.EnemyTypeToString()}!");
+                break;
             }
         }
 
-        private bool BeginBattle()
+        /// <summary>
+        /// Determines if you are ready to battle.
+        /// </summary>
+        /// <returns></returns>
+        private bool ReadyForBattle()
         {
-            _writer.WriteMessage("Are you ready to begin the battle Y for Yes N for N?:\n");
-            return _reader.ReadChar() == 'Y';
+            _writer.WriteMessage("\n");
+            _writer.WriteMessage("Are you ready to begin the battle?\nPress Y to begin or N if you are not ready:");
+            return char.ToUpper(_reader.ReadChar()).Equals('Y');
         }
 
         /// <summary>
@@ -117,9 +135,17 @@ namespace ArmyBuilder
         /// <param name="enemy"></param>
         private void DisplayBeginBattleMessage(IEnemy enemy)
         {
+            _writer.ClearMessage();
+
             var messageBuilder = new StringBuilder();
             messageBuilder.Append("\nThe army approaches a dark and dreary cavern.......");
             messageBuilder.Append($"\nA foul {enemy.EnemyTypeToString()} sallies forth from its lair...");
+
+            /*
+             * todo:
+             * This part might be different for different enemies.
+             * Maybe create a method on the enemy that says BeginBattle Message or something?
+             */
             messageBuilder.Append("\nSlime and flame eminate from the beast as it approaches...");
 
             _writer.WriteMessage(messageBuilder.ToString());
@@ -139,7 +165,8 @@ namespace ArmyBuilder
                 {
                     var attackDamage = soldier.Attack();
                     _writer.WriteMessage($"{soldier.Name} charges forth to attack and slashes at the monster for {attackDamage} points damage!\n");
-                    //{army.Recruits[i].Name} pauses, chants a loud and ancient phrase, when suddenly lightning strikes the monster for {damage} points of damage!");
+                    
+                    // Enemy Defends the Attack
                     enemy.Defend(attackDamage);
                 }
                 else
@@ -154,7 +181,7 @@ namespace ArmyBuilder
         /// Army Defends against the Enemy
         /// </summary>
         /// <param name="enemy"></param>
-        public void Defend(IEnemy enemy)
+        private void Defend(IEnemy enemy)
         {
             var liveSoldiers = Recruits.Where(r => !r.IsDead);
 
@@ -173,14 +200,14 @@ namespace ArmyBuilder
         /// </summary>
         /// <param name="soldierCasualties"></param>
         /// <param name="soldierCount"></param>
-        /// <param name="monsterHitPoints"></param>
+        /// <param name="enemyHitPoints"></param>
         /// <returns></returns>
-        private string BuildBattleReport(int soldierCasualties, int soldierCount, int monsterHitPoints)
+        private static string BuildBattleReport(int soldierCasualties, int soldierCount, int enemyHitPoints)
         {
             var messageBuilder = new StringBuilder();
             messageBuilder.Append("Your Army has defended against the Monster. Here is the battle report:\n");
             messageBuilder.Append($"Casualties: {soldierCasualties}\nRemaining Soldiers: {soldierCount}\n");
-            messageBuilder.Append($"Monster HitPoints: {monsterHitPoints}\n");
+            messageBuilder.Append($"Enemy HitPoints: {enemyHitPoints}\n");
             return messageBuilder.ToString();
         }
 
