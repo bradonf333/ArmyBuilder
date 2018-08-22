@@ -9,6 +9,7 @@
         {
             SoldierType = SoldierType.Minotaur;
             ApplyBonuses();
+            AssignAttackType();
         }
 
         public sealed override void ApplyBonuses()

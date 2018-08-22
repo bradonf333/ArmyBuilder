@@ -9,6 +9,7 @@
         {
             SoldierType = SoldierType.Lizardman;
             ApplyBonuses();
+            AssignAttackType();
         }
 
         public sealed override void ApplyBonuses()

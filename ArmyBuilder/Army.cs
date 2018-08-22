@@ -45,9 +45,9 @@ namespace ArmyBuilder
         // By default Allow 1 Sergeant
         private int _maxSergeantCount = 1;
 
-
         /// <summary>
-        /// Pass in all the recruits and the type of writer to display details about the army to the user.
+        /// Pass in all the recruits needed to build the Army.
+        /// Also need a reader and writer in order to communicate with the user.
         /// This will also Determine the recruits to ensure the Ranks are correct.
         /// If ranks are incorrect, some recruits Rank will be demoted!!
         /// </summary>
@@ -109,13 +109,25 @@ namespace ArmyBuilder
 
                     var soldierCasualties = Recruits.Count(r => r.IsDead);
                     _writer.WriteMessage(BuildBattleReport(soldierCasualties, soldierCount, enemy.HitPoints));
+
+                    UserInputForNextRound();
                 }
 
                 _writer.WriteMessage(enemy.IsDead
                     ? $"The Army has successfully defeated the {enemy.EnemyTypeToString()}!"
                     : $"The Army has been defeated by the {enemy.EnemyTypeToString()}!");
+
                 break;
             }
+        }
+
+        /// <summary>
+        /// Pause before the next round of battle.
+        /// </summary>
+        private void UserInputForNextRound()
+        {
+            _writer.WriteMessage("Press any key to begin the next round of battle!");
+            _reader.ReadChar();
         }
 
         /// <summary>
@@ -144,7 +156,7 @@ namespace ArmyBuilder
             /*
              * todo:
              * This part might be different for different enemies.
-             * Maybe create a method on the enemy that says BeginBattle Message or something?
+             * Maybe create a method on the enemy that says BeginBattleMessage or something?
              */
             messageBuilder.Append("\nSlime and flame eminate from the beast as it approaches...");
 
@@ -157,21 +169,21 @@ namespace ArmyBuilder
         /// <param name="enemy"></param>
         private void Attack(IEnemy enemy)
         {
-            _writer.WriteMessage("\nThe Army begins its Attack!!");
+            _writer.WriteMessage("\nThe Army begins its Attack!!\n");
 
-            foreach (var soldier in Recruits)
+            foreach (var soldier in Recruits.Where(r => !r.IsDead))
             {
                 if (enemy.HitPoints > 0)
                 {
                     var attackDamage = soldier.Attack();
-                    _writer.WriteMessage($"{soldier.Name} charges forth to attack and slashes at the monster for {attackDamage} points damage!\n");
+                    _writer.WriteMessage(soldier.AttackMessage());
                     
                     // Enemy Defends the Attack
                     enemy.Defend(attackDamage);
                 }
                 else
                 {
-                    soldier.IsDead = true;
+                    enemy.IsDead = true;
                     break;
                 }
             }
@@ -184,14 +196,16 @@ namespace ArmyBuilder
         private void Defend(IEnemy enemy)
         {
             var liveSoldiers = Recruits.Where(r => !r.IsDead);
+            
+            _writer.WriteMessage("It's now time for the Army to Defend!");
 
-            _writer.WriteMessage("The Monster attacks each recruit in the army!!");
             foreach (var soldier in liveSoldiers)
             {
                 var attackDamage = enemy.Attack();
 
                 soldier.Defend(enemy.AttackType, attackDamage);
-                _writer.WriteMessage($"{soldier.Name} has been hit with a {enemy.AttackType} attack for {attackDamage} damage!");
+                // Wonder about putting this inside Defend, but then defend would need to return a string which might be weird?
+                _writer.WriteMessage(soldier.DefendMessage(enemy.AttackType, attackDamage)); 
             }
         }
 

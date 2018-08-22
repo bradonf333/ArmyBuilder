@@ -33,6 +33,7 @@ namespace ArmyBuilder.Soldiers
             soldier.SoldierStats.HitPoints = hitPoints;
 
             soldier.AssignStatModifiers();
+            soldier.AssignAttackType();
             _writer.ClearMessage();
 
             return soldier;
@@ -58,9 +59,9 @@ namespace ArmyBuilder.Soldiers
         {
             _writer.ClearMessage();
             _writer.WriteMessage($"\nHow tough is your soldier? Pick a number between 1 (weak) and 10 (strong).");
-            return Convert.ToInt32(Console.ReadLine());
+            var input = ParseInt(Console.ReadLine());
+            return input;
         }
-
 
         /// <summary>
         /// Name your soldier bruh!
@@ -227,6 +228,23 @@ namespace ArmyBuilder.Soldiers
             {
                 _writer.WriteMessage($"{i} : {soldierTypes[i]}");
             }
+        }
+
+        /// <summary>
+        /// If the value is not an integer then use default value.
+        /// </summary>
+        /// <param name="intToParse"></param>
+        /// <param name="defaultValue"></param>
+        /// <returns></returns>
+        private static int ParseInt(string intToParse, int defaultValue = 1)
+        {
+            int parsedInt;
+            if (int.TryParse(intToParse, out parsedInt))
+            {
+                return parsedInt;
+            }
+
+            return defaultValue;
         }
     }
 }

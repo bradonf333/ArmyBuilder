@@ -12,6 +12,12 @@ namespace ArmyBuilder.Soldiers
         SoldierStats SoldierStats { get; set; }
         SoldierType SoldierType { get; set; }
         bool IsDead { get; set; }
+        AttackType AttackType { get; set; }
+
+        /// <summary>
+        /// Determines the Soldiers AttackType
+        /// </summary>
+        void AssignAttackType();
 
         /// <summary>
         /// Returns the Soldiers Attack
@@ -43,5 +49,17 @@ namespace ArmyBuilder.Soldiers
         /// If there are modifiers 
         /// </summary>
         void AssignStatModifiers();
+
+        /// <summary>
+        /// Builds the Soldiers Message for attacking!
+        /// </summary>
+        /// <returns></returns>
+        string AttackMessage();
+
+        /// <summary>
+        /// Builds the Soldiers Message for defending!
+        /// </summary>
+        /// <returns></returns>
+        string DefendMessage(AttackType attackType, int damage);
     }
 }

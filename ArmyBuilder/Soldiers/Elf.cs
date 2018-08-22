@@ -8,6 +8,12 @@
         public Elf()
         {
             SoldierType = SoldierType.Elf;
+            ApplyBonuses();
+            AssignAttackType();
+        }
+
+        public sealed override void ApplyBonuses()
+        {
             SoldierStats.SorceryStrength += 10;
         }
     }

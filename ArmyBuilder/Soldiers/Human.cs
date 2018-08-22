@@ -12,6 +12,7 @@
         {
             SoldierType = SoldierType.Human;
             ApplyBonuses();
+            AssignAttackType();
         }
 
         /// <summary>
@@ -23,6 +24,7 @@
             SoldierType = SoldierType.Human;
             Classification = classEnum;
             ApplyBonuses();
+            AssignAttackType();
         }
 
         /// <inheritdoc />

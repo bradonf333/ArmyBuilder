@@ -19,5 +19,7 @@
         /// </summary>
         /// <returns>Enemies type as a string</returns>
         string EnemyTypeToString();
+
+        string AttackMessage();
     }
 }

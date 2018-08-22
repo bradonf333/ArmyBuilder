@@ -17,6 +17,7 @@ namespace ArmyBuilder.Soldiers
         public SoldierStats SoldierStats { get; set; }
         public SoldierType SoldierType { get; set; }
         public bool IsDead { get; set; }
+        public AttackType AttackType { get; set; }
 
         /// <summary>
         /// Modifer used to determine bonuses. This affects the scale of the bonus.
@@ -34,6 +35,7 @@ namespace ArmyBuilder.Soldiers
 
             Classification = Class.None;
             Rank = Rank.Private;
+            AssignAttackType();
         }
 
         /// <summary>
@@ -60,6 +62,7 @@ namespace ArmyBuilder.Soldiers
             stringBuilder.Append($"{"Race:",-15} {SoldierType,5}\n");
             stringBuilder.Append($"{"Class:",-15} {Classification,5}\n");
             stringBuilder.Append($"{"Rank:",-15} {Rank,5}\n");
+            stringBuilder.Append($"{"AttackType:",-15} {AttackType,5}\n");
             stringBuilder.Append($"{"-----------",-10} {"Stats",5} {"-----------",10}\n");
             stringBuilder.Append($"{"AttackStrength:",-15} {SoldierStats.AttackStrength,7}\n");
             stringBuilder.Append($"{"Defense:",-15} {SoldierStats.Defense,7}\n");
@@ -75,14 +78,25 @@ namespace ArmyBuilder.Soldiers
 
         /// <inheritdoc />
         /// <summary>
-        /// Determines which Type of Attack the Soldier uses based on whichever is highest.
+        /// Returns the Attack Damage of the Soldier based on their AttackType.
         /// </summary>
         /// <returns>Attack as an integer</returns>
         public int Attack()
         {
-            return SoldierStats.AttackStrength > SoldierStats.SorceryStrength
+            return AttackType == AttackType.Physical
                 ? SoldierStats.AttackStrength
                 : SoldierStats.SorceryStrength;
+        }
+
+        /// <inheritdoc />
+        /// <summary>
+        /// Determines the Soldiers AttackType
+        /// </summary>
+        public void AssignAttackType()
+        {
+            AttackType = SoldierStats.AttackStrength > SoldierStats.SorceryStrength
+                ? AttackType.Physical
+                : AttackType.Magical;
         }
 
         /// <inheritdoc />
@@ -122,6 +136,36 @@ namespace ArmyBuilder.Soldiers
             AssignArmorClass();
             AssignMagicResistanceBonus();
             AssignDefenseBonus();
+        }
+
+        /// <summary>
+        /// Return the Attack Message for the soldier.
+        /// </summary>
+        /// <returns></returns>
+        public string AttackMessage()
+        {
+            var message = AttackType == AttackType.Physical
+                ? $"{Name} charges forth to attack and slashes at the monster for {Attack()} points of damage!\n"
+                : $"{Name} pauses, chants a loud and ancient phrase, when suddenly lightning strikes the monster\nfor {Attack()} points of damage!\n";
+
+            return message;
+        }
+
+        /// <summary>
+        /// Build the defend message for the soldier depending on the attack type.
+        /// </summary>
+        /// <param name="attackType"></param>
+        /// <param name="damage"></param>
+        /// <returns></returns>
+        public string DefendMessage(AttackType attackType, int damage)
+        {
+            var messageBuilder = new StringBuilder();
+            messageBuilder.Append($"{Name} is hit with a {attackType} attack for {damage} points of damage ");
+            messageBuilder.Append(IsDead
+                ? "and falls dead to the earth!!\n"
+                : "\nbut recovers and is ready for another round of battle!\n");
+
+            return messageBuilder.ToString();
         }
 
         /// <summary>

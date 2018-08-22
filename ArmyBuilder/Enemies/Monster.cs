@@ -64,5 +64,14 @@ namespace ArmyBuilder.Enemies
                 IsDead = true;
             }
         }
+
+        public string AttackMessage()
+        {
+            var attackMessage = AttackType == AttackType.Physical
+                ? "The Monster turns its ugly head and unleashes a mighty blow!\n"
+                : "Flames spew forth from the tentacles of the beast and envelop {army.Recruits[i].Name} who falls dead to the earth.\n";
+
+            return attackMessage;
+        }
     }
 }
