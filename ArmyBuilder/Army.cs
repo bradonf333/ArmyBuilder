@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using ArmyBuilder.Enemies;
 using ArmyBuilder.Input;
-using ArmyBuilder.Writers;
+using ArmyBuilder.Output;
 
 namespace ArmyBuilder
 {
@@ -113,12 +113,31 @@ namespace ArmyBuilder
                     UserInputForNextRound();
                 }
 
-                _writer.WriteMessage(enemy.IsDead
-                    ? $"The Army has successfully defeated the {enemy.EnemyTypeToString()}!"
-                    : $"The Army has been defeated by the {enemy.EnemyTypeToString()}!");
+                if (enemy.IsDead)
+                {
+                    ArmyVictoriousMessage(enemy);
+                }
+                else
+                {
+                    ArmyDefeatedMessage(enemy);
+                }
 
                 break;
             }
+        }
+
+        private void ArmyVictoriousMessage(IEnemy enemy)
+        {
+            _writer.Information();
+            _writer.WriteMessage($"{"-----------",-10} {$"The Army has successfully defeated the {enemy.EnemyTypeToString()}",5} {"-----------",10}\n");
+            _writer.Default();
+        }
+
+        private void ArmyDefeatedMessage(IEnemy enemy)
+        {
+            _writer.Alert();
+            _writer.WriteMessage($"{"-----------",-10} {$"The Army has been defeated by the {enemy.EnemyTypeToString()}",5} {"-----------",10}\n");
+            _writer.Default();
         }
 
         /// <summary>
@@ -169,7 +188,9 @@ namespace ArmyBuilder
         /// <param name="enemy"></param>
         private void Attack(IEnemy enemy)
         {
-            _writer.WriteMessage("\nThe Army begins its Attack!!\n");
+            _writer.Information();
+            _writer.WriteMessage($"\n{"-----------",-10} {"The Army begins its Attack!!",5} {"-----------",10}\n");
+            _writer.Default();
 
             foreach (var soldier in Recruits.Where(r => !r.IsDead))
             {
@@ -197,7 +218,9 @@ namespace ArmyBuilder
         {
             var liveSoldiers = Recruits.Where(r => !r.IsDead);
             
-            _writer.WriteMessage("It's now time for the Army to Defend!");
+            _writer.Custom(Color.Blue);
+            _writer.WriteMessage($"\n{"-----------",-10} {"It's now time for the Army to Defend!",5} {"-----------",10}\n");
+            _writer.Default();
 
             foreach (var soldier in liveSoldiers)
             {

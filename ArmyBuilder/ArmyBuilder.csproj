@@ -48,6 +48,7 @@
     <Compile Include="Enemies\Monster.cs" />
     <Compile Include="Input\ConsoleReader.cs" />
     <Compile Include="Input\IReader.cs" />
+    <Compile Include="Output\Color.cs" />
     <Compile Include="Output\ConsoleWriter.cs" />
     <Compile Include="Output\IWriter.cs" />
     <Compile Include="Soldiers\BaseSoldier.cs" />

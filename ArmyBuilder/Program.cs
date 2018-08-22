@@ -6,7 +6,6 @@ using ArmyBuilder.Enemies;
 using ArmyBuilder.Input;
 using ArmyBuilder.Output;
 using ArmyBuilder.Soldiers;
-using ArmyBuilder.Writers;
 
 namespace ArmyBuilder
 {

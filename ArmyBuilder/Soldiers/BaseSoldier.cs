@@ -20,7 +20,7 @@ namespace ArmyBuilder.Soldiers
         public AttackType AttackType { get; set; }
 
         /// <summary>
-        /// Modifer used to determine bonuses. This affects the scale of the bonus.
+        /// Modifer used to determine bonuses. This affects the scale of the bonus. It's a magic number currently.
         /// </summary>
         private const int StatModifier = 16;
 

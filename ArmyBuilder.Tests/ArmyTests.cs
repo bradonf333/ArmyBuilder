@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ArmyBuilder.Input;
+﻿using ArmyBuilder.Input;
 using ArmyBuilder.Output;
 using ArmyBuilder.Soldiers;
-using ArmyBuilder.Writers;
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
 
 namespace ArmyBuilder.Tests
 {

@@ -1,5 +1,5 @@
-﻿using ArmyBuilder.Writers;
-using System;
+﻿using System;
+using ArmyBuilder.Output;
 
 namespace ArmyBuilder.Soldiers
 {
