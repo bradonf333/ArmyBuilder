@@ -56,11 +56,11 @@ namespace ArmyBuilder
         /// <param name="reader"></param>
         public Army(List<ISoldier> recruits, IWriter writer, IReader reader)
         {
+            _writer = writer;
+            _reader = reader;
             IsDefeated = false;
             Recruits = recruits;
             DetermineRanks();
-            _writer = writer;
-            _reader = reader;
         }
 
         /// <summary>
@@ -324,6 +324,17 @@ namespace ArmyBuilder
                 DemoteNecessarySergeantsToPrivates();
                 CountRanks();
             }
+
+            DisplayArmyRecruitRanks();
+        }
+
+        private void DisplayArmyRecruitRanks()
+        {
+            _writer.WriteMessage("Updated Army Ranks");
+            _writer.WriteMessage($"Sergeants: {SergeantCount, 5}");
+            _writer.WriteMessage($"Generals: {GeneralCount, 5}");
+            _writer.WriteMessage($"Captains: {CaptainCount, 5}");
+            _writer.WriteMessage($"Privates: {PrivateCount, 5}");
         }
 
         /// <summary>
