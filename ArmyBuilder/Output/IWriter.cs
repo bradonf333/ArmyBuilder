@@ -7,6 +7,7 @@
         void Alert();
         void Information();
         void Default();
-        void Custom(Color color);
+        void CustomBG(Color color);
+        void CustomFG(Color color);
     }
 }

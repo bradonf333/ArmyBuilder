@@ -93,6 +93,7 @@ namespace ArmyBuilder
 
                 while (!(enemy.IsDead || IsDefeated))
                 {
+                    //ReadyToAttack();
                     Attack(enemy);
                     if (enemy.IsDead)
                     {
@@ -126,17 +127,40 @@ namespace ArmyBuilder
             }
         }
 
+        private void ReadyToAttack()
+        {
+            _writer.WriteMessage("\nPress any key when you are ready to begin the Attack!!");
+            _reader.ReadChar();
+        }
+
+        /// <summary>
+        /// Spent way too much time formatting the Messages.....
+        /// </summary>
+        /// <param name="enemy"></param>
         private void ArmyVictoriousMessage(IEnemy enemy)
         {
-            _writer.Information();
-            _writer.WriteMessage($"{"-----------",-10} {$"The Army has successfully defeated the {enemy.EnemyTypeToString()}",5} {"-----------",10}\n");
+            _writer.CustomBG(Color.Green);
+            _writer.CustomFG(Color.Black);
+            _writer.WriteMessage($"{" ",-80}");
+            _writer.WriteMessage($"{" ",-80}");
+            _writer.WriteMessage($"{"-----------",15} {$"The Army has successfully defeated the {enemy.EnemyTypeToString()}",5} {"-----------",10}{" ",6}");
+            _writer.WriteMessage($"{" ",-80}");
+            _writer.WriteMessage($"{" ",-80}\n");
             _writer.Default();
         }
 
+        /// <summary>
+        /// Spent way too much time formatting the Messages.....
+        /// </summary>
+        /// <param name="enemy"></param>
         private void ArmyDefeatedMessage(IEnemy enemy)
         {
             _writer.Alert();
-            _writer.WriteMessage($"{"-----------",-10} {$"The Army has been defeated by the {enemy.EnemyTypeToString()}",5} {"-----------",10}\n");
+            _writer.WriteMessage($"{" ",-80}");
+            _writer.WriteMessage($"{" ",-80}");
+            _writer.WriteMessage($"{"-----------",20} {$"The Army has been defeated by the {enemy.EnemyTypeToString()}",5} {"-----------",10}{" ",6}");
+            _writer.WriteMessage($"{" ",-80}");
+            _writer.WriteMessage($"{" ",-80}\n");
             _writer.Default();
         }
 
@@ -189,7 +213,9 @@ namespace ArmyBuilder
         private void Attack(IEnemy enemy)
         {
             _writer.Information();
-            _writer.WriteMessage($"\n{"-----------",-10} {"The Army begins its Attack!!",5} {"-----------",10}\n");
+            _writer.WriteMessage($"\n{" ",-80}");
+            _writer.WriteMessage($"{"-----------",22} {"The Army begins its Attack!!",5} {"-----------",10}{" ",17}");
+            _writer.WriteMessage($"{" ",-80}\n");
             _writer.Default();
 
             foreach (var soldier in Recruits.Where(r => !r.IsDead))
@@ -218,22 +244,26 @@ namespace ArmyBuilder
         {
             var liveSoldiers = Recruits.Where(r => !r.IsDead);
             
-            _writer.Custom(Color.Blue);
-            _writer.WriteMessage($"\n{"-----------",-10} {"It's now time for the Army to Defend!",5} {"-----------",10}\n");
+            _writer.CustomBG(Color.Cyan);
+            _writer.CustomFG(Color.Black);
+            _writer.WriteMessage($"{" ",-80}");
+            _writer.WriteMessage($"{"-----------",20} {"It's now time for the Army to Defend!",5} {"-----------",10}{" ",10}");
+            _writer.WriteMessage($"{" ",-80}\n");
             _writer.Default();
 
             foreach (var soldier in liveSoldiers)
             {
                 var attackDamage = enemy.Attack();
-
+                _writer.WriteMessage(enemy.AttackMessage());
                 soldier.Defend(enemy.AttackType, attackDamage);
+
                 // Wonder about putting this inside Defend, but then defend would need to return a string which might be weird?
                 _writer.WriteMessage(soldier.DefendMessage(enemy.AttackType, attackDamage)); 
             }
         }
 
         /// <summary>
-        /// Generate Battle reports: Casulties, Remaining Soldiers and Monster HitPoints
+        /// Generate Battle reports: Casualties, Remaining Soldiers and Monster HitPoints
         /// </summary>
         /// <param name="soldierCasualties"></param>
         /// <param name="soldierCount"></param>

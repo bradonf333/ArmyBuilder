@@ -33,9 +33,9 @@ namespace ArmyBuilder.Enemies
         public int Attack()
         {
             var numberGenerator = new Random();
-            var attackTypeGenerator = numberGenerator.Next(0, 2);
+            var attackTypeGenerator = numberGenerator.Next(0, 5000);
 
-            AttackType = attackTypeGenerator == 0 ? AttackType.Physical : AttackType.Magical;
+            AttackType = attackTypeGenerator % 2 == 0 ? AttackType.Physical : AttackType.Magical;
 
             var attackDamage = AttackType == AttackType.Physical ? PhysicalAttackDamage : MagicalAttackDamage;
 
@@ -69,7 +69,7 @@ namespace ArmyBuilder.Enemies
         {
             var attackMessage = AttackType == AttackType.Physical
                 ? "The Monster turns its ugly head and unleashes a mighty blow!\n"
-                : "Flames spew forth from the tentacles of the beast and envelop {army.Recruits[i].Name} who falls dead to the earth.\n";
+                : $"Flames spew forth from the tentacles of the beast and envelop the foe.\n";
 
             return attackMessage;
         }
