@@ -93,12 +93,13 @@ namespace ArmyBuilder
 
                 while (!(enemy.IsDead || IsDefeated))
                 {
-                    //ReadyToAttack();
                     Attack(enemy);
+
                     if (enemy.IsDead)
                     {
                         break;
                     }
+
                     Defend(enemy);
 
                     var soldierCount = Recruits.Count(r => !r.IsDead);
@@ -109,7 +110,8 @@ namespace ArmyBuilder
                     }
 
                     var soldierCasualties = Recruits.Count(r => r.IsDead);
-                    _writer.WriteMessage(BuildBattleReport(soldierCasualties, soldierCount, enemy.HitPoints));
+                    var battleReport = BuildBattleReport(soldierCasualties, soldierCount, enemy.HitPoints);
+                    _writer.WriteMessage(battleReport);
 
                     UserInputForNextRound();
                 }
@@ -125,12 +127,6 @@ namespace ArmyBuilder
 
                 break;
             }
-        }
-
-        private void ReadyToAttack()
-        {
-            _writer.WriteMessage("\nPress any key when you are ready to begin the Attack!!");
-            _reader.ReadChar();
         }
 
         /// <summary>
@@ -243,13 +239,8 @@ namespace ArmyBuilder
         private void Defend(IEnemy enemy)
         {
             var liveSoldiers = Recruits.Where(r => !r.IsDead);
-            
-            _writer.CustomBG(Color.Cyan);
-            _writer.CustomFG(Color.Black);
-            _writer.WriteMessage($"{" ",-80}");
-            _writer.WriteMessage($"{"-----------",20} {"It's now time for the Army to Defend!",5} {"-----------",10}{" ",10}");
-            _writer.WriteMessage($"{" ",-80}\n");
-            _writer.Default();
+
+            DisplayDefendMessage();
 
             foreach (var soldier in liveSoldiers)
             {
@@ -258,8 +249,18 @@ namespace ArmyBuilder
                 soldier.Defend(enemy.AttackType, attackDamage);
 
                 // Wonder about putting this inside Defend, but then defend would need to return a string which might be weird?
-                _writer.WriteMessage(soldier.DefendMessage(enemy.AttackType, attackDamage)); 
+                _writer.WriteMessage(soldier.DefendMessage(enemy.AttackType, attackDamage));
             }
+        }
+
+        private void DisplayDefendMessage()
+        {
+            _writer.CustomBG(Color.Cyan);
+            _writer.CustomFG(Color.Black);
+            _writer.WriteMessage($"{" ",-80}");
+            _writer.WriteMessage($"{"-----------",20} {"It's now time for the Army to Defend!",5} {"-----------",10}{" ",10}");
+            _writer.WriteMessage($"{" ",-80}\n");
+            _writer.Default();
         }
 
         /// <summary>
